@@ -1,10 +1,8 @@
 #BlueJ class context
 comment0.params=
 comment0.target=world_handler()
-comment1.params=o
-comment1.target=void\ add_object(Object)
+comment1.params=
+comment1.target=void\ draw_all()
 comment2.params=o
-comment2.target=void\ rm_object(Object)
-comment3.params=
-comment3.target=void\ draw_all()
-numComments=4
+comment2.target=void\ add_object(Object)
+numComments=3

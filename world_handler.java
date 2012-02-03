@@ -10,16 +10,14 @@ public class world_handler
         
     }
     
-    public void add_object(Object o) {
-        objects.add(o);
-    }
-    public void rm_object(Object o) {
-        objects.remove(o);
-    }
-    
     public void draw_all() {
         for (int i = 0 ; i < objects.size() ; i++) {
-            objects.get(i);
+            Object current = (Object)objects.get(i);
+            current.draw();
         }
+    }
+    
+    public void add_object(Object o) {
+        objects.add(o);
     }
 }
