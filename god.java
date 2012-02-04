@@ -25,7 +25,6 @@ public class god
     }
     
     public void create_object(String name, float x_pos, float y_pos, String world_image_path) {
-        System.out.println("Created obj");
         world.add_object(new Object (name, x_pos, y_pos, world_image_path));
         window.set_objects(world.get_objects());
     }

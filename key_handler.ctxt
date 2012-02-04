@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.params=
+comment0.target=key_handler()
+comment1.params=c
+comment1.target=void\ handle_key(java.lang.Character)
+numComments=2
