@@ -26,6 +26,9 @@ public class applet_handler implements KeyListener
     public void set_objects(ArrayList ol) {
         drawer.set_objects(ol);
     }
+    public void set_characters(ArrayList cl) {
+        drawer.set_characters(cl);
+    }
     
         
     // Stuff for multiple key detection

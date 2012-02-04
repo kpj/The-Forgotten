@@ -5,7 +5,8 @@ import java.util.*;
 
 public class draw_anything extends JComponent
 {
-    ArrayList<Object> objects = new ArrayList();
+    ArrayList<Object> objects = new ArrayList<Object>();
+    ArrayList<Char> characters = new ArrayList<Char>();
 
     public draw_anything()
     {
@@ -22,6 +23,10 @@ public class draw_anything extends JComponent
     
     public void set_objects(ArrayList ol) {
         objects = ol;
+        repaint();
+    }
+    public void set_characters(ArrayList cl) {
+        characters = cl;
         repaint();
     }
 }
