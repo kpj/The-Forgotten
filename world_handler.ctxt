@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=
+comment0.target=world_handler()
+comment1.params=o
+comment1.target=void\ add_object(Object)
+comment2.params=c
+comment2.target=void\ add_character(Char)
+comment3.params=
+comment3.target=java.util.ArrayList\ get_objects()
+comment4.params=
+comment4.target=java.util.ArrayList\ get_characters()
+numComments=5

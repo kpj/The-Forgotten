@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=
+comment0.target=applet_handler()
+comment1.params=ol
+comment1.target=void\ set_objects(java.util.ArrayList)
+comment2.params=cl
+comment2.target=void\ set_characters(java.util.ArrayList)
+comment3.params=e
+comment3.target=void\ keyPressed(java.awt.event.KeyEvent)
+comment4.params=e
+comment4.target=void\ keyReleased(java.awt.event.KeyEvent)
+comment5.params=e
+comment5.target=void\ keyTyped(java.awt.event.KeyEvent)
+numComments=6

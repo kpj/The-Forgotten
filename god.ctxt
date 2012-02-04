@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.params=
+comment0.target=god()
+comment1.params=
+comment1.target=void\ live()
+comment2.params=name\ x_pos\ y_pos\ world_image_path
+comment2.target=void\ create_object(java.lang.String,\ float,\ float,\ java.lang.String)
+comment3.params=name\ x_pos\ y_pos\ world_image_path\ set
+comment3.target=void\ create_character(java.lang.String,\ float,\ float,\ java.lang.String,\ key_set)
+numComments=4
