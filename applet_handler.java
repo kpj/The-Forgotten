@@ -30,6 +30,9 @@ public class applet_handler implements KeyListener
         drawer.set_characters(cl);
     }
     
+    public void repaint() {
+        drawer.repaint();
+    }
         
     // Stuff for multiple key detection
     @Override

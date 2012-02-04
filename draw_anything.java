@@ -19,6 +19,10 @@ public class draw_anything extends JComponent
         for (Object current : objects) {
             g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
         }
+        
+        for (Char current : characters) {
+            g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
+        }
     }
     
     public void set_objects(ArrayList ol) {

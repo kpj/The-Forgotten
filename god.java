@@ -13,13 +13,23 @@ public class god
     }
     
     public void live() {
+        create_character("Hinz", 0, 0, "pics/hero.png", new key_set());
         while(true) {
-            try {
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException e) {
-                System.out.println("Nicht warten?");
-            }
+            sleep(1000);
+            draw();
+        }
+    }
+    
+    public void draw() {
+        window.repaint();
+    }
+    
+    public void sleep(int t) {
+        try {
+            Thread.sleep(t);
+        }
+        catch (InterruptedException e) {
+            System.out.println("Nicht warten?");
         }
     }
     
