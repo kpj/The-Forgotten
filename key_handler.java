@@ -1,4 +1,4 @@
-public class key_handler extends god
+public class key_handler
 {
     public key_handler()
     {
@@ -7,6 +7,6 @@ public class key_handler extends god
     
     public void handle_key(Character c) {
         System.out.println(c);
-        System.out.println(world.get_characters());
+        System.out.println();
     }
 }
