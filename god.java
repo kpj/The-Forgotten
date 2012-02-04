@@ -16,8 +16,13 @@ public class god
         create_character("Hinz", 0, 0, "pics/hero.png", new key_set());
         while(true) {
             sleep(1000);
-            draw();
+            update();
         }
+    }
+    
+    public void update() {
+        draw();
+        
     }
     
     public void draw() {

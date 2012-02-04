@@ -7,7 +7,7 @@ public class Char
     float x_pos, y_pos, height, width;
     key_set set;
     
-    public Char(String n, float x, float y, String w_i, key_set set)
+    public Char(String n, float x, float y, String w_i, key_set kset)
     {
         name = n;
         world_image = Toolkit.getDefaultToolkit().getImage(w_i);
@@ -15,7 +15,7 @@ public class Char
         width = world_image.getWidth(null);
         x_pos = x;
         y_pos = y;
-        set = set;
+        set = kset;
     }
     
     public Image get_image() {

@@ -27,6 +27,7 @@ public class applet_handler implements KeyListener
         drawer.set_objects(ol);
     }
     public void set_characters(ArrayList cl) {
+        keyer.set_characters(cl);
         drawer.set_characters(cl);
     }
     

@@ -17,4 +17,8 @@ public class key_set
 
         player_set.put(name, action2key);
     }
+    
+    public HashMap get_set() {
+        return player_set;
+    }
 }
