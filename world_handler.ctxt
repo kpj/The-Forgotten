@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.params=
 comment0.target=world_handler()
-comment1.params=
-comment1.target=void\ draw_all()
-comment2.params=o
-comment2.target=void\ add_object(Object)
+comment1.params=o
+comment1.target=void\ add_object(Object)
+comment2.params=
+comment2.target=java.util.ArrayList\ get_objects()
 numComments=3

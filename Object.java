@@ -1,13 +1,27 @@
- public class Object
+import java.awt.*;
+
+public class Object
 {
     String name;
+    Image world_image;
+    float x_pos, y_pos;
 
-    public Object(String n)
+    public Object(String n, float x, float y, String w_i)
     {
         name = n;
+        world_image = Toolkit.getDefaultToolkit().getImage(w_i);
+        x_pos = x;
+        y_pos = y;
     }
     
-    public void draw() {
-        System.out.println(name);
+    public Image get_image() {
+        return world_image;
+    }
+    
+    public float get_x() {
+        return x_pos;
+    }
+    public float get_y() {
+        return y_pos;
     }
 }
