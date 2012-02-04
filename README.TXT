@@ -1,6 +1,0 @@
-PROJECT TITLE: The Forgotten
-PURPOSE OF PROJECT: Generate maximum fun
-VERSION or DATE: 0.0.1
-HOW TO START THIS PROJECT: Get bluej
-AUTHORS: kpj, Kraabumm
-USER INSTRUCTIONS: Enjoy
