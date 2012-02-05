@@ -8,7 +8,7 @@ public class applet_handler implements KeyListener
 {
     draw_anything drawer = new draw_anything();
     key_handler keyer = new key_handler();
-    private final Set<Character> pressed = new HashSet<Character>();
+    Set<Character> pressed = new HashSet<Character>();
 
     public applet_handler()
     {
@@ -20,7 +20,7 @@ public class applet_handler implements KeyListener
         f.addKeyListener(this);
         
         //Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-
+        keyer.start();
     }
     
     public void set_objects(ArrayList ol) {
@@ -39,16 +39,13 @@ public class applet_handler implements KeyListener
     @Override
     public synchronized void keyPressed(KeyEvent e) {
         pressed.add(e.getKeyChar());
-        
-        for (Character c : pressed) {
-            keyer.handle_key(c);
-        }
-
+        keyer.set_key_list(pressed);
     }
 
     @Override
     public synchronized void keyReleased(KeyEvent e) {
         pressed.remove(e.getKeyChar());
+        keyer.set_key_list(pressed);
     }
 
     @Override
