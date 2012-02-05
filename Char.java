@@ -9,7 +9,7 @@ public class Char
     float world_image_height, world_image_width, fight_image_height, fight_image_width;
     key_set set;
     
-    HashMap<Item, Boolean> items = new HashMap<Item, Boolean>();
+    ArrayList<ArrayList> items = new ArrayList<ArrayList>();
     HashMap<String, Integer> property = new HashMap<String, Integer>();
     
     public Char(String n, float x, float y, String w_i, String f_i, key_set kset)
@@ -33,9 +33,10 @@ public class Char
         property.put("lebenspunkte", 10);
         property.put("manapunkte", 10);
         property.put("ausdauerpunkte", 5);
-        property.put("erfahrung", 0);
         property.put("initiative", 8);
         property.put("magieresistenz", 9);
+        property.put("angriffskraft", 2);
+        property.put("verteidigungspunkte", 1);
     }
     
     public Image get_image() {
@@ -62,5 +63,16 @@ public class Char
         else if (direction == "RIGHT") {
             x_pos += property.get("geschwindigkeit");
         }
+    }
+    
+    public void collect_item(Item it) {
+        ArrayList inside_items = new ArrayList();
+        inside_items.add(it);
+        inside_items.add(false);
+        items.add(inside_items);
+    }
+    
+    public ArrayList return_items() {
+        return items;
     }
 }

@@ -9,7 +9,7 @@ public class god
 
     public god()
     {
-
+        
     }
     
     public void live() {
@@ -48,7 +48,7 @@ public class god
         window.set_characters(world.get_characters());
     }
     
-    public void create_item(String name, int id, String equipped_image_path, String entity_image_path, HashMap effects) {
-        //new Item(id, name, equipped_image_path, entity_image_path, effects);
+    public Item create_item(int id) {
+        return new Item(id);
     }
 }
