@@ -13,7 +13,7 @@ public class god
     }
     
     public void live() {
-        create_character("Hinz", 0, 0, "pics/hero.png", new key_set());
+        create_character("Hinz", 0, 0, "pics/hero.png", "path/to/fight.img", new key_set());
         while(true) {
             sleep(42);
             update();
@@ -43,8 +43,8 @@ public class god
         window.set_objects(world.get_objects());
     }
     
-    public void create_character(String name, float x_pos, float y_pos, String world_image_path, key_set set) {
-        world.add_character(new Char (name, x_pos, y_pos, world_image_path, set));
+    public void create_character(String name, float x_pos, float y_pos, String world_image_path, String fight_image_path, key_set set) {
+        world.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set));
         window.set_characters(world.get_characters());
     }
 }
