@@ -11,13 +11,20 @@ public class key_handler
     
     public void handle_key(Character c) {
         for (Char current : characters) {
-            HashMap cur_set = current.set.get_set();
+            HashMap cur_set = (HashMap)current.set.get_set().get(current.name);
             
-            System.out.println(current +"--"+ current.set +"--"+ cur_set.get(current.name));
-            
-            //if (c == cur_set.get(current.name).get("UP")) {
-            //    System.out.println("move up");
-            //}
+            if (c == cur_set.get("UP")) {
+                current.move("UP");
+            }
+            else if (c == cur_set.get("RIGHT")) {
+                current.move("RIGHT");
+            }
+            else if (c == cur_set.get("LEFT")) {
+                current.move("LEFT");
+            }
+            else if (c == cur_set.get("DOWN")) {
+                current.move("DOWN");
+            }
         }
     }
     

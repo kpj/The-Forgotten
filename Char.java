@@ -4,7 +4,7 @@ public class Char
 {
     String name;
     Image world_image;
-    float x_pos, y_pos, height, width;
+    float x_pos, y_pos, height, width, velocity;
     key_set set;
     
     public Char(String n, float x, float y, String w_i, key_set kset)
@@ -16,6 +16,8 @@ public class Char
         x_pos = x;
         y_pos = y;
         set = kset;
+        
+        velocity = 5;
     }
     
     public Image get_image() {
@@ -27,5 +29,20 @@ public class Char
     }
     public float get_y() {
         return y_pos;
+    }
+    
+    public void move(String direction) {
+        if (direction == "UP") {
+            y_pos -= velocity;
+        }
+        else if (direction == "DOWN") {
+            y_pos += velocity;
+        }
+        else if (direction == "LEFT") {
+            x_pos -= velocity;
+        }
+        else if (direction == "RIGHT") {
+            x_pos += velocity;
+        }
     }
 }

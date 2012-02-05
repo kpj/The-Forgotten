@@ -15,7 +15,7 @@ public class god
     public void live() {
         create_character("Hinz", 0, 0, "pics/hero.png", new key_set());
         while(true) {
-            sleep(1000);
+            sleep(42);
             update();
         }
     }
