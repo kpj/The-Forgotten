@@ -7,10 +7,10 @@ public class Char
     Image world_image, fight_image;
     float x_pos, y_pos;
     float world_image_height, world_image_width, fight_image_height, fight_image_width;
-    float velocity;
     key_set set;
     
     HashMap<Item, Boolean> items = new HashMap<Item, Boolean>();
+    HashMap<String, Integer> property = new HashMap<String, Integer>();
     
     public Char(String n, float x, float y, String w_i, String f_i, key_set kset)
     {
@@ -28,7 +28,14 @@ public class Char
         y_pos = y;
         set = kset;
         
-        velocity = 5;
+        // Properties
+        property.put("geschwindigkeit", 5);
+        property.put("lebenspunkte", 10);
+        property.put("manapunkte", 10);
+        property.put("ausdauerpunkte", 5);
+        property.put("erfahrung", 0);
+        property.put("initiative", 8);
+        property.put("magieresistenz", 9);
     }
     
     public Image get_image() {
@@ -44,16 +51,16 @@ public class Char
     
     public void move(String direction) {
         if (direction == "UP") {
-            y_pos -= velocity;
+            y_pos -= property.get("geschwindigkeit");
         }
         else if (direction == "DOWN") {
-            y_pos += velocity;
+            y_pos += property.get("geschwindigkeit");
         }
         else if (direction == "LEFT") {
-            x_pos -= velocity;
+            x_pos -= property.get("geschwindigkeit");
         }
         else if (direction == "RIGHT") {
-            x_pos += velocity;
+            x_pos += property.get("geschwindigkeit");
         }
     }
 }

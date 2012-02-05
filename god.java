@@ -47,4 +47,8 @@ public class god
         world.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set));
         window.set_characters(world.get_characters());
     }
+    
+    public void create_item(String name, int id, String equipped_image_path, String entity_image_path, HashMap effects) {
+        //new Item(id, name, equipped_image_path, entity_image_path, effects);
+    }
 }
