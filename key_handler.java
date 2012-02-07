@@ -41,6 +41,7 @@ public class key_handler extends Thread
     
     public void give_fight_handler(fight_handler fi) {
         fighter = fi;
+        pressed = new HashSet();
     }
     
     public void handle_key(Character c) {

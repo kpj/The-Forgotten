@@ -16,7 +16,7 @@ public class god implements Runnable
     
     public void run() {
         create_character("Hinz", 200, 200, "pics/Prop.png", "path/to/fight.img", new key_set());
-        create_object("Dummy", 300, 100, "pics/hero.png", "RANDOM_FIGHT");
+        create_object("Dummy", 300, 100, "pics/fight.png", "RANDOM_FIGHT");
         while(true) {
             sleep(42);
             update();
