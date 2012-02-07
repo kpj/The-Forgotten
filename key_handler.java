@@ -56,7 +56,7 @@ public class key_handler extends Thread
         }
     }
     
-    public void set_characters(ArrayList cl) {
+    public void set_characters(ArrayList<Char> cl) {
         characters = cl;
     }
 }

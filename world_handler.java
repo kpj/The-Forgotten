@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class world_handler
 {
-    ArrayList<Object> objects = new ArrayList<Object>();
+    ArrayList<Thing> objects = new ArrayList<Thing>();
     ArrayList<Char> characters = new ArrayList<Char>();
     
     Image bg_image;
@@ -16,17 +16,17 @@ public class world_handler
         bg_image = Toolkit.getDefaultToolkit().getImage("pics/bg_image.png");
     }
     
-    public void add_object(Object o) {
+    public void add_object(Thing o) {
         objects.add(o);
     }
     public void add_character(Char c) {
         characters.add(c);
     }
     
-    public ArrayList get_objects() {
+    public ArrayList<Thing> get_objects() {
         return objects;
     }
-    public ArrayList get_characters() {
+    public ArrayList<Char> get_characters() {
         return characters;
     }
     

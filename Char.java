@@ -80,6 +80,7 @@ public class Char
     
     // Erzeugt benötigte Item-Listen-Struktur: [Item. boolean], [Item, boolean], ...
     // Item: jeweiliges Item-Objekt, boolean: Ausgerüstet oder nicht
+    @SuppressWarnings("unchecked")
     public void collect_item(Item it) {
         ArrayList inside_items = new ArrayList();
         inside_items.add(it);

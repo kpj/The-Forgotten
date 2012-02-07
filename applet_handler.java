@@ -28,10 +28,10 @@ public class applet_handler implements KeyListener
         keyer.start();
     }
     
-    public void set_objects(ArrayList ol) {
+    public void set_objects(ArrayList<Thing> ol) {
         drawer.set_objects(ol);
     }
-    public void set_characters(ArrayList cl) {
+    public void set_characters(ArrayList<Char> cl) {
         keyer.set_characters(cl);
         drawer.set_characters(cl);
     }

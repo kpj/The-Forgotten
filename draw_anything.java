@@ -78,11 +78,11 @@ public class draw_anything extends JComponent
         fighter = fi;
     }
     
-    public void set_objects(ArrayList ol) {
+    public void set_objects(ArrayList<Thing> ol) {
         objects = ol;
         repaint();
     }
-    public void set_characters(ArrayList cl) {
+    public void set_characters(ArrayList<Char> cl) {
         characters = cl;
         repaint();
     }
