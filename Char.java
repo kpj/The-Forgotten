@@ -1,10 +1,12 @@
 import java.awt.*;
 import java.util.*;
+import javax.swing.*;
 
 public class Char
 {
     String name;
     Image world_image, fight_image;
+    ImageIcon icon;
     float x_pos, y_pos;
     float world_image_height, world_image_width, fight_image_height, fight_image_width;
     key_set set;
@@ -17,12 +19,14 @@ public class Char
         name = n;
         
         world_image = Toolkit.getDefaultToolkit().getImage(w_i);
-        world_image_height = world_image.getHeight(null);
-        world_image_width = world_image.getWidth(null);
+        icon = new ImageIcon(world_image);
+        world_image_height = icon.getIconHeight();
+        world_image_width = icon.getIconWidth();
         
         fight_image = Toolkit.getDefaultToolkit().getImage(f_i);
-        fight_image_height = fight_image.getHeight(null);
-        fight_image_width = fight_image.getWidth(null);
+        icon = new ImageIcon(fight_image);
+        fight_image_height = icon.getIconHeight();
+        fight_image_width = icon.getIconWidth();
         
         x_pos = x;
         y_pos = y;
@@ -48,6 +52,15 @@ public class Char
     }
     public float get_y() {
         return y_pos;
+    }
+    public float get_width() {
+        return world_image_width;
+    }
+    public float get_height() {
+        return world_image_height;
+    }
+    public Rectangle get_rect() {
+        return new Rectangle((int)x_pos,(int)y_pos,(int)world_image_width,(int)world_image_height);
     }
     
     public void move(String direction) {

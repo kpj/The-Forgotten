@@ -5,7 +5,7 @@ import java.util.*;
 
 public class draw_anything extends JComponent
 {
-    ArrayList<Object> objects = new ArrayList<Object>();
+    ArrayList<Thing> objects = new ArrayList<Thing>();
     ArrayList<Char> characters = new ArrayList<Char>();
     
     Image bufImage;
@@ -41,7 +41,7 @@ public class draw_anything extends JComponent
     @Override
     protected void paintComponent( Graphics g )
     {
-        for (Object current : objects) {
+        for (Thing current : objects) {
             g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
         }
         
