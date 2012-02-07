@@ -13,7 +13,7 @@ public class god implements Runnable
     }
     
     public void run() {
-        create_character("Hinz", 0, 0, "pics/hero.png", "path/to/fight.img", new key_set());
+        create_character("Hinz", 0, 0, "pics/Prop.png", "path/to/fight.img", new key_set());
         while(true) {
             sleep(42);
             update();

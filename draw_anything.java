@@ -7,10 +7,35 @@ public class draw_anything extends JComponent
 {
     ArrayList<Object> objects = new ArrayList<Object>();
     ArrayList<Char> characters = new ArrayList<Char>();
+    
+    Image bufImage;
+    Graphics bufG;
 
     public draw_anything()
     {
         
+    }
+    
+    // Double-Buffering
+    @Override
+    public void update(Graphics g) {
+       
+        int w = this.getSize().width;
+        int h = this.getSize().height;
+ 
+        if(bufImage == null){
+            bufImage = this.createImage(w,h);
+            bufG = bufImage.getGraphics();
+        }
+        
+        bufG.setColor(this.getBackground());
+        bufG.fillRect(0,0,w,h);
+        
+        bufG.setColor(this.getForeground());
+        
+        paint(bufG);
+ 
+        g.drawImage(bufImage,0,0,this);
     }
     
     @Override
