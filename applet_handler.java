@@ -9,12 +9,15 @@ public class applet_handler implements KeyListener
     draw_anything drawer = new draw_anything();
     key_handler keyer = new key_handler();
     Set<Character> pressed = new HashSet<Character>();
+    
+    int window_width = 600;
+    int window_height = 500;
 
     public applet_handler()
     {
         JFrame f = new JFrame("The Forgotten");
         f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        f.setSize(600, 500);
+        f.setSize(window_width, window_height);
         f.add(drawer);
         f.setVisible(true);
         f.addKeyListener(this);
@@ -31,10 +34,17 @@ public class applet_handler implements KeyListener
         drawer.set_characters(cl);
     }
     
+    public int get_window_width() {
+        return window_width;
+    }
+    public int get_window_height() {
+        return window_height;
+    }
+    
     public void repaint() {
         drawer.repaint();
     }
-        
+    
     // Stuff for multiple key detection
     @Override
     public synchronized void keyPressed(KeyEvent e) {

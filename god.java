@@ -7,13 +7,15 @@ public class god implements Runnable
     world_handler world = new world_handler();
     applet_handler window = new applet_handler();
 
+    String mode = "WORLD";
+    
     public god()
     {
         new Thread(this).start();
     }
     
     public void run() {
-        create_character("Hinz", 0, 0, "pics/Prop.png", "path/to/fight.img", new key_set());
+        create_character("Hinz", 200, 200, "pics/Prop.png", "path/to/fight.img", new key_set());
         create_object("Dummy", 300, 100, "pics/hero.png", "RANDOM_FIGHT");
         while(true) {
             sleep(42);
@@ -23,7 +25,14 @@ public class god implements Runnable
     
     public void update() {
         draw();
-        check_collisions();
+        
+        if (mode == "WORLD") {
+            check_collisions();
+            world.set_params(window.get_window_width(), window.get_window_height());
+            world.calc_movement();
+            
+            window.drawer.help_with_bg(world.get_bg_image(), window.get_window_width(), window.get_window_height(), world.change_x, world.change_y);
+        }
     }
     
     public void check_collisions() {
@@ -55,6 +64,7 @@ public class god implements Runnable
                 }
                 else if (type == "RANDOM_FIGHT") {
                     // START FIGHT
+                    System.out.println("FIGHT");
                 }
                 
                 o.set_touched(false);

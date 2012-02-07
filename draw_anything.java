@@ -10,6 +10,14 @@ public class draw_anything extends JComponent
     
     Image bufImage;
     Graphics bufG;
+    
+    Image bg_image;
+    
+    String mode = "WORLD";
+    
+    int window_width, window_height;
+    int bg_x_change = 0;
+    int bg_y_change = 0;
 
     public draw_anything()
     {
@@ -41,6 +49,9 @@ public class draw_anything extends JComponent
     @Override
     protected void paintComponent( Graphics g )
     {
+        
+        g.drawImage(bg_image, 0,0,window_width,window_height ,bg_x_change,bg_y_change,bg_x_change+window_width,bg_y_change+window_height, this);
+        
         for (Thing current : objects) {
             g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
         }
@@ -48,6 +59,18 @@ public class draw_anything extends JComponent
         for (Char current : characters) {
             g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
         }
+    }
+    
+    public void set_mode(String m) {
+        mode = m;
+    }
+    
+    public void help_with_bg(Image bg_img, int ww, int wh, int cx, int cy) {
+        bg_image = bg_img;
+        window_width = ww;
+        window_height = wh;
+        bg_x_change -= cx;
+        bg_y_change -= cy;
     }
     
     public void set_objects(ArrayList ol) {

@@ -23,11 +23,6 @@ public class Char
         world_image_height = icon.getIconHeight();
         world_image_width = icon.getIconWidth();
         
-        fight_image = Toolkit.getDefaultToolkit().getImage(f_i);
-        icon = new ImageIcon(fight_image);
-        fight_image_height = icon.getIconHeight();
-        fight_image_width = icon.getIconWidth();
-        
         x_pos = x;
         y_pos = y;
         set = kset;
@@ -61,6 +56,11 @@ public class Char
     }
     public Rectangle get_rect() {
         return new Rectangle((int)x_pos,(int)y_pos,(int)world_image_width,(int)world_image_height);
+    }
+    
+    public void change_pos(int x, int y) {
+        x_pos += x;
+        y_pos += y;
     }
     
     public void move(String direction) {
