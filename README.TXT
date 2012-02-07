@@ -6,7 +6,6 @@ HOW TO START:
 -------------
 
 1. Create an instance of the "god"-class.
-2. Start function "live()" inside of "god".
 
 
 HOW TO PLAY:

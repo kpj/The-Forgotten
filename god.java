@@ -14,7 +14,7 @@ public class god implements Runnable
     
     public void run() {
         create_character("Hinz", 0, 0, "pics/Prop.png", "path/to/fight.img", new key_set());
-        create_object("Dummy", 300, 100, "pics/hero.png", "FIGHT");
+        create_object("Dummy", 300, 100, "pics/hero.png", "RANDOM_FIGHT");
         while(true) {
             sleep(42);
             update();
@@ -53,7 +53,7 @@ public class god implements Runnable
                 if (type == "NOTHING") {
                     // Well, nothing...
                 }
-                else if (type == "FIGHT") {
+                else if (type == "RANDOM_FIGHT") {
                     // START FIGHT
                 }
                 
