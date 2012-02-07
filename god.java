@@ -14,7 +14,7 @@ public class god implements Runnable
     
     public void run() {
         create_character("Hinz", 0, 0, "pics/Prop.png", "path/to/fight.img", new key_set());
-        create_object("Dummy", 300, 100, "pics/hero.png");
+        create_object("Dummy", 300, 100, "pics/hero.png", "FIGHT");
         while(true) {
             sleep(42);
             update();
@@ -39,6 +39,27 @@ public class god implements Runnable
                 }
             }
         }
+        
+        check_actions();
+    }
+    
+    public void check_actions() {
+        for (Object ob : world.get_objects()) {
+            Thing o = (Thing)ob;
+            
+            if (o.get_touched()) {
+                String type = o.get_type();
+                
+                if (type == "NOTHING") {
+                    // Well, nothing...
+                }
+                else if (type == "FIGHT") {
+                    // START FIGHT
+                }
+                
+                o.set_touched(false);
+            }
+        }
     }
     
     public void draw() {
@@ -54,8 +75,8 @@ public class god implements Runnable
         }
     }
     
-    public void create_object(String name, float x_pos, float y_pos, String world_image_path) {
-        world.add_object(new Thing (name, x_pos, y_pos, world_image_path));
+    public void create_object(String name, float x_pos, float y_pos, String world_image_path, String t) {
+        world.add_object(new Thing (name, x_pos, y_pos, world_image_path, t));
         window.set_objects(world.get_objects());
     }
     
