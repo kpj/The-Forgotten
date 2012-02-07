@@ -8,12 +8,12 @@ public class draw_anything extends JComponent
     ArrayList<Thing> objects = new ArrayList<Thing>();
     ArrayList<Char> characters = new ArrayList<Char>();
     
+    fight_handler fighter = null;
+    
     Image bufImage;
     Graphics bufG;
     
     Image bg_image;
-    
-    String mode = "WORLD";
     
     int window_width, window_height;
     int bg_x_change = 1000;
@@ -49,20 +49,21 @@ public class draw_anything extends JComponent
     @Override
     protected void paintComponent( Graphics g )
     {
-        
-        g.drawImage(bg_image, 0,0,window_width,window_height ,bg_x_change,bg_y_change,bg_x_change+window_width,bg_y_change+window_height, this);
-        
-        for (Thing current : objects) {
-            g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
+        if (fighter != null) {
+            // Has to draw some fighting
         }
+        else {
+            // Draw a world
+            g.drawImage(bg_image, 0,0,window_width,window_height ,bg_x_change,bg_y_change,bg_x_change+window_width,bg_y_change+window_height, this);
         
-        for (Char current : characters) {
-            g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
+            for (Thing current : objects) {
+                g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
+            }
+        
+            for (Char current : characters) {
+                g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
+            }
         }
-    }
-    
-    public void set_mode(String m) {
-        mode = m;
     }
     
     public void help_with_bg(Image bg_img, int ww, int wh, int cx, int cy) {
@@ -71,6 +72,10 @@ public class draw_anything extends JComponent
         window_height = wh;
         bg_x_change -= cx;
         bg_y_change -= cy;
+    }
+    
+    public void give_fight_handler(fight_handler fi) {
+        fighter = fi;
     }
     
     public void set_objects(ArrayList ol) {

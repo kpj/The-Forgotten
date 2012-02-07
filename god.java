@@ -7,7 +7,7 @@ public class god implements Runnable
     world_handler world = new world_handler();
     applet_handler window = new applet_handler();
 
-    String mode = "WORLD";
+    fight_handler fighter = null;
     
     public god()
     {
@@ -26,12 +26,20 @@ public class god implements Runnable
     public void update() {
         draw();
         
-        if (mode == "WORLD") {
+        if (fighter == null) {
+            // Running around in world
             check_collisions();
             world.set_params(window.get_window_width(), window.get_window_height());
             world.calc_movement();
             
             window.drawer.help_with_bg(world.get_bg_image(), window.get_window_width(), window.get_window_height(), world.change_x, world.change_y);
+        }
+        else {
+            // Fight is taking place
+            
+            if (fighter.is_over) {
+                fighter = null;
+            }
         }
     }
     
@@ -64,7 +72,8 @@ public class god implements Runnable
                 }
                 else if (type == "RANDOM_FIGHT") {
                     // START FIGHT
-                    System.out.println("FIGHT");
+                    fighter = new fight_handler(world.get_characters());
+                    window.drawer.give_fight_handler(fighter);
                 }
                 
                 o.set_touched(false);
