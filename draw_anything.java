@@ -16,8 +16,8 @@ public class draw_anything extends JComponent
     String mode = "WORLD";
     
     int window_width, window_height;
-    int bg_x_change = 0;
-    int bg_y_change = 0;
+    int bg_x_change = 1000;
+    int bg_y_change = 1000;
 
     public draw_anything()
     {

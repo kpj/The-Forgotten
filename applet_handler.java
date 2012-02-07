@@ -22,7 +22,9 @@ public class applet_handler implements KeyListener
         f.setVisible(true);
         f.addKeyListener(this);
         
-        //Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        f.setLocation((int)d.getWidth()/2 - window_width/2, (int)d.getHeight()/2 - window_height/2);
+        
         keyer.start();
     }
     
