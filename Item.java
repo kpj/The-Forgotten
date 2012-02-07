@@ -5,11 +5,12 @@ public class Item
 {
     String name, n;
     String e_i, i_i;
-    HashMap effect, property;
+    HashMap effect = new HashMap();
+    HashMap property = new HashMap();
     Image equipped_image, entity_image;
 
     public Item(int id)
-    {
+    {   
         if (id == 0) {
             n = "Normales Holzschwert";
             e_i = "path/to/pic";

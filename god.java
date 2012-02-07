@@ -2,17 +2,17 @@ import java.lang.*;
 import java.util.*;
 import java.awt.*;
 
-public class god
+public class god implements Runnable
 {
     world_handler world = new world_handler();
     applet_handler window = new applet_handler();
 
     public god()
     {
-        
+        new Thread(this).start();
     }
     
-    public void live() {
+    public void run() {
         create_character("Hinz", 0, 0, "pics/hero.png", "path/to/fight.img", new key_set());
         while(true) {
             sleep(42);
