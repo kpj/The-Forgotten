@@ -43,6 +43,11 @@ public class applet_handler implements KeyListener
         return window_height;
     }
     
+    public void give_fight_handler(fight_handler fi) {
+        drawer.give_fight_handler(fi);
+        keyer.give_fight_handler(fi);
+    }
+    
     public void repaint() {
         drawer.repaint();
     }

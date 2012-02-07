@@ -23,6 +23,10 @@ public class world_handler
         characters.add(c);
     }
     
+    public void rm_object(Thing o) {
+        objects.remove(o);
+    }
+    
     public ArrayList<Thing> get_objects() {
         return objects;
     }

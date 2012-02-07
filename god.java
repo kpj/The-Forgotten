@@ -39,6 +39,7 @@ public class god implements Runnable
             
             if (fighter.is_over) {
                 fighter = null;
+                window.give_fight_handler(fighter);
             }
         }
     }
@@ -61,6 +62,7 @@ public class god implements Runnable
     }
     
     public void check_actions() {
+        Thing to_rm = null;
         for (Object ob : world.get_objects()) {
             Thing o = (Thing)ob;
             
@@ -76,9 +78,18 @@ public class god implements Runnable
                     window.drawer.give_fight_handler(fighter);
                 }
                 
+                to_rm = o;
                 o.set_touched(false);
             }
         }
+        if (to_rm != null) {
+            world.rm_object(to_rm);
+            to_rm = null;
+        }
+    }
+    
+    public void over() {
+        fighter.is_over = true;
     }
     
     public void draw() {

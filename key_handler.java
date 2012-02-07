@@ -6,6 +6,8 @@ public class key_handler extends Thread
     ArrayList<Char> characters = new ArrayList<Char>();
     Set pressed = new HashSet();
     
+    fight_handler fighter = null;
+    
     int one_runtime = 42;
 
     public key_handler()
@@ -37,7 +39,24 @@ public class key_handler extends Thread
         pressed = set;
     }
     
+    public void give_fight_handler(fight_handler fi) {
+        fighter = fi;
+    }
+    
     public void handle_key(Character c) {
+        if (fighter == null) {
+            world_movement(c);
+        }
+        else {
+            fight_movement(c);
+        }
+    }
+    
+    public void fight_movement(Character c) {
+        System.out.println(c);
+    }
+        
+    public void world_movement (Character c) {
         for (Char current : characters) {
             HashMap cur_set = (HashMap)current.set.get_set().get(current.name);
             
