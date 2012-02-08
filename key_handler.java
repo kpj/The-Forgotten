@@ -73,6 +73,10 @@ public class key_handler extends Thread
             else if (c == cur_set.get("DOWN")) {
                 current.move("DOWN");
             }
+            
+            if (c == cur_set.get("INVENTAR")) {
+                System.out.println("INV");
+            }
         }
     }
     

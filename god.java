@@ -74,8 +74,7 @@ public class god implements Runnable
                 }
                 else if (type == "RANDOM_FIGHT") {
                     // START FIGHT
-                    fighter = new fight_handler(world.get_characters());
-                    window.drawer.give_fight_handler(fighter);
+                    create_fight();
                 }
                 
                 to_rm = o;
@@ -86,10 +85,6 @@ public class god implements Runnable
             world.rm_object(to_rm);
             to_rm = null;
         }
-    }
-    
-    public void over() {
-        fighter.is_over = true;
     }
     
     public void draw() {
@@ -117,5 +112,10 @@ public class god implements Runnable
     
     public Item create_item(int id) {
         return new Item(id);
+    }
+    
+    public void create_fight() {
+        fighter = new fight_handler(world.get_characters());
+        window.give_fight_handler(fighter);
     }
 }

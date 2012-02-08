@@ -5,6 +5,7 @@ import javax.swing.*;
 public class Char
 {
     String name;
+    String fighti;
     Image world_image, fight_image;
     ImageIcon icon;
     float x_pos, y_pos;
@@ -22,6 +23,8 @@ public class Char
         icon = new ImageIcon(world_image);
         world_image_height = icon.getIconHeight();
         world_image_width = icon.getIconWidth();
+        
+        fighti = f_i;
         
         x_pos = x;
         y_pos = y;

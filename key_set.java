@@ -14,6 +14,8 @@ public class key_set
         action2key.put("LEFT", 'a');
         action2key.put("RIGHT", 'd');
         action2key.put("DOWN", 's');
+        
+        action2key.put("INVENTAR", 'i');
 
         player_set.put(name, action2key);
     }
