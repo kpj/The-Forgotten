@@ -30,7 +30,6 @@ public class god implements Runnable
         
         if (world != null) {
             // Running around in world
-            //System.out.println("FIGHT    "+t);
             check_collisions();
             world.set_params(window.get_window_width(), window.get_window_height());
             world.calc_movement();
@@ -52,7 +51,26 @@ public class god implements Runnable
         }
         else {
             // We are in map
-            //System.out.println("MAP   "+t);
+            check_mouse();
+            
+        }
+    }
+    
+    public void check_mouse() {
+        if (window.left_mouse) {
+            window.left_mouse = false;
+            
+            System.out.println("POKE");
+        }
+        else if (window.right_mouse) {
+            window.right_mouse = false;
+            
+            
+        }
+        else if (window.middle_mouse) {
+            window.middle_mouse = false;
+            
+            
         }
     }
     
