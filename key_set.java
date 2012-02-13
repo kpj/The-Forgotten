@@ -4,9 +4,9 @@ public class key_set
 {
     HashMap<String, HashMap> player_set = new HashMap<String, HashMap>();
 
-    public key_set()
+    public key_set(String n)
     {
-        String name = "Hinz";
+        String name = n;
         
         HashMap<String, Character> action2key = new HashMap<String, Character>();
         

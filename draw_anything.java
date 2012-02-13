@@ -9,6 +9,7 @@ public class draw_anything extends JComponent
     ArrayList<Char> characters = new ArrayList<Char>();
     
     fight_handler fighter = null;
+    world_handler world = null;
     
     Image bufImage;
     Graphics bufG;
@@ -52,7 +53,7 @@ public class draw_anything extends JComponent
         if (fighter != null) {
             // Has to draw some fighting
         }
-        else {
+        else if (world != null) {
             // Draw a world
             g.drawImage(bg_image, 0,0,window_width,window_height ,bg_x_change,bg_y_change,bg_x_change+window_width,bg_y_change+window_height, this);
         
@@ -63,6 +64,10 @@ public class draw_anything extends JComponent
             for (Char current : characters) {
                 g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
             }
+        }
+        else {
+            // Draw nice map
+            
         }
     }
     
@@ -76,6 +81,9 @@ public class draw_anything extends JComponent
     
     public void give_fight_handler(fight_handler fi) {
         fighter = fi;
+    }
+    public void give_world_handler(world_handler wo) {
+        world = wo;
     }
     
     public void set_objects(ArrayList<Thing> ol) {

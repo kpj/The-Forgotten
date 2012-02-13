@@ -7,6 +7,7 @@ public class key_handler extends Thread
     Set pressed = new HashSet();
     
     fight_handler fighter = null;
+    world_handler world = null;
     
     int one_runtime = 42;
 
@@ -43,14 +44,25 @@ public class key_handler extends Thread
         fighter = fi;
         pressed = new HashSet();
     }
+    public void give_world_handler(world_handler wo) {
+        world = wo;
+        pressed = new HashSet();
+    }
     
     public void handle_key(Character c) {
-        if (fighter == null) {
+        if (world != null) {
             world_movement(c);
         }
-        else {
+        else if (fighter != null) {
             fight_movement(c);
         }
+        else {
+            map_movement(c);
+        }
+    }
+    
+    public void map_movement(Character c) {
+        System.out.println("USE MOUSE");
     }
     
     public void fight_movement(Character c) {
@@ -58,6 +70,9 @@ public class key_handler extends Thread
     }
         
     public void world_movement (Character c) {
+        if (characters.size() == 0) {
+            return;
+        }
         for (Char current : characters) {
             HashMap cur_set = (HashMap)current.set.get_set().get(current.name);
             

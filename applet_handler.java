@@ -47,6 +47,10 @@ public class applet_handler implements KeyListener
         drawer.give_fight_handler(fi);
         keyer.give_fight_handler(fi);
     }
+    public void give_world_handler(world_handler wo) {
+        drawer.give_world_handler(wo);
+        keyer.give_world_handler(wo);
+    }
     
     public void repaint() {
         drawer.repaint();

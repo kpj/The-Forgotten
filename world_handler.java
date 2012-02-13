@@ -10,10 +10,12 @@ public class world_handler
     
     int border = 100;
     int change_x, change_y, char_x, char_y, char_w, char_h, window_h, window_w;
+    
+    boolean is_over = false;
 
-    public world_handler()
+    public world_handler(String bg_img)
     {
-        bg_image = Toolkit.getDefaultToolkit().getImage("pics/bg_image.png");
+        bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
     }
     
     public void add_object(Thing o) {
@@ -41,6 +43,9 @@ public class world_handler
     }
     
     public void calc_movement() {
+        if (characters.size() == 0) {
+            return;
+        }
         Char cur = characters.get(0);
         
         change_x = 0;
