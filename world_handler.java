@@ -3,39 +3,20 @@ import java.awt.*;
 
 public class world_handler
 {
-    ArrayList<Thing> objects = new ArrayList<Thing>();
-    ArrayList<Char> characters = new ArrayList<Char>();
-    
     Image bg_image;
+    
+    content_handler content;
     
     int border = 100;
     int change_x, change_y, char_x, char_y, char_w, char_h, window_h, window_w;
     
     boolean is_over = false;
 
-    public world_handler(String bg_img)
+    public world_handler(String bg_img, content_handler ch)
     {
         bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
+        content = ch;
     }
-    
-    public void add_object(Thing o) {
-        objects.add(o);
-    }
-    public void add_character(Char c) {
-        characters.add(c);
-    }
-    
-    public void rm_object(Thing o) {
-        objects.remove(o);
-    }
-    
-    public ArrayList<Thing> get_objects() {
-        return objects;
-    }
-    public ArrayList<Char> get_characters() {
-        return characters;
-    }
-    
         
     public void set_params(int ww, int wh) {
         window_w = ww;
@@ -43,10 +24,10 @@ public class world_handler
     }
     
     public void calc_movement() {
-        if (characters.size() == 0) {
+        if (content.get_characters().size() == 0) {
             return;
         }
-        Char cur = characters.get(0);
+        Char cur = content.get_characters().get(0);
         
         change_x = 0;
         change_y = 0;
@@ -74,7 +55,7 @@ public class world_handler
     }
     public void change_pos(Char c) {
         c.change_pos(change_x, change_y);
-        for (Object ob : objects) {
+        for (Object ob : content.get_objects()) {
             Thing o = (Thing)ob;
             o.change_pos(change_x, change_y);
         }

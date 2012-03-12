@@ -6,6 +6,7 @@ public class god implements Runnable
 {
     map_handler map = new map_handler();
     applet_handler window = new applet_handler();
+    content_handler content = new content_handler();
 
     fight_handler fighter = null;
     world_handler world = null;
@@ -28,7 +29,15 @@ public class god implements Runnable
         t++;
         draw();
         
-        if (world != null) {
+        if (fighter != null){
+            // Fight is taking place
+            
+            if (fighter.is_over) {
+                fighter = null;
+                window.give_fight_handler(fighter);
+            }
+        }
+        else if (world != null) {
             // Running around in world
             check_collisions();
             world.set_params(window.get_window_width(), window.get_window_height());
@@ -39,14 +48,6 @@ public class god implements Runnable
             if (world.is_over) {
                 world = null;
                 window.give_world_handler(world);
-            }
-        }
-        else if (fighter != null){
-            // Fight is taking place
-            
-            if (fighter.is_over) {
-                fighter = null;
-                window.give_fight_handler(fighter);
             }
         }
         else {
@@ -75,10 +76,10 @@ public class god implements Runnable
     }
     
     public void check_collisions() {
-        for (int i = 0 ; i < world.get_objects().size() ; i++) {
-            for (int u = 0 ; u < world.get_characters().size() ; u++) {
-                Thing o = (Thing)world.get_objects().get(i);
-                Char c = (Char)world.get_characters().get(u);
+        for (int i = 0 ; i < content.get_objects().size() ; i++) {
+            for (int u = 0 ; u < content.get_characters().size() ; u++) {
+                Thing o = (Thing)content.get_objects().get(i);
+                Char c = (Char)content.get_characters().get(u);
 
                 //System.out.println(o.get_rect().toString() +"    "+ c.get_rect().toString());
                 
@@ -93,7 +94,7 @@ public class god implements Runnable
     
     public void check_actions() {
         Thing to_rm = null;
-        for (Object ob : world.get_objects()) {
+        for (Object ob : content.get_objects()) {
             Thing o = (Thing)ob;
             
             if (o.get_touched()) {
@@ -112,7 +113,7 @@ public class god implements Runnable
             }
         }
         if (to_rm != null) {
-            world.rm_object(to_rm);
+            content.rm_object(to_rm);
             to_rm = null;
         }
     }
@@ -135,20 +136,14 @@ public class god implements Runnable
     }
     
     public void create_object(String name, float x_pos, float y_pos, String world_image_path, String t) {
-        if (world == null) {
-            return;
-        }
-        world.add_object(new Thing (name, x_pos, y_pos, world_image_path, t));
-        window.set_objects(world.get_objects());
+        content.add_object(new Thing (name, x_pos, y_pos, world_image_path, t));
+        window.set_objects(content.get_objects());
     }
     
     public void create_character(String name, float x_pos, float y_pos, String world_image_path, String fight_image_path) {
-        if (world == null) {
-            return;
-        }
         key_set set = new key_set(name);
-        world.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set));
-        window.set_characters(world.get_characters());
+        content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set));
+        window.set_characters(content.get_characters());
     }
     
     public Item create_item(int id) {
@@ -156,12 +151,12 @@ public class god implements Runnable
     }
     
     public void create_fight() {
-        fighter = new fight_handler(world.get_characters());
+        fighter = new fight_handler(content.get_characters());
         window.give_fight_handler(fighter);
     }
     public void create_world() {
-        world = new world_handler("pics/bg_image.png");
+        world = new world_handler("pics/bg_image.png", content);
         window.give_world_handler(world);
-        create_character("g",200,200,"pics/hero.png", "lol");
+        create_character("g",200,200,"pics/GedrehtPre.png", "lol");
     }
 }
