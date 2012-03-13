@@ -4,12 +4,12 @@ import java.awt.*;
 
 public class god implements Runnable
 {
-    map_handler map = new map_handler();
     applet_handler window = new applet_handler();
     content_handler content = new content_handler();
 
     fight_handler fighter = null;
     world_handler world = null;
+    map_handler map = null;
     
     int t = 0;
     
@@ -50,7 +50,7 @@ public class god implements Runnable
                 window.give_world_handler(world);
             }
         }
-        else {
+        else if (map != null) {
             // We are in map
             check_mouse();
             
@@ -151,12 +151,15 @@ public class god implements Runnable
     }
     
     public void create_fight() {
-        fighter = new fight_handler(content.get_characters());
+        fighter = new fight_handler(content);
         window.give_fight_handler(fighter);
     }
     public void create_world() {
         world = new world_handler("pics/bg_image.png", content);
         window.give_world_handler(world);
         create_character("g",200,200,"pics/GedrehtPre.png", "lol");
+    }
+    public void create_map() {
+        map = new map_handler("pics/map_bg.png", content);
     }
 }

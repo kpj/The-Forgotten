@@ -4,7 +4,7 @@ public class fight_handler
 {
     boolean is_over = false;
 
-    public fight_handler(ArrayList chars)
+    public fight_handler(content_handler con)
     {
         System.out.println("I am a fight handler!");
     }

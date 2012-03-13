@@ -10,6 +10,7 @@ public class draw_anything extends JComponent
     
     fight_handler fighter = null;
     world_handler world = null;
+    map_handler map = null;
     
     Image bufImage;
     Graphics bufG;
@@ -84,6 +85,9 @@ public class draw_anything extends JComponent
     }
     public void give_world_handler(world_handler wo) {
         world = wo;
+    }
+    public void give_map_handler(map_handler ma) {
+        map = ma;
     }
     
     public void set_objects(ArrayList<Thing> ol) {
