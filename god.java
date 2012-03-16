@@ -13,9 +13,10 @@ public class god implements Runnable
     {
         new Thread(this).start();
         
-        create_world();
-        create_character("g", 200,200,"pics/GedrehtPre.png", "lol");
-        create_object("g", 100,300,"pics/fight.png", "RANDOM_FIGHT");
+        //create_world();
+        //create_character("g", 200,200,"pics/GedrehtPre.png", "lol");
+        //create_object("g", 100,300,"pics/fight.png", "RANDOM_FIGHT");
+        create_fight();
     }
     
     public void run() {
@@ -141,7 +142,7 @@ public class god implements Runnable
     }
     
     public void create_fight() {
-        content.add_fight(new fight_handler(content));
+        content.add_fight(new fight_handler("pics/fight_bg_image.png", content));
     }
     public void create_world() {
         content.add_world(new world_handler("pics/world_bg_image.png", content));
