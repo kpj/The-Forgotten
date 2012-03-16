@@ -4,90 +4,107 @@ import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
 
-public class applet_handler implements KeyListener, MouseListener
+public class applet_handler implements KeyListener, MouseListener, MouseMotionListener
 {
-    draw_anything drawer = new draw_anything();
-    key_handler keyer = new key_handler();
-    mouse_handler mice = new mouse_handler();
-    Set<Character> pressed = new HashSet<Character>();
+    content_handler content;
+    draw_anything drawer;
+
+    JFrame f;
     
-    int window_width = 600;
-    int window_height = 500;
+    key_handler keyer;
+    Set<Character> pressed = new HashSet<Character>();
     
     boolean left_mouse = false;
     boolean right_mouse = false;
     boolean middle_mouse = false;
     
 
-    public applet_handler()
+    public applet_handler(content_handler con)
     {
-        JFrame f = new JFrame("The Forgotten");
+        content = con;
+        drawer = new draw_anything(content);
+        keyer = new key_handler(content);
+        
+        f = new JFrame("The Forgotten");
         f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        f.setSize(window_width, window_height);
+        f.setSize(content.window_width, content.window_height);
         f.add(drawer);
         f.setVisible(true);
         
         f.addMouseListener(this);
+        f.addMouseMotionListener(this);
         f.addKeyListener(this);
         
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        f.setLocation((int)d.getWidth()/2 - window_width/2, (int)d.getHeight()/2 - window_height/2);
+        f.setLocation((int)d.getWidth()/2 - content.window_width/2, (int)d.getHeight()/2 - content.window_height/2);
         
         keyer.start();
     }
     
-    public void set_objects(ArrayList<Thing> ol) {
-        drawer.set_objects(ol);
-    }
-    public void set_characters(ArrayList<Char> cl) {
-        keyer.set_characters(cl);
-        drawer.set_characters(cl);
-    }
-    
-    public int get_window_width() {
-        return window_width;
-    }
-    public int get_window_height() {
-        return window_height;
-    }
-    
-    public void give_fight_handler(fight_handler fi) {
-        drawer.give_fight_handler(fi);
-        keyer.give_fight_handler(fi);
-    }
-    public void give_world_handler(world_handler wo) {
-        drawer.give_world_handler(wo);
-        keyer.give_world_handler(wo);
-    }
-    
     public void repaint() {
         drawer.repaint();
-    }
+    }    
     
     // Stuff for mousy mouse
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+        get_mouse_pos();
+        if (content.fight_active)
+            ((fight_handler)content.get_active_environment()).on_press("LEFT");
+    }
+    public void mouseReleased(MouseEvent e) {
+        get_mouse_pos();
+        if (content.fight_active)
+            ((fight_handler)content.get_active_environment()).on_release("LEFT");
+    }
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {
+        get_mouse_pos();
+        if (content.fight_active)
+            ((fight_handler)content.get_active_environment()).on_drag("LEFT");
+    }
     public void mouseClicked(MouseEvent e) {
+        get_mouse_pos();
+        
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 // LEFT     
-                left_mouse = true;
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_click("LEFT");
+                if (content.world_active)
+                    ((world_handler)content.get_active_environment()).on_click("LEFT");
+                if (content.map_active)
+                    ((map_handler)content.get_active_environment()).on_click("LEFT");
                 break;
             }
             case InputEvent.BUTTON2_MASK: {
                 // MIDDLE    
-                middle_mouse = true;
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_click("MIDDLE");
+                if (content.world_active)
+                    ((world_handler)content.get_active_environment()).on_click("MIDDLE");
+                if (content.map_active)
+                    ((map_handler)content.get_active_environment()).on_click("MIDDLE");
                 break;
             }
             case InputEvent.BUTTON3_MASK: {
                 // RIGHT   
-                right_mouse = true;
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_click("RIGHT");
+                if (content.world_active)
+                    ((world_handler)content.get_active_environment()).on_click("RIGHT");
+                if (content.map_active)
+                    ((map_handler)content.get_active_environment()).on_click("RIG");
                 break;
             }
         }
     }
+    public void get_mouse_pos() {
+        content.mouse_x = (int) MouseInfo.getPointerInfo().getLocation().x - f.getLocationOnScreen().x;
+        content.mouse_y = (int) MouseInfo.getPointerInfo().getLocation().y - f.getLocationOnScreen().y;
+    }
+    
     
     // Stuff for multiple key detection
     @Override

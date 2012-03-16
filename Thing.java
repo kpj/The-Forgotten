@@ -25,13 +25,7 @@ public class Thing
     public Image get_image() {
         return world_image;
     }
-    
-    public float get_x() {
-        return x_pos;
-    }
-    public float get_y() {
-        return y_pos;
-    }
+
     public float get_width() {
         return width;
     }

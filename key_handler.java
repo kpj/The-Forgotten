@@ -3,6 +3,8 @@ import java.lang.*;
 
 public class key_handler extends Thread
 {
+    content_handler content;
+
     ArrayList<Char> characters = new ArrayList<Char>();
     Set pressed = new HashSet();
     
@@ -11,9 +13,9 @@ public class key_handler extends Thread
     
     int one_runtime = 42;
 
-    public key_handler()
+    public key_handler(content_handler con)
     {
-        
+        content = con;
     }
     
     float start_time, end_time, time_diff;
@@ -40,23 +42,14 @@ public class key_handler extends Thread
         pressed = set;
     }
     
-    public void give_fight_handler(fight_handler fi) {
-        fighter = fi;
-        pressed = new HashSet();
-    }
-    public void give_world_handler(world_handler wo) {
-        world = wo;
-        pressed = new HashSet();
-    }
-    
     public void handle_key(Character c) {
-        if (world != null) {
+        if (content.world_active) {
             world_movement(c);
         }
-        else if (fighter != null) {
+        else if (content.fight_active) {
             fight_movement(c);
         }
-        else {
+        else if (content.map_active){
             map_movement(c);
         }
     }
@@ -70,10 +63,10 @@ public class key_handler extends Thread
     }
         
     public void world_movement (Character c) {
-        if (characters.size() == 0) {
+        if (content.characters.size() == 0) {
             return;
         }
-        for (Char current : characters) {
+        for (Char current : content.characters) {
             HashMap cur_set = (HashMap)current.set.get_set().get(current.name);
             
             if (c == cur_set.get("UP")) {

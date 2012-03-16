@@ -8,22 +8,37 @@ public class world_handler
     content_handler content;
     
     int border = 100;
-    int change_x, change_y, char_x, char_y, char_w, char_h, window_h, window_w;
+    int char_x, char_y, char_w, char_h, window_h, window_w;
+    int change_x, change_y;
     
     boolean is_over = false;
-
+    
     public world_handler(String bg_img, content_handler ch)
     {
         bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
         content = ch;
     }
         
-    public void set_params(int ww, int wh) {
-        window_w = ww;
-        window_h = wh;
+    public void draw_stuff(Graphics g, draw_anything imo) {
+        g.drawImage(bg_image, 0 , 0, content.window_width, content.window_height, content.world_bg_x_change, content.world_bg_y_change, content.world_bg_x_change+content.window_width, content.world_bg_y_change+content.window_height, imo);
+    
+        for (Thing current : content.objects) {
+            g.drawImage(current.get_image(), (int)current.x_pos, (int)current.y_pos, imo);
+        }
+    
+        for (Char current : content.characters) {
+            g.drawImage(current.get_image(), (int)current.x_pos, (int)current.y_pos, imo);
+        }
+    }
+    
+    public void on_click(String button) {
+        
     }
     
     public void calc_movement() {
+        window_w = content.window_width;
+        window_h = content.window_height;
+        
         if (content.get_characters().size() == 0) {
             return;
         }
@@ -32,8 +47,8 @@ public class world_handler
         change_x = 0;
         change_y = 0;
         
-        char_x = (int)cur.get_x();
-        char_y = (int)cur.get_y();
+        char_x = (int)cur.x_pos;
+        char_y = (int)cur.y_pos;
         char_w = (int)cur.get_width();
         char_h = (int)cur.get_height();
         
@@ -59,9 +74,7 @@ public class world_handler
             Thing o = (Thing)ob;
             o.change_pos(change_x, change_y);
         }
-    }
-    
-    public Image get_bg_image() {
-        return bg_image;
+        content.world_bg_x_change -= change_x;
+        content.world_bg_y_change -= change_y;
     }
 }

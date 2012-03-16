@@ -4,18 +4,19 @@ import java.awt.*;
 
 public class god implements Runnable
 {
-    applet_handler window = new applet_handler();
     content_handler content = new content_handler();
-
-    fight_handler fighter = null;
-    world_handler world = null;
-    map_handler map = null;
+    applet_handler window = new applet_handler(content);
     
     int t = 0;
     
     public god()
     {
         new Thread(this).start();
+        
+        //create_world();
+        //create_character("g", 200,200,"pics/GedrehtPre.png", "lol");
+        //create_object("g", 100,300,"pics/fight.png", "RANDOM_FIGHT");
+        create_fight();
     }
     
     public void run() {
@@ -29,28 +30,24 @@ public class god implements Runnable
         t++;
         draw();
         
-        if (fighter != null){
+        if (content.fight_active){
             // Fight is taking place
             
-            if (fighter.is_over) {
-                fighter = null;
-                window.give_fight_handler(fighter);
+            if (content.fight.is_over) {
+                content.rm_environment(content.fight);
             }
         }
-        else if (world != null) {
+        else if (content.world_active) {
             // Running around in world
             check_collisions();
-            world.set_params(window.get_window_width(), window.get_window_height());
-            world.calc_movement();
+            content.world.calc_movement();
+     
             
-            window.drawer.help_with_bg(world.get_bg_image(), window.get_window_width(), window.get_window_height(), world.change_x, world.change_y);
-            
-            if (world.is_over) {
-                world = null;
-                window.give_world_handler(world);
+            if (content.world.is_over) {
+                content.rm_environment(content.world);
             }
         }
-        else if (map != null) {
+        else if (content.map_active) {
             // We are in map
             check_mouse();
             
@@ -66,11 +63,9 @@ public class god implements Runnable
         else if (window.right_mouse) {
             window.right_mouse = false;
             
-            
         }
         else if (window.middle_mouse) {
             window.middle_mouse = false;
-            
             
         }
     }
@@ -121,10 +116,6 @@ public class god implements Runnable
     public void draw() {
         window.repaint();
     }
-
-    public void del_world() {
-        world.is_over = true;
-    }
     
     public void sleep(int t) {
         try {
@@ -137,13 +128,11 @@ public class god implements Runnable
     
     public void create_object(String name, float x_pos, float y_pos, String world_image_path, String t) {
         content.add_object(new Thing (name, x_pos, y_pos, world_image_path, t));
-        window.set_objects(content.get_objects());
     }
     
     public void create_character(String name, float x_pos, float y_pos, String world_image_path, String fight_image_path) {
         key_set set = new key_set(name);
         content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set));
-        window.set_characters(content.get_characters());
     }
     
     public Item create_item(int id) {
@@ -151,15 +140,12 @@ public class god implements Runnable
     }
     
     public void create_fight() {
-        fighter = new fight_handler(content);
-        window.give_fight_handler(fighter);
+        content.add_fight(new fight_handler("pics/fight_bg_image.png", content));
     }
     public void create_world() {
-        world = new world_handler("pics/bg_image.png", content);
-        window.give_world_handler(world);
-        create_character("g",200,200,"pics/GedrehtPre.png", "lol");
+        content.add_world(new world_handler("pics/world_bg_image.png", content));
     }
     public void create_map() {
-        map = new map_handler("pics/map_bg.png", content);
+        content.add_map(new map_handler("pics/map_bg.png", content));
     }
 }
