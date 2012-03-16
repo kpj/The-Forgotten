@@ -143,11 +143,17 @@ dependency8.type=UsesDependency
 dependency9.from=god
 dependency9.to=Char
 dependency9.type=UsesDependency
-package.editor.height=746
+package.editor.height=740
 package.editor.width=821
+<<<<<<< HEAD
+package.editor.x=265
+package.editor.y=7
+package.numDependencies=41
+=======
 package.editor.x=488
 package.editor.y=19
 package.numDependencies=48
+>>>>>>> 953fe9cf58f2d9c5c7c91548648fc99ac9eb2013
 package.numTargets=15
 package.showExtends=true
 package.showUses=true
