@@ -24,6 +24,11 @@ public class Char
         world_image_height = icon.getIconHeight();
         world_image_width = icon.getIconWidth();
         
+        fight_image = Toolkit.getDefaultToolkit().getImage(f_i);
+        icon = new ImageIcon(fight_image);
+        fight_image_height = icon.getIconHeight();
+        fight_image_width = icon.getIconWidth();
+        
         fighti = f_i;
         
         x_pos = x;

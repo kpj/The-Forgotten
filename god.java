@@ -14,7 +14,10 @@ public class god implements Runnable
         new Thread(this).start();
         
         //create_world();
-        //create_character("g", 200,200,"pics/GedrehtPre.png", "lol");
+        create_character("g", 200,200,"pics/GedrehtPre.png", "pics/Character/hero1.png");
+        create_character("h", 300,200,"pics/GedrehtPre.png", "pics/Character/hero2.png");
+        create_character("j", 400,200,"pics/GedrehtPre.png", "pics/Character/hero3.png");
+        create_character("k", 100,200,"pics/GedrehtPre.png", "pics/Character/hero4.png");
         //create_object("g", 100,300,"pics/fight.png", "RANDOM_FIGHT");
         create_fight();
     }

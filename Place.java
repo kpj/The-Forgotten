@@ -1,10 +1,10 @@
 public class Place
 {
-    Character cur;
+    Char cur;
     int index;
     boolean checked = false;
 
-    public Place(Character on, int ind)
+    public Place(Char on, int ind)
     {
         cur = on;
         index = ind;

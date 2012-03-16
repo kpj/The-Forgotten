@@ -11,10 +11,10 @@ public class fight_handler
     boolean is_over = false;
     
     // field
-    int field_width = 10;
-    int field_height = 10;
-    int place_width = 30;
-    int place_height = 30;
+    int field_width = 100;
+    int field_height = 100;
+    int place_width = 100;
+    int place_height = 100;
     int spacing = 3;
     
     // selector
@@ -44,25 +44,27 @@ public class fight_handler
                 ind++;
             }
         }
+        
+        place_char((Place)field.get(2).get(2), content.characters.get(0));
+        place_char((Place)field.get(1).get(2), content.characters.get(1));
+        place_char((Place)field.get(2).get(1), content.characters.get(2));
+        place_char((Place)field.get(3).get(1), content.characters.get(3));
     }
     
-    public void place_char(Character c, int place) {
-        for (Object o : field) {
-            ArrayList l = (ArrayList) o;
-            for (Object ob : l) {
-                Place p = (Place) ob;
-                p.cur = c;
-            }
-        }
+    public void place_char(Place p, Char c) {
+        System.out.println("Placed one char");
+        p.cur = c;
     }
     
-    public void draw_stuff(Graphics g2, draw_anything imo) {
+    public void draw_stuff(Graphics g3, draw_anything imo) {
         // For stroke thickness
-        Graphics2D g = (Graphics2D)g2;
+        Graphics2D g = (Graphics2D)g3;
         
         // draw field
         ArrayList<Place> checked = new ArrayList<Place>();
         ArrayList<Place> unchecked = new ArrayList<Place>();
+        
+        // draw boxes + characters
         for (Object o : field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
@@ -78,8 +80,15 @@ public class fight_handler
                     checked.add(p);
                 }
                 g.drawRect(x, y, place_width, place_height);
+                
+                // now characters
+                if (p.cur != null) {
+                    g.drawImage(p.cur.fight_image, x, y, (int)p.cur.fight_image_width, (int)p.cur.fight_image_height, imo);
+                }
             }
         }
+        
+        // draw checked
         for (Object o : checked) {
             Place p = (Place) o;
             
@@ -98,6 +107,12 @@ public class fight_handler
             g.setColor(Color.blue);
             g.drawRect(select_x_tmp, select_y_tmp, select_width, select_height);
         }
+        
+        compute_selection(checked);
+    }
+    
+    public void compute_selection(ArrayList<Place> sel) {
+        //System.out.println(sel.size());
     }
     
     public void on_click(String button) {
@@ -162,7 +177,7 @@ public class fight_handler
             }
         }
         
-                select_width = 0;
+        select_width = 0;
         select_height = 0;
     }
 }
