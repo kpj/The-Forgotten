@@ -21,6 +21,8 @@ public class fight_handler
     boolean selecting = false;
     int select_x = 0;
     int select_y = 0;
+    int select_x_tmp = 0;
+    int select_y_tmp = 0;
     int select_width = 0;
     int select_height = 0;
     
@@ -94,7 +96,7 @@ public class fight_handler
         if(selecting) {
             g.setStroke(new BasicStroke(2));
             g.setColor(Color.blue);
-            g.drawRect(select_x, select_y, select_width, select_height);
+            g.drawRect(select_x_tmp, select_y_tmp, select_width, select_height);
         }
     }
     
@@ -112,18 +114,42 @@ public class fight_handler
         }
     }
     public void on_drag(String button) {
-        select_width = content.mouse_x - select_x;
-        select_height = content.mouse_y - select_y;
+        if (content.mouse_x - select_x > 0 && content.mouse_y - select_y > 0) {
+            select_width = content.mouse_x - select_x;
+            select_height = content.mouse_y - select_y;
+            select_x_tmp = select_x;
+            select_y_tmp = select_y;
+        }
+        else if (content.mouse_x - select_x < 0 && content.mouse_y - select_y < 0) {
+            select_x_tmp = content.mouse_x;
+            select_y_tmp = content.mouse_y;
+            select_width = select_x - content.mouse_x;
+            select_height = select_y - content.mouse_y;
+        }
+        else if (content.mouse_x - select_x > 0 && content.mouse_y - select_y < 0) {
+            select_width = content.mouse_x - select_x;
+            select_x_tmp = select_x;
+            select_y_tmp = content.mouse_y;
+            select_height = select_y - content.mouse_y;
+        }
+        else if (content.mouse_x - select_x < 0 && content.mouse_y - select_y > 0) {
+            select_x_tmp = content.mouse_x;
+            select_width = select_x - content.mouse_x;
+            select_y_tmp = select_y;
+            select_height = content.mouse_y - select_y;
+        }
     }
     public void on_press(String button) {
         selecting = true;
         select_x = content.mouse_x;
         select_y = content.mouse_y;
+        select_x_tmp = select_x;
+        select_y_tmp = select_y;
     }
     public void on_release(String button) {
         selecting = false;
         
-        Rectangle selection_rect = new Rectangle(select_x, select_y, select_width, select_height);
+        Rectangle selection_rect = new Rectangle(select_x_tmp, select_y_tmp, select_width, select_height);
         for (Object o : field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
