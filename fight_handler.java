@@ -13,8 +13,8 @@ public class fight_handler
     // field
     int field_width = 10;
     int field_height = 10;
-    int place_width = 100;
-    int place_height = 100;
+    int place_width = 30;
+    int place_height = 30;
     int spacing = 3;
     
     // selector
@@ -84,7 +84,7 @@ public class fight_handler
             Place p = (Place) o;
             
             int x = (p.index % field_width) * (place_width + spacing);
-            int y = (int)Math.floor(p.index / field_height) * (place_width + spacing);
+            int y = (int)Math.floor(p.index / field_height) * (place_height + spacing);
             
             g.setStroke(new BasicStroke(5));
             g.setColor(Color.red);
@@ -105,7 +105,7 @@ public class fight_handler
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
                 Place p = (Place) ob;
-                Rectangle r = new Rectangle((p.index % field_width) * place_width, (int)Math.floor(p.index / field_height) * place_height, place_width, place_height);
+                Rectangle r = new Rectangle((p.index % field_width) * (place_width + spacing), (int)Math.floor(p.index / field_height) * (place_height + spacing), place_width, place_height);
                 
                 if(r.contains(content.mouse_x, content.mouse_y)) {
                     p.checked = !p.checked;
@@ -154,7 +154,7 @@ public class fight_handler
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
                 Place p = (Place) ob;
-                Rectangle r = new Rectangle((p.index % field_width) * place_width, (int)Math.floor(p.index / field_height) * place_height, place_width, place_height);
+                Rectangle r = new Rectangle((p.index % field_width) * (place_width + spacing), (int)Math.floor(p.index / field_height) * (place_height + spacing), place_width, place_height);
                 
                 if(selection_rect.intersects(r)) {
                     p.checked = !p.checked;
