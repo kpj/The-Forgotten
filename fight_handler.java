@@ -1,4 +1,5 @@
 import java.util.*;
+import java.awt.*;
 
 public class fight_handler
 {
@@ -6,13 +7,10 @@ public class fight_handler
 
     public fight_handler(content_handler con)
     {
-        System.out.println("I am a fight handler!");
+        
     }
     
-    public void fight_is_over (){
-        is_over = true;
-    }
-    public boolean is_over() {
-        return is_over;
+    public void draw_stuff(Graphics g, draw_anything imo) {
+        
     }
 }

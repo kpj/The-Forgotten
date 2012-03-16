@@ -5,6 +5,8 @@ import java.util.*;
 
 public class draw_anything extends JComponent
 {
+    content_handler content;
+
     ArrayList<Thing> objects = new ArrayList<Thing>();
     ArrayList<Char> characters = new ArrayList<Char>();
     
@@ -21,9 +23,9 @@ public class draw_anything extends JComponent
     int bg_x_change = 1000;
     int bg_y_change = 1000;
 
-    public draw_anything()
+    public draw_anything(content_handler con)
     {
-        
+        content = con;
     }
     
     // Double-Buffering
@@ -51,25 +53,12 @@ public class draw_anything extends JComponent
     @Override
     protected void paintComponent( Graphics g )
     {
-        if (fighter != null) {
-            // Has to draw some fighting
-        }
-        else if (world != null) {
-            // Draw a world
-            g.drawImage(bg_image, 0,0,window_width,window_height ,bg_x_change,bg_y_change,bg_x_change+window_width,bg_y_change+window_height, this);
-        
-            for (Thing current : objects) {
-                g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
-            }
-        
-            for (Char current : characters) {
-                g.drawImage(current.get_image(), (int)current.get_x(), (int)current.get_y(), this);
-            }
-        }
-        else {
-            // Draw nice map
-            
-        }
+        if (content.fight_active)
+            ((fight_handler)content.get_active_environment()).draw_stuff(g, this);
+        if (content.world_active)
+            ((world_handler)content.get_active_environment()).draw_stuff(g, this);
+        if (content.map_active)
+            ((map_handler)content.get_active_environment()).draw_stuff(g, this);
     }
     
     public void help_with_bg(Image bg_img, int ww, int wh, int cx, int cy) {
@@ -78,24 +67,5 @@ public class draw_anything extends JComponent
         window_height = wh;
         bg_x_change -= cx;
         bg_y_change -= cy;
-    }
-    
-    public void give_fight_handler(fight_handler fi) {
-        fighter = fi;
-    }
-    public void give_world_handler(world_handler wo) {
-        world = wo;
-    }
-    public void give_map_handler(map_handler ma) {
-        map = ma;
-    }
-    
-    public void set_objects(ArrayList<Thing> ol) {
-        objects = ol;
-        repaint();
-    }
-    public void set_characters(ArrayList<Char> cl) {
-        characters = cl;
-        repaint();
     }
 }

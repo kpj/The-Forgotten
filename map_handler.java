@@ -10,4 +10,8 @@ public class map_handler
     {
         bg_image = bg_image = Toolkit.getDefaultToolkit().getImage(bg);
     }
+    
+    public void draw_stuff(Graphics g, draw_anything imo) {
+        
+    }
 }

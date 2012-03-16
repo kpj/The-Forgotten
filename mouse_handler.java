@@ -3,9 +3,11 @@ import java.util.*;
 
 public class mouse_handler
 {
-    public mouse_handler()
+    content_handler content;
+
+    public mouse_handler(content_handler con)
     {
-        
+        content = con;
     }
     
     public ArrayList get_mouse_pos() {
