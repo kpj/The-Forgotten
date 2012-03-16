@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
 
-public class applet_handler implements KeyListener, MouseListener
+public class applet_handler implements KeyListener, MouseListener, MouseMotionListener
 {
     content_handler content;
     draw_anything drawer;
@@ -32,6 +32,7 @@ public class applet_handler implements KeyListener, MouseListener
         f.setVisible(true);
         
         f.addMouseListener(this);
+        f.addMouseMotionListener(this);
         f.addKeyListener(this);
         
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -45,12 +46,24 @@ public class applet_handler implements KeyListener, MouseListener
     }    
     
     // Stuff for mousy mouse
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+        get_mouse_pos();
+        if (content.fight_active)
+            ((fight_handler)content.get_active_environment()).on_press("LEFT");
+    }
+    public void mouseReleased(MouseEvent e) {
+        get_mouse_pos();
+        if (content.fight_active)
+            ((fight_handler)content.get_active_environment()).on_release("LEFT");
+    }
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {}
-    public void mouseDragged(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {
+        get_mouse_pos();
+        if (content.fight_active)
+            ((fight_handler)content.get_active_environment()).on_drag("LEFT");
+    }
     public void mouseClicked(MouseEvent e) {
         get_mouse_pos();
         
@@ -82,7 +95,7 @@ public class applet_handler implements KeyListener, MouseListener
                 if (content.world_active)
                     ((world_handler)content.get_active_environment()).on_click("RIGHT");
                 if (content.map_active)
-                    ((map_handler)content.get_active_environment()).on_click("RIGHT");
+                    ((map_handler)content.get_active_environment()).on_click("RIG");
                 break;
             }
         }
