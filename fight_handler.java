@@ -60,6 +60,9 @@ public class fight_handler
         // For stroke thickness
         Graphics2D g = (Graphics2D)g3;
         
+        // draw bg
+        g.drawImage(bg_image, 0, 0, content.window_width, content.window_height, imo);
+        
         // draw field
         ArrayList<Place> checked = new ArrayList<Place>();
         ArrayList<Place> unchecked = new ArrayList<Place>();
