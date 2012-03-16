@@ -31,6 +31,10 @@ public class world_handler
         }
     }
     
+    public void on_click(String button) {
+        
+    }
+    
     public void calc_movement() {
         window_w = content.window_width;
         window_h = content.window_height;

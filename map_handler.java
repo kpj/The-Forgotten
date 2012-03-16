@@ -14,4 +14,8 @@ public class map_handler
     public void draw_stuff(Graphics g, draw_anything imo) {
         
     }
+    
+    public void on_click(String button) {
+        
+    }
 }

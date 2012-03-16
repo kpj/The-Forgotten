@@ -63,11 +63,9 @@ public class god implements Runnable
         else if (window.right_mouse) {
             window.right_mouse = false;
             
-            
         }
         else if (window.middle_mouse) {
             window.middle_mouse = false;
-            
             
         }
     }

@@ -21,6 +21,7 @@ public class content_handler
     ArrayList<Char> characters = new ArrayList<Char>();
     int window_width = 600;
     int window_height = 500;
+    int mouse_x, mouse_y;
 
     public content_handler()
     {
