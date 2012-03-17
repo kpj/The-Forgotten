@@ -11,8 +11,8 @@ public class fight_handler
     boolean is_over = false;
     
     // field
-    int field_width = 100;
-    int field_height = 100;
+    int field_width = 5;
+    int field_height = 5;
     int place_width = 100;
     int place_height = 100;
     int spacing = 3;
@@ -94,6 +94,7 @@ public class fight_handler
                     checked.add(p);
                 }
                 g.drawRect(x, y, place_width, place_height);
+                g.drawString(""+p.index,x+15,y+15);
                 
                 // now characters
                 if (p.cur != null) {
@@ -134,9 +135,51 @@ public class fight_handler
         ret.add(y);
         return ret;
     }
+    public ArrayList<Place> get_bordering_places(Place p) {
+        ArrayList<Place> border = new ArrayList<Place>();
+        int pos = p.index;
+        
+        if (pos >= field_width) {
+            border.add(get_place(pos - field_width));
+        }
+        if (pos % field_width != 4) {
+            border.add(get_place(pos + 1));
+        }
+        if (pos % field_width != 0) {
+            border.add(get_place(pos - 1));
+        }
+        if (pos < field_width * field_height - field_width) {
+            border.add(get_place(pos + field_width));
+        }
+        
+        return border;
+    }
+    public Place get_place(int pos) {
+        for (Object o : field) {
+            ArrayList l = (ArrayList)o;
+            for (Object ob : l) {
+                if (pos == ((Place)ob).index) {
+                    return (Place)ob;
+                }
+            }
+        }
+        return null;
+    }
     
     public void compute_selection(ArrayList<Place> sel) {
-        //System.out.println(sel.size());
+        if (sel.size() == 0) {
+            
+        }
+        else {
+            for (Object o : sel) {
+                Place p = (Place)o;
+                
+                for (Object ob : get_bordering_places(p)) {
+                    System.out.print(((Place)ob).index + " ");
+                }
+                System.out.println();
+            }
+        }
     }
     
     public void on_click(String button) {
