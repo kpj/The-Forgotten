@@ -105,15 +105,7 @@ public class fight_handler
         
         // draw checked
         for (Object o : checked) {
-            Place p = (Place) o;
-            
-            int x = calc_offset(p.index).get(0);
-            int y = calc_offset(p.index).get(1);
-            
-            g.setStroke(new BasicStroke(5));
-            g.setColor(Color.red);
-            
-            g.drawRect(x, y, place_width, place_height);
+            draw_place(g, (Place)o, 5, Color.red);
         }
         
         // draw selector
@@ -124,6 +116,15 @@ public class fight_handler
         }
         
         compute_selection(checked);
+    }
+    public void draw_place(Graphics2D g, Place p, int thickness, Color col) {
+        int x = calc_offset(p.index).get(0);
+        int y = calc_offset(p.index).get(1);
+        
+        g.setStroke(new BasicStroke(5));
+        g.setColor(Color.red);
+        
+        g.drawRect(x, y, place_width, place_height); 
     }
     public ArrayList<Integer> calc_offset(int index) {
         ArrayList<Integer> ret = new ArrayList<Integer>();
@@ -174,10 +175,11 @@ public class fight_handler
             for (Object o : sel) {
                 Place p = (Place)o;
                 
-                for (Object ob : get_bordering_places(p)) {
-                    System.out.print(((Place)ob).index + " ");
+                if (p.cur != null) {
+                    int depth = p.cur.property_current.get("geschwindigkeit").intValue();
+                    
+                    
                 }
-                System.out.println();
             }
         }
     }
