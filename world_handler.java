@@ -49,8 +49,8 @@ public class world_handler
         
         char_x = (int)cur.x_pos;
         char_y = (int)cur.y_pos;
-        char_w = (int)cur.get_width();
-        char_h = (int)cur.get_height();
+        char_w = (int)cur.world_image_width;
+        char_h = (int)cur.world_image_height;
         
         if (char_x < border) {
             change_x += border - char_x;

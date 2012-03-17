@@ -64,7 +64,6 @@ public class fight_handler
     }
     
     public void place_char(Place p, Char c) {
-        System.out.println("Placed one char");
         p.cur = c;
     }
     

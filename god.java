@@ -18,6 +18,10 @@ public class god implements Runnable
         create_character("h", 300,200,"pics/GedrehtPre.png", "pics/Character/hero2.png");
         create_character("j", 400,200,"pics/GedrehtPre.png", "pics/Character/hero3.png");
         create_character("k", 100,200,"pics/GedrehtPre.png", "pics/Character/hero4.png");
+        content.characters.get(0).collect_item(new Item(0));
+        content.characters.get(0).collect_item(new Item(1));
+        content.characters.get(0).collect_item(new Item(2));
+        content.characters.get(0).equip_item(0);
         //create_object("g", 100,300,"pics/fight.png", "RANDOM_FIGHT");
         create_fight();
     }

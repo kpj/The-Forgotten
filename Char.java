@@ -12,8 +12,10 @@ public class Char
     float world_image_height, world_image_width, fight_image_height, fight_image_width;
     key_set set;
     
-    ArrayList<ArrayList> items = new ArrayList<ArrayList>();
-    HashMap<String, Integer> property = new HashMap<String, Integer>();
+    ArrayList<Item> items = new ArrayList<Item>();
+    HashMap<String, Float> property_std = new HashMap<String, Float>(); // standard values
+    HashMap<String, Float> property_max = new HashMap<String, Float>(); // values with equipped items
+    HashMap<String, Float> property_current = new HashMap<String, Float>(); // values during fight
     
     public Char(String n, float x, float y, String w_i, String f_i, key_set kset)
     {
@@ -36,26 +38,21 @@ public class Char
         set = kset;
         
         // Properties
-        property.put("geschwindigkeit", 5);
-        property.put("lebenspunkte", 10);
-        property.put("manapunkte", 10);
-        property.put("ausdauerpunkte", 5);
-        property.put("initiative", 8);
-        property.put("magieresistenz", 9);
-        property.put("angriffskraft", 2);
-        property.put("verteidigungspunkte", 1);
+        property_std.put("geschwindigkeit", (float)5);
+        property_std.put("lebenspunkte", (float)10);
+        property_std.put("manapunkte", (float)10);
+        property_std.put("ausdauerpunkte", (float)5);
+        property_std.put("initiative", (float)8);
+        property_std.put("magieresistenz", (float)9);
+        property_std.put("angriffskraft", (float)2);
+        property_std.put("verteidigungspunkte", (float)1);
+        calc_property_max();
     }
     
     public Image get_image() {
         return world_image;
     }
     
-    public float get_width() {
-        return world_image_width;
-    }
-    public float get_height() {
-        return world_image_height;
-    }
     public Rectangle get_rect() {
         return new Rectangle((int)x_pos,(int)y_pos,(int)world_image_width,(int)world_image_height);
     }
@@ -67,16 +64,16 @@ public class Char
     
     public void move(String direction) {
         if (direction == "UP") {
-            y_pos -= property.get("geschwindigkeit");
+            y_pos -= property_current.get("geschwindigkeit");
         }
         else if (direction == "DOWN") {
-            y_pos += property.get("geschwindigkeit");
+            y_pos += property_current.get("geschwindigkeit");
         }
         else if (direction == "LEFT") {
-            x_pos -= property.get("geschwindigkeit");
+            x_pos -= property_current.get("geschwindigkeit");
         }
         else if (direction == "RIGHT") {
-            x_pos += property.get("geschwindigkeit");
+            x_pos += property_current.get("geschwindigkeit");
         }
     }
     
@@ -84,13 +81,39 @@ public class Char
     // Item: jeweiliges Item-Objekt, boolean: Ausgerüstet oder nicht
     @SuppressWarnings("unchecked")
     public void collect_item(Item it) {
-        ArrayList inside_items = new ArrayList();
-        inside_items.add(it);
-        inside_items.add(false);
-        items.add(inside_items);
+        items.add(it);
+    }
+    public void equip_item(int pos) {
+        items.get(pos).is_in_use = true;
+        calc_property_max();
+    }
+    public void unequip_item(int pos) {
+        items.get(pos).is_in_use = false;
     }
     
-    public ArrayList return_items() {
-        return items;
+    public void calc_property_max() {
+        property_max = property_std;
+        
+        for (Object o : items) {
+            Item i = (Item)o;
+            
+            i.is_in_use = true;
+            if (i.is_in_use) {
+                for (Map.Entry<String, Float> ob : i.effect.entrySet()) {
+                    for (Map.Entry<String, Float> obj : property_std.entrySet()) {
+                        
+                        String item_key = ob.getKey();
+                        String char_key = obj.getKey();
+                        
+                        if (item_key.equals(char_key)) {
+                            property_max.put(item_key, ob.getValue() + obj.getValue());
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+        property_current = property_max; // CHANGE, QUICK!!!
     }
 }
