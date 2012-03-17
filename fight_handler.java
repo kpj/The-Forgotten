@@ -186,6 +186,9 @@ public class fight_handler
     }
     
     public void move_char(Place from, Place to) {
+        if (to.cur != null) {
+            return;
+        }
         to.cur = from.cur;
         from.cur = null;
     }
@@ -207,7 +210,7 @@ public class fight_handler
                         multiple_units_selected = true;
                     }
                     in_reach = new ArrayList<Place>();
-                    in_reach.add(p);
+                    in_reach.add(p); // to know, who to move, later on
                     int max_dist = (int)Math.floor(p.cur.property_current.get("geschwindigkeit").intValue()/2);
                     
                     for (Object ob : field) {
