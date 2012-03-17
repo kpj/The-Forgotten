@@ -38,6 +38,11 @@ public class fight_handler
     int old_move_x = 0;
     int old_move_y = 0;
     
+    // move 'em
+    ArrayList<Place> in_reach = new ArrayList<Place>();
+    boolean unit_selected = false;
+    boolean multiple_units_selected = false;
+    
     @SuppressWarnings("unchecked")
     public fight_handler(String bg_img, content_handler con)
     {
@@ -105,7 +110,12 @@ public class fight_handler
         
         // draw checked
         for (Object o : checked) {
-            draw_place(g, (Place)o, 5, Color.red);
+            draw_place(g, (Place)o, 4, Color.red);
+        }
+        
+        // draw reachable
+        for (Object o : in_reach) {
+            draw_place(g, (Place)o, 4, Color.green);
         }
         
         // draw selector
@@ -185,8 +195,14 @@ public class fight_handler
                 
                 // detect reach
                 if (p.cur != null) {
-                    ArrayList<Place> in_reach = new ArrayList<Place>();
-                    int max_dist = p.cur.property_current.get("geschwindigkeit").intValue()-3;
+                    if (sel.size() == 1) {
+                        unit_selected = true;
+                    }
+                    else {
+                        multiple_units_selected = true;
+                    }
+                    in_reach = new ArrayList<Place>();
+                    int max_dist = (int)Math.floor(p.cur.property_current.get("geschwindigkeit").intValue()/2);
                     
                     for (Object ob : field) {
                         ArrayList l = (ArrayList) ob;
@@ -194,10 +210,10 @@ public class fight_handler
                             Place pl = (Place)obj;
                             if (max_dist >= get_distance(p, pl)) {
                                 in_reach.add(pl);
-                                draw_place(g, pl, 4, Color.green);
                             }
                         }
                     }
+                    p.checked = false;
                 }
             }
         }
@@ -205,16 +221,24 @@ public class fight_handler
     
     public void on_click(String button) {
         if (button.equals("LEFT")) {
-            for (Object o : field) {
-                ArrayList l = (ArrayList) o;
-                for (Object ob : l) {
-                    Place p = (Place) ob;
-                    Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
-                    
-                    if(r.contains(content.mouse_x, content.mouse_y)) {
-                        p.checked = !p.checked;
+            System.out.println(unit_selected);
+            if (!unit_selected) {
+                for (Object o : field) {
+                    ArrayList l = (ArrayList) o;
+                    for (Object ob : l) {
+                        Place p = (Place) ob;
+                        Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
+                        
+                        if(r.contains(content.mouse_x, content.mouse_y)) {
+                            p.checked = !p.checked;
+                        }
                     }
                 }
+            }
+            else if (unit_selected){
+                unit_selected= false;
+                multiple_units_selected = false;
+                in_reach.clear();
             }
         }
     }

@@ -17,6 +17,8 @@ public class Char
     HashMap<String, Float> property_max = new HashMap<String, Float>(); // values with equipped items
     HashMap<String, Float> property_current = new HashMap<String, Float>(); // values during fight
     
+    boolean did_something_this_round = false;
+    
     public Char(String n, float x, float y, String w_i, String f_i, key_set kset)
     {
         name = n;
