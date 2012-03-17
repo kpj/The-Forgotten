@@ -59,7 +59,7 @@ public class key_handler extends Thread
     }
     
     public void fight_movement(Character c) {
-        System.out.println(c);
+        //System.out.println(c);
     }
         
     public void world_movement (Character c) {

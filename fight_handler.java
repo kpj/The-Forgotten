@@ -11,8 +11,8 @@ public class fight_handler
     boolean is_over = false;
     
     // field
-    int field_width = 5;
-    int field_height = 5;
+    int field_width = 100;
+    int field_height = 100;
     int place_width = 100;
     int place_height = 100;
     int spacing = 3;
@@ -115,14 +115,14 @@ public class fight_handler
             g.drawRect(select_x_tmp, select_y_tmp, select_width, select_height);
         }
         
-        compute_selection(checked);
+        compute_selection(g, checked);
     }
     public void draw_place(Graphics2D g, Place p, int thickness, Color col) {
         int x = calc_offset(p.index).get(0);
         int y = calc_offset(p.index).get(1);
         
         g.setStroke(new BasicStroke(5));
-        g.setColor(Color.red);
+        g.setColor(col);
         
         g.drawRect(x, y, place_width, place_height); 
     }
@@ -167,7 +167,15 @@ public class fight_handler
         return null;
     }
     
-    public void compute_selection(ArrayList<Place> sel) {
+    public int get_distance(Place p1, Place p2) {
+        int xi1 = p1.index % field_width;
+        int yi1 = (int)Math.floor(p1.index / 100);
+        int xi2 = p2.index % field_width;
+        int yi2 = (int)Math.floor(p2.index / 100);
+        return Math.abs(xi1-xi2)+Math.abs(yi1-yi2);
+    }
+    
+    public void compute_selection(Graphics2D g, ArrayList<Place> sel) {
         if (sel.size() == 0) {
             
         }
@@ -175,10 +183,21 @@ public class fight_handler
             for (Object o : sel) {
                 Place p = (Place)o;
                 
+                // detect reach
                 if (p.cur != null) {
-                    int depth = p.cur.property_current.get("geschwindigkeit").intValue();
+                    ArrayList<Place> in_reach = new ArrayList<Place>();
+                    int max_dist = p.cur.property_current.get("geschwindigkeit").intValue()-3;
                     
-                    
+                    for (Object ob : field) {
+                        ArrayList l = (ArrayList) ob;
+                        for (Object obj : l) {
+                            Place pl = (Place)obj;
+                            if (max_dist >= get_distance(p, pl)) {
+                                in_reach.add(pl);
+                                draw_place(g, pl, 4, Color.green);
+                            }
+                        }
+                    }
                 }
             }
         }
