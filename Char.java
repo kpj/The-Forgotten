@@ -8,6 +8,7 @@ public class Char
     String fighti;
     Image world_image, fight_image;
     ImageIcon icon;
+    int team;
     float x_pos, y_pos;
     float world_image_height, world_image_width, fight_image_height, fight_image_width;
     key_set set;
@@ -19,7 +20,7 @@ public class Char
     
     boolean did_something_this_round = false;
     
-    public Char(String n, float x, float y, String w_i, String f_i, key_set kset)
+    public Char(String n, float x, float y, String w_i, String f_i, key_set kset, int t)
     {
         name = n;
         
@@ -37,6 +38,7 @@ public class Char
         
         x_pos = x;
         y_pos = y;
+        team = t;
         set = kset;
         
         // Properties
@@ -77,6 +79,10 @@ public class Char
         else if (direction == "RIGHT") {
             x_pos += property_current.get("geschwindigkeit");
         }
+    }
+    
+    public void deal_damage(float val) {
+        property_current.put("lebenspunkte", property_current.get("lebenspunkte") - val);
     }
     
     // Erzeugt benötigte Item-Listen-Struktur: [Item. boolean], [Item, boolean], ...

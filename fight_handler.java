@@ -186,11 +186,42 @@ public class fight_handler
     }
     
     public void move_char(Place from, Place to) {
+        boolean was_fighting = false;
+        boolean successful_combat = false;
         if (to.cur != null) {
-            return;
+            if (from.cur.team == to.cur.team) {
+                return;
+            }
+            else {
+                was_fighting = true;
+                successful_combat = attack_char(from, to);
+            }
         }
-        to.cur = from.cur;
-        from.cur = null;
+        if (!was_fighting) {
+            to.cur = from.cur;
+            from.cur = null;
+        }
+        else {
+            if (successful_combat) {
+                to.cur = from.cur;
+                from.cur = null;
+            }
+        }
+    }
+    public boolean attack_char(Place attacker, Place defender) {
+        // very simple system
+        float att = attacker.cur.property_current.get("angriffskraft");
+        float def = defender.cur.property_current.get("verteidigungspunkte");
+        
+        if (att > def) {
+            defender.cur.deal_damage(att - def);
+        }
+        
+        System.out.println(attacker.cur.name + " dealt " + (att-def) + " damage to " + defender.cur.name);
+        System.out.println(defender.cur.name + " has now " + defender.cur.property_current.get("lebenspunkte") + " life points");
+        if (defender.cur.property_current.get("lebenspunkte") <= 0)
+            return true;
+        return false;
     }
     
     public void compute_selection(Graphics2D g, ArrayList<Place> sel) {

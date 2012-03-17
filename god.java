@@ -14,10 +14,10 @@ public class god implements Runnable
         new Thread(this).start();
         
         //create_world();
-        create_character("g", 200,200,"pics/GedrehtPre.png", "pics/Character/hero1.png");
-        create_character("h", 300,200,"pics/GedrehtPre.png", "pics/Character/hero2.png");
-        create_character("j", 400,200,"pics/GedrehtPre.png", "pics/Character/hero3.png");
-        create_character("k", 100,200,"pics/GedrehtPre.png", "pics/Character/hero4.png");
+        create_character("red", 200,200,"pics/GedrehtPre.png", "pics/Character/hero1.png", 1);
+        create_character("blue", 300,200,"pics/GedrehtPre.png", "pics/Character/hero2.png", 1);
+        create_character("yellow", 400,200,"pics/GedrehtPre.png", "pics/Character/hero3.png", 2);
+        create_character("green", 100,200,"pics/GedrehtPre.png", "pics/Character/hero4.png", 2);
         content.characters.get(0).collect_item(new Item(0));
         content.characters.get(0).collect_item(new Item(1));
         content.characters.get(0).collect_item(new Item(2));
@@ -137,9 +137,9 @@ public class god implements Runnable
         content.add_object(new Thing (name, x_pos, y_pos, world_image_path, t));
     }
     
-    public void create_character(String name, float x_pos, float y_pos, String world_image_path, String fight_image_path) {
+    public void create_character(String name, float x_pos, float y_pos, String world_image_path, String fight_image_path, int team) {
         key_set set = new key_set(name);
-        content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set));
+        content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set, team));
     }
     
     public Item create_item(int id) {
