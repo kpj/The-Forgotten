@@ -13,16 +13,27 @@ public class god implements Runnable
     {
         new Thread(this).start();
         
-        //create_world();
-        create_character("red", 200,200,"pics/GedrehtPre.png", "pics/Character/hero1.png", 1);
-        create_character("blue", 300,200,"pics/GedrehtPre.png", "pics/Character/hero2.png", 1);
-        create_character("yellow", 400,200,"pics/GedrehtPre.png", "pics/Character/hero3.png", 2);
-        create_character("green", 100,200,"pics/GedrehtPre.png", "pics/Character/hero4.png", 2);
+        // LIttle scene
+        create_character("King Arthur", 200,200,"pics/GedrehtPre.png", "pics/Character/king.png", 1);
+        create_character("Jeremy", 300,200,"pics/GedrehtPre.png", "pics/Character/soldier.png", 1);
+        create_character("Ken", 400,200,"pics/GedrehtPre.png", "pics/Character/soldier.png", 1);
+        create_character("Isaac", 100,200,"pics/GedrehtPre.png", "pics/Character/soldier.png", 1);
+        create_character("Shroon", 100,200,"pics/GedrehtPre.png", "pics/Character/soldier_mean.png", 1);
+        
+        create_character("K'Hraa", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
+        create_character("Fou'Dsirlag", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
+        create_character("Rha'Thou", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
+        create_character("Sri'Lanka", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
+        create_character("Ha'Tschi", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
+        
+        
         content.characters.get(0).collect_item(new Item(0));
         content.characters.get(0).collect_item(new Item(1));
         content.characters.get(0).collect_item(new Item(2));
+        
         content.characters.get(0).equip_item(0);
-        //create_object("g", 100,300,"pics/fight.png", "RANDOM_FIGHT");
+        
+        
         create_fight();
     }
     

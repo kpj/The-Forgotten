@@ -19,8 +19,8 @@ public class content_handler
     
     // Everywhere
     ArrayList<Char> characters = new ArrayList<Char>();
-    int window_width = 600;
-    int window_height = 500;
+    int window_width = 800;
+    int window_height = 600;
     int mouse_x, mouse_y;
 
     public content_handler()

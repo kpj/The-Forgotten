@@ -31,12 +31,12 @@ public class fight_handler
     int drag_y = 0;
     int drag_start_x = 0;
     int drag_start_y = 0;
-    int move_x = 0;
-    int move_y = 0;
-    int move_x_tmp = 0;
-    int move_y_tmp = 0;
-    int old_move_x = 0;
-    int old_move_y = 0;
+    int move_x = -500;
+    int move_y = -500;
+    int move_x_tmp = move_x;
+    int move_y_tmp = move_y;
+    int old_move_x = move_x;
+    int old_move_y = move_y;
     
     // move 'em
     ArrayList<Place> in_reach = new ArrayList<Place>();
@@ -62,14 +62,31 @@ public class fight_handler
             }
         }
         
-        place_char((Place)field.get(2).get(2), content.characters.get(0));
-        place_char((Place)field.get(1).get(2), content.characters.get(1));
-        place_char((Place)field.get(2).get(1), content.characters.get(2));
-        place_char((Place)field.get(3).get(1), content.characters.get(3));
+        // Little scene
+        place_char2(506, content.characters.get(0));
+        place_char2(605, content.characters.get(1));
+        place_char2(607, content.characters.get(2));
+        place_char2(406, content.characters.get(3));
+        place_char2(505, content.characters.get(4));
+        place_char2(707, content.characters.get(5));
+        place_char2(708, content.characters.get(6));
+        place_char2(709, content.characters.get(7));
+        place_char2(808, content.characters.get(8));
+        place_char2(807, content.characters.get(9));
     }
     
     public void place_char(Place p, Char c) {
         p.cur = c;
+    }
+    public void place_char2(int pos, Char c) {
+        for (Object o : field) {
+            ArrayList l = (ArrayList) o;
+            for (Object ob : l) {
+                Place p = (Place) ob;
+                if (p.index == pos)
+                    p.cur = c;
+            }
+        }
     }
     
     public void draw_stuff(Graphics g3, draw_anything imo) {
@@ -99,7 +116,7 @@ public class fight_handler
                     checked.add(p);
                 }
                 g.drawRect(x, y, place_width, place_height);
-                g.drawString(""+p.index,x+15,y+15);
+                //g.drawString(""+p.index,x+15,y+15);
                 
                 // now characters
                 if (p.cur != null) {
