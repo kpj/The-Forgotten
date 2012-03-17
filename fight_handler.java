@@ -186,6 +186,11 @@ public class fight_handler
     }
     
     public void move_char(Place from, Place to) {
+        if (from.cur.did_something_this_round) {
+            System.out.println("This character can only act in the next round.");
+            return;
+        }
+        from.cur.did_something_this_round = true;
         boolean was_fighting = false;
         boolean successful_combat = false;
         if (to.cur != null) {
@@ -222,6 +227,18 @@ public class fight_handler
         if (defender.cur.property_current.get("lebenspunkte") <= 0)
             return true;
         return false;
+    }
+    public void next_round() {
+        System.out.println("Let the next round begin!");
+        for (Object o : field) {
+            ArrayList l = (ArrayList) o;
+            for (Object ob : l) {
+                Place p = (Place) ob;
+                if (p.cur != null) {
+                    p.cur.did_something_this_round = false;
+                }
+            }
+        }
     }
     
     public void compute_selection(Graphics2D g, ArrayList<Place> sel) {
@@ -365,6 +382,15 @@ public class fight_handler
         else if(button.equals("MIDDLE")) {
             old_move_x = move_x;
             old_move_y = move_y;
+        }
+    }
+    
+    public void on_key(Character key) {
+        switch (key) {
+            case 'n': {
+                next_round();
+                break;
+            }
         }
     }
 }

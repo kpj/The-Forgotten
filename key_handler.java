@@ -47,7 +47,7 @@ public class key_handler extends Thread
             world_movement(c);
         }
         else if (content.fight_active) {
-            fight_movement(c);
+            content.fight.on_key(c);
         }
         else if (content.map_active){
             map_movement(c);
@@ -56,10 +56,6 @@ public class key_handler extends Thread
     
     public void map_movement(Character c) {
         System.out.println("USE MOUSE");
-    }
-    
-    public void fight_movement(Character c) {
-        //System.out.println(c);
     }
         
     public void world_movement (Character c) {
