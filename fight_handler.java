@@ -26,6 +26,18 @@ public class fight_handler
     int select_width = 0;
     int select_height = 0;
     
+    // dragging
+    int drag_x = 0;
+    int drag_y = 0;
+    int drag_start_x = 0;
+    int drag_start_y = 0;
+    int move_x = 0;
+    int move_y = 0;
+    int move_x_tmp = 0;
+    int move_y_tmp = 0;
+    int old_move_x = 0;
+    int old_move_y = 0;
+    
     @SuppressWarnings("unchecked")
     public fight_handler(String bg_img, content_handler con)
     {
@@ -61,7 +73,7 @@ public class fight_handler
         Graphics2D g = (Graphics2D)g3;
         
         // draw bg
-        g.drawImage(bg_image, 0, 0, content.window_width, content.window_height, imo);
+        g.drawImage(bg_image, 0 , 0, content.window_width, content.window_height, -move_x, -move_y, -move_x+content.window_width, -move_y+content.window_height, imo);
         
         // draw field
         ArrayList<Place> checked = new ArrayList<Place>();
@@ -73,8 +85,8 @@ public class fight_handler
             for (Object ob : l) {
                 Place p = (Place) ob;
                 
-                int x = (p.index % field_width) * (place_width + spacing);
-                int y = (int)Math.floor(p.index / field_height) * (place_height + spacing);
+                int x = calc_offset(p.index).get(0);
+                int y = calc_offset(p.index).get(1);
                 
                 //System.out.println(p.index + " at: " + x + " | " + y);
                 g.setStroke(new BasicStroke(4));
@@ -95,8 +107,8 @@ public class fight_handler
         for (Object o : checked) {
             Place p = (Place) o;
             
-            int x = (p.index % field_width) * (place_width + spacing);
-            int y = (int)Math.floor(p.index / field_height) * (place_height + spacing);
+            int x = calc_offset(p.index).get(0);
+            int y = calc_offset(p.index).get(1);
             
             g.setStroke(new BasicStroke(5));
             g.setColor(Color.red);
@@ -113,74 +125,106 @@ public class fight_handler
         
         compute_selection(checked);
     }
+    public ArrayList<Integer> calc_offset(int index) {
+        ArrayList<Integer> ret = new ArrayList<Integer>();
+        
+        int x = (index % field_width) * (place_width + spacing) + move_x;
+        int y = (int)Math.floor(index / field_height) * (place_height + spacing) + move_y;
+        
+        ret.add(x);
+        ret.add(y);
+        return ret;
+    }
     
     public void compute_selection(ArrayList<Place> sel) {
         //System.out.println(sel.size());
     }
     
     public void on_click(String button) {
-        for (Object o : field) {
-            ArrayList l = (ArrayList) o;
-            for (Object ob : l) {
-                Place p = (Place) ob;
-                Rectangle r = new Rectangle((p.index % field_width) * (place_width + spacing), (int)Math.floor(p.index / field_height) * (place_height + spacing), place_width, place_height);
-                
-                if(r.contains(content.mouse_x, content.mouse_y)) {
-                    p.checked = !p.checked;
+        if (button.equals("LEFT")) {
+            for (Object o : field) {
+                ArrayList l = (ArrayList) o;
+                for (Object ob : l) {
+                    Place p = (Place) ob;
+                    Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
+                    
+                    if(r.contains(content.mouse_x, content.mouse_y)) {
+                        p.checked = !p.checked;
+                    }
                 }
             }
         }
     }
     public void on_drag(String button) {
-        if (content.mouse_x - select_x > 0 && content.mouse_y - select_y > 0) {
-            select_width = content.mouse_x - select_x;
-            select_height = content.mouse_y - select_y;
-            select_x_tmp = select_x;
-            select_y_tmp = select_y;
+        if (button.equals("LEFT")) {
+            if (content.mouse_x - select_x > 0 && content.mouse_y - select_y > 0) {
+                select_width = content.mouse_x - select_x;
+                select_height = content.mouse_y - select_y;
+                select_x_tmp = select_x;
+                select_y_tmp = select_y;
+            }
+            else if (content.mouse_x - select_x < 0 && content.mouse_y - select_y < 0) {
+                select_x_tmp = content.mouse_x;
+                select_y_tmp = content.mouse_y;
+                select_width = select_x - content.mouse_x;
+                select_height = select_y - content.mouse_y;
+            }
+            else if (content.mouse_x - select_x > 0 && content.mouse_y - select_y < 0) {
+                select_width = content.mouse_x - select_x;
+                select_x_tmp = select_x;
+                select_y_tmp = content.mouse_y;
+                select_height = select_y - content.mouse_y;
+            }
+            else if (content.mouse_x - select_x < 0 && content.mouse_y - select_y > 0) {
+                select_x_tmp = content.mouse_x;
+                select_width = select_x - content.mouse_x;
+                select_y_tmp = select_y;
+                select_height = content.mouse_y - select_y;
+            }
         }
-        else if (content.mouse_x - select_x < 0 && content.mouse_y - select_y < 0) {
-            select_x_tmp = content.mouse_x;
-            select_y_tmp = content.mouse_y;
-            select_width = select_x - content.mouse_x;
-            select_height = select_y - content.mouse_y;
-        }
-        else if (content.mouse_x - select_x > 0 && content.mouse_y - select_y < 0) {
-            select_width = content.mouse_x - select_x;
-            select_x_tmp = select_x;
-            select_y_tmp = content.mouse_y;
-            select_height = select_y - content.mouse_y;
-        }
-        else if (content.mouse_x - select_x < 0 && content.mouse_y - select_y > 0) {
-            select_x_tmp = content.mouse_x;
-            select_width = select_x - content.mouse_x;
-            select_y_tmp = select_y;
-            select_height = content.mouse_y - select_y;
+        else if(button.equals("MIDDLE")) {
+            move_x_tmp = (content.mouse_x - drag_start_x);
+            move_y_tmp = (content.mouse_y - drag_start_y);
+            move_x = move_x_tmp + old_move_x;
+            move_y = move_y_tmp + old_move_y;
         }
     }
     public void on_press(String button) {
-        selecting = true;
-        select_x = content.mouse_x;
-        select_y = content.mouse_y;
-        select_x_tmp = select_x;
-        select_y_tmp = select_y;
+        if (button.equals("LEFT")) {
+            selecting = true;
+            select_x = content.mouse_x;
+            select_y = content.mouse_y;
+            select_x_tmp = select_x;
+            select_y_tmp = select_y;
+        }
+        else if (button.equals("MIDDLE")) {
+            drag_start_x = content.mouse_x;
+            drag_start_y = content.mouse_y;
+        }
     }
     public void on_release(String button) {
-        selecting = false;
+        if (button.equals("LEFT")) {
+            selecting = false;
         
-        Rectangle selection_rect = new Rectangle(select_x_tmp, select_y_tmp, select_width, select_height);
-        for (Object o : field) {
-            ArrayList l = (ArrayList) o;
-            for (Object ob : l) {
-                Place p = (Place) ob;
-                Rectangle r = new Rectangle((p.index % field_width) * (place_width + spacing), (int)Math.floor(p.index / field_height) * (place_height + spacing), place_width, place_height);
+            Rectangle selection_rect = new Rectangle(select_x_tmp, select_y_tmp, select_width, select_height);
+            for (Object o : field) {
+                ArrayList l = (ArrayList) o;
+                for (Object ob : l) {
+                    Place p = (Place) ob;
+                    Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
                 
-                if(selection_rect.intersects(r)) {
-                    p.checked = !p.checked;
+                    if(selection_rect.intersects(r)) {
+                        p.checked = !p.checked;
+                    }
                 }
             }
-        }
         
-        select_width = 0;
-        select_height = 0;
+            select_width = 0;
+            select_height = 0;
+        }
+        else if(button.equals("MIDDLE")) {
+            old_move_x = move_x;
+            old_move_y = move_y;
+        }
     }
 }

@@ -48,21 +48,66 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     // Stuff for mousy mouse
     public void mousePressed(MouseEvent e) {
         get_mouse_pos();
-        if (content.fight_active)
-            ((fight_handler)content.get_active_environment()).on_press("LEFT");
+        switch(e.getModifiers()) {
+            case InputEvent.BUTTON1_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_press("LEFT");
+                break;
+            }
+            case InputEvent.BUTTON2_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_press("MIDDLE");
+                break;
+            }
+            case InputEvent.BUTTON3_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_press("RIGHT");
+                break;
+            }
+        }
     }
     public void mouseReleased(MouseEvent e) {
         get_mouse_pos();
-        if (content.fight_active)
-            ((fight_handler)content.get_active_environment()).on_release("LEFT");
+        switch(e.getModifiers()) {
+            case InputEvent.BUTTON1_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_release("LEFT");
+                break;
+            }
+            case InputEvent.BUTTON2_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_release("MIDDLE");
+                break;
+            }
+            case InputEvent.BUTTON3_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_release("RIGHT");
+                break;
+            }
+        }
     }
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {}
     public void mouseDragged(MouseEvent e) {
         get_mouse_pos();
-        if (content.fight_active)
-            ((fight_handler)content.get_active_environment()).on_drag("LEFT");
+        switch(e.getModifiers()) {
+            case InputEvent.BUTTON1_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_drag("LEFT");
+                break;
+            }
+            case InputEvent.BUTTON2_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_drag("MIDDLE");
+                break;
+            }
+            case InputEvent.BUTTON3_MASK: {
+                if (content.fight_active)
+                    ((fight_handler)content.get_active_environment()).on_drag("RIGHT");
+                break;
+            }
+        }
     }
     public void mouseClicked(MouseEvent e) {
         get_mouse_pos();
