@@ -185,6 +185,11 @@ public class fight_handler
         return Math.abs(xi1-xi2)+Math.abs(yi1-yi2);
     }
     
+    public void move_char(Place from, Place to) {
+        to.cur = from.cur;
+        from.cur = null;
+    }
+    
     public void compute_selection(Graphics2D g, ArrayList<Place> sel) {
         if (sel.size() == 0) {
             
@@ -202,6 +207,7 @@ public class fight_handler
                         multiple_units_selected = true;
                     }
                     in_reach = new ArrayList<Place>();
+                    in_reach.add(p);
                     int max_dist = (int)Math.floor(p.cur.property_current.get("geschwindigkeit").intValue()/2);
                     
                     for (Object ob : field) {
@@ -221,7 +227,6 @@ public class fight_handler
     
     public void on_click(String button) {
         if (button.equals("LEFT")) {
-            System.out.println(unit_selected);
             if (!unit_selected) {
                 for (Object o : field) {
                     ArrayList l = (ArrayList) o;
@@ -236,6 +241,20 @@ public class fight_handler
                 }
             }
             else if (unit_selected){
+                for (Object o : field) {
+                    ArrayList l = (ArrayList) o;
+                    for (Object ob : l) {
+                        Place p = (Place) ob;
+                        Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
+                        
+                        if(r.contains(content.mouse_x, content.mouse_y)) {
+                            if(in_reach.contains(p)) {
+                                move_char(in_reach.get(0), p);
+                            }
+                        }
+                    }
+                }
+                
                 unit_selected= false;
                 multiple_units_selected = false;
                 in_reach.clear();
