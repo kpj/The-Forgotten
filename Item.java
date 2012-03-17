@@ -34,6 +34,20 @@ public class Item
             
             property.put("verteidigungspunkte", (float)0.3);
         }
+        else if (id == 3) {
+            n = "Schwere Schuhe";
+            e_i = "path/to/pic";
+            i_i = "path/to/pic";
+            
+            property.put("geschwindigkeit", (float)-1);
+        }
+        else if (id == 4) {
+            n = "Schuhe des Fliegens";
+            e_i = "path/to/pic";
+            i_i = "path/to/pic";
+            
+            property.put("geschwindigkeit", (float)1);
+        }
         
         
         

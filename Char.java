@@ -90,6 +90,7 @@ public class Char
     @SuppressWarnings("unchecked")
     public void collect_item(Item it) {
         items.add(it);
+        calc_property_max();
     }
     public void equip_item(int pos) {
         items.get(pos).is_in_use = true;
@@ -97,16 +98,15 @@ public class Char
     }
     public void unequip_item(int pos) {
         items.get(pos).is_in_use = false;
+        calc_property_max();
     }
     
     public void calc_property_max() {
         property_max = property_std;
-        
         for (Object o : items) {
             Item i = (Item)o;
             
-            i.is_in_use = true;
-            if (i.is_in_use) {
+            if (!i.is_in_use) { // CHANGE, REALLY QUICK
                 for (Map.Entry<String, Float> ob : i.effect.entrySet()) {
                     for (Map.Entry<String, Float> obj : property_std.entrySet()) {
                         

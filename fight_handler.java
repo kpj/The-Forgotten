@@ -73,6 +73,8 @@ public class fight_handler
         place_char2(709, content.characters.get(7));
         place_char2(808, content.characters.get(8));
         place_char2(807, content.characters.get(9));
+        place_char2(806, content.characters.get(10));
+        place_char2(908, content.characters.get(11));
     }
     
     public void place_char(Place p, Char c) {

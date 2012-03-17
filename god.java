@@ -25,16 +25,36 @@ public class god implements Runnable
         create_character("Rha'Thou", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
         create_character("Sri'Lanka", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
         create_character("Ha'Tschi", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
+        create_character("Rums'Tara", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
+        create_character("De'Brook", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
         
         
         content.characters.get(0).collect_item(new Item(0));
+        content.characters.get(0).collect_item(new Item(0));
         content.characters.get(0).collect_item(new Item(1));
-        content.characters.get(0).collect_item(new Item(2));
+        content.characters.get(0).collect_item(new Item(1));
+        content.characters.get(0).collect_item(new Item(3));
+        //content.characters.get(0).equip_item(4);
         
-        content.characters.get(0).equip_item(0);
+        content.characters.get(4).collect_item(new Item(0));
+        content.characters.get(4).collect_item(new Item(1));
+        content.characters.get(0).collect_item(new Item(3));
+        
+        content.characters.get(5).collect_item(new Item(4));
+        content.characters.get(6).collect_item(new Item(4));
+        content.characters.get(7).collect_item(new Item(4));
+        content.characters.get(8).collect_item(new Item(4));
+        content.characters.get(9).collect_item(new Item(4));
+        content.characters.get(10).collect_item(new Item(4));
+        content.characters.get(11).collect_item(new Item(4));
         
         
         create_fight();
+    }
+    
+    public static void main (String[] args)
+    {
+        god good = new god();
     }
     
     public void run() {
