@@ -1,9 +1,13 @@
 import java.util.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class fight_handler
 {
     Image bg_image;
+    Image did_something_image;
+    int did_something_image_height, did_something_image_width;
+    
     content_handler content;
 
     ArrayList<ArrayList> field;
@@ -47,7 +51,13 @@ public class fight_handler
     public fight_handler(String bg_img, content_handler con)
     {
         content = con;
+        
         bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
+        
+        did_something_image = Toolkit.getDefaultToolkit().getImage("pic/did_something.png");
+        ImageIcon icon = new ImageIcon(did_something_image);
+        did_something_image_height = icon.getIconHeight();
+        did_something_image_width = icon.getIconWidth();
         
         // Create fighting place
         field = new ArrayList<ArrayList>();
@@ -123,6 +133,11 @@ public class fight_handler
                 // now characters
                 if (p.cur != null) {
                     g.drawImage(p.cur.fight_image, x, y, (int)p.cur.fight_image_width, (int)p.cur.fight_image_height, imo);
+                
+                    if (p.cur.did_something_this_round) {
+                        g.drawString("NO MOVES LEFT",x ,y+10);
+                        //g.drawImage(did_something_image, content.mouse_x, content.mouse_y, did_something_image_width, did_something_image_height, imo);
+                    }
                 }
             }
         }
@@ -214,6 +229,7 @@ public class fight_handler
         boolean successful_combat = false;
         if (to.cur != null) {
             if (from.cur.team == to.cur.team) {
+                from.cur.did_something_this_round = false;
                 return;
             }
             else {
@@ -227,8 +243,9 @@ public class fight_handler
         }
         else {
             if (successful_combat) {
-                to.cur = from.cur;
-                from.cur = null;
+                //to.cur = from.cur;
+                //from.cur = null;
+                to.cur = null;
             }
         }
     }
@@ -279,7 +296,7 @@ public class fight_handler
                     in_reach = new ArrayList<Place>();
                     in_reach.add(p); // to know, who to move, later on
                     int max_dist = (int)Math.floor(p.cur.property_current.get("geschwindigkeit").intValue()/2);
-                    
+
                     for (Object ob : field) {
                         ArrayList l = (ArrayList) ob;
                         for (Object obj : l) {
