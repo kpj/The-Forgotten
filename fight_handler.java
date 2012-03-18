@@ -300,6 +300,7 @@ public class fight_handler
                 if (p.cur != null) {
                     if (sel.size() == 1) {
                         unit_selected = true;
+                        content.current_selected = p;
                     }
                     else {
                         multiple_units_selected = true;
@@ -360,11 +361,15 @@ public class fight_handler
                 }
                 
                 unit_selected= false;
+                content.current_selected = null;
                 multiple_units_selected = false;
                 in_reach.clear();
             }
         }
         else if (button.equals("RIGHT")) {
+            if (content.current_selected == null)
+                return;
+            
             show_move_radius = !show_move_radius;
             if (in_reach.size() != 0) {
                 // Little trick, makes a new calculation

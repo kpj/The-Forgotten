@@ -9,6 +9,9 @@ public class content_handler
     world_handler world; public boolean world_active = false;
     map_handler map; public boolean map_active = false;
 
+    // In fight
+    Place current_selected = null;
+    
     // In world
     ArrayList<Thing> objects = new ArrayList<Thing>();
     int world_bg_x_change = 1000;
@@ -18,9 +21,11 @@ public class content_handler
     ArrayList<Region> regions = new ArrayList<Region>();
     
     // Everywhere
+    menu_handler menu;
+    
     ArrayList<Char> characters = new ArrayList<Char>();
-    int window_width = 800;
-    int window_height = 600;
+    int window_width = 1024;
+    int window_height = 768;
     int mouse_x, mouse_y;
 
     public content_handler()

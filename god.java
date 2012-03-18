@@ -11,9 +11,10 @@ public class god implements Runnable
     
     public god()
     {
+        content.menu = new menu_handler(content);
         new Thread(this).start();
         
-        // LIttle scene
+        // Little scene
         create_character("King Arthur", 200,200,"pics/GedrehtPre.png", "pics/Character/king.png", 1);
         create_character("Jeremy", 300,200,"pics/GedrehtPre.png", "pics/Character/soldier.png", 1);
         create_character("Ken", 400,200,"pics/GedrehtPre.png", "pics/Character/soldier.png", 1);
