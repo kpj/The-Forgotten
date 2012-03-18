@@ -32,26 +32,25 @@ public class god implements Runnable
         
         content.characters.get(0).collect_item(new Item(0));
         content.characters.get(0).equip_item(0);
-        content.characters.get(0).collect_item(new Item(0));
+        content.characters.get(0).collect_item(new Item(1));
         content.characters.get(0).equip_item(1);
-        content.characters.get(0).collect_item(new Item(1));
-        content.characters.get(0).equip_item(2);
-        content.characters.get(0).collect_item(new Item(1));
-        content.characters.get(0).equip_item(3);
         content.characters.get(0).collect_item(new Item(3));
-        content.characters.get(0).equip_item(4);
+        content.characters.get(0).equip_item(2);
         
-        content.characters.get(4).collect_item(new Item(0));
+        content.characters.get(4).collect_item(new Item(5));
         content.characters.get(4).equip_item(0);
         content.characters.get(4).collect_item(new Item(1));
-        content.characters.get(4).equip_item(1);
         content.characters.get(4).collect_item(new Item(3));
         content.characters.get(4).equip_item(2);
         
         content.characters.get(5).collect_item(new Item(4));
+        content.characters.get(5).collect_item(new Item(0));
         content.characters.get(5).equip_item(0);
+        content.characters.get(5).equip_item(1);
         content.characters.get(6).collect_item(new Item(4));
+        content.characters.get(6).collect_item(new Item(5));
         content.characters.get(6).equip_item(0);
+        content.characters.get(6).equip_item(1);
         content.characters.get(7).collect_item(new Item(4));
         content.characters.get(7).equip_item(0);
         content.characters.get(8).collect_item(new Item(4));
