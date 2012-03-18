@@ -59,6 +59,14 @@ public class Item
             
             property.put("angriffskraft", (float)3);
         }
+        else if (id == 6) {
+            n = "Langbogen";
+            e_i = "pics/Items/Langbogen.png";
+            i_i = "path/to/pic";
+            
+            property.put("angriffskraft", (float)2);
+            property.put("attackenreichweite", (float)6);
+        }
         
         
         

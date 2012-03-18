@@ -37,6 +37,13 @@ public class god implements Runnable
         content.characters.get(0).collect_item(new Item(3));
         content.characters.get(0).equip_item(2);
         
+        content.characters.get(1).collect_item(new Item(6));
+        content.characters.get(1).equip_item(0);
+        content.characters.get(2).collect_item(new Item(6));
+        content.characters.get(2).equip_item(0);
+        content.characters.get(3).collect_item(new Item(0));
+        content.characters.get(3).equip_item(0);
+        
         content.characters.get(4).collect_item(new Item(5));
         content.characters.get(4).equip_item(0);
         content.characters.get(4).collect_item(new Item(1));
