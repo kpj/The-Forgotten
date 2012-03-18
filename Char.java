@@ -49,6 +49,7 @@ public class Char
         property_std.put("initiative", (float)8);
         property_std.put("magieresistenz", (float)9);
         property_std.put("angriffskraft", (float)2);
+        property_std.put("attackenreichweite", (float)2);
         property_std.put("verteidigungspunkte", (float)1);
         calc_property_max();
     }
@@ -90,7 +91,6 @@ public class Char
     @SuppressWarnings("unchecked")
     public void collect_item(Item it) {
         items.add(it);
-        calc_property_max();
     }
     public void equip_item(int pos) {
         items.get(pos).is_in_use = true;
@@ -101,12 +101,22 @@ public class Char
         calc_property_max();
     }
     
+    public ArrayList get_equipped_items() {
+        ArrayList<Item> equi = new ArrayList<Item>();
+        for (Object o : items) {
+            Item i = (Item)o;
+            if (i.is_in_use)
+                equi.add(i);
+        }
+        return equi;
+    }
+    
     public void calc_property_max() {
         property_max = property_std;
         for (Object o : items) {
             Item i = (Item)o;
             
-            if (!i.is_in_use) { // CHANGE, REALLY QUICK
+            if (i.is_in_use) {
                 for (Map.Entry<String, Float> ob : i.effect.entrySet()) {
                     for (Map.Entry<String, Float> obj : property_std.entrySet()) {
                         

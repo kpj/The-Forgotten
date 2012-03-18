@@ -36,7 +36,7 @@ public class Item
         }
         else if (id == 3) {
             n = "Schwere Schuhe";
-            e_i = "path/to/pic";
+            e_i = "pics/Items/Schwere_Schuhe.png";
             i_i = "path/to/pic";
             
             property.put("geschwindigkeit", (float)-1);

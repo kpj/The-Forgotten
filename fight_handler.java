@@ -5,8 +5,6 @@ import javax.swing.*;
 public class fight_handler
 {
     Image bg_image;
-    Image did_something_image;
-    int did_something_image_height, did_something_image_width;
     
     content_handler content;
 
@@ -43,9 +41,14 @@ public class fight_handler
     int old_move_y = move_y;
     
     // move 'em
-    ArrayList<Place> in_reach = new ArrayList<Place>();
     boolean unit_selected = false;
     boolean multiple_units_selected = false;
+    
+    boolean show_move_radius = true;
+    ArrayList<Place> in_reach = new ArrayList<Place>();
+    
+    ArrayList<Place> checked;
+    ArrayList<Place> unchecked;
     
     @SuppressWarnings("unchecked")
     public fight_handler(String bg_img, content_handler con)
@@ -53,11 +56,6 @@ public class fight_handler
         content = con;
         
         bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
-        
-        did_something_image = Toolkit.getDefaultToolkit().getImage("pic/did_something.png");
-        ImageIcon icon = new ImageIcon(did_something_image);
-        did_something_image_height = icon.getIconHeight();
-        did_something_image_width = icon.getIconWidth();
         
         // Create fighting place
         field = new ArrayList<ArrayList>();
@@ -109,8 +107,8 @@ public class fight_handler
         g.drawImage(bg_image, 0 , 0, content.window_width, content.window_height, -move_x, -move_y, -move_x+content.window_width, -move_y+content.window_height, imo);
         
         // draw field
-        ArrayList<Place> checked = new ArrayList<Place>();
-        ArrayList<Place> unchecked = new ArrayList<Place>();
+        checked = new ArrayList<Place>();
+        unchecked = new ArrayList<Place>();
         
         // draw boxes + characters
         for (Object o : field) {
@@ -130,13 +128,18 @@ public class fight_handler
                 g.drawRect(x, y, place_width, place_height);
                 //g.drawString(""+p.index,x+15,y+15);
                 
-                // now characters
+                // now characters + equipped items
                 if (p.cur != null) {
                     g.drawImage(p.cur.fight_image, x, y, (int)p.cur.fight_image_width, (int)p.cur.fight_image_height, imo);
                 
                     if (p.cur.did_something_this_round) {
                         g.drawString("NO MOVES LEFT",x ,y+10);
-                        //g.drawImage(did_something_image, content.mouse_x, content.mouse_y, did_something_image_width, did_something_image_height, imo);
+                    }
+                    
+                    for (Object obj : p.cur.get_equipped_items()) {
+                        Item i = (Item)obj;
+                        
+                        g.drawImage(i.equipped_image, x, y, Color.black, imo);
                     }
                 }
             }
@@ -148,8 +151,12 @@ public class fight_handler
         }
         
         // draw reachable
+        Color reach_col = Color.red;
+        if (show_move_radius) {
+            reach_col = Color.green;
+        }
         for (Object o : in_reach) {
-            draw_place(g, (Place)o, 4, Color.green);
+            draw_place(g, (Place)o, 4, reach_col);
         }
         
         // draw selector
@@ -233,6 +240,10 @@ public class fight_handler
                 return;
             }
             else {
+                if (show_move_radius) {
+                    from.cur.did_something_this_round = false;
+                    return;
+                }
                 was_fighting = true;
                 successful_combat = attack_char(from, to);
             }
@@ -294,8 +305,14 @@ public class fight_handler
                         multiple_units_selected = true;
                     }
                     in_reach = new ArrayList<Place>();
-                    in_reach.add(p); // to know, who to move, later on
-                    int max_dist = (int)Math.floor(p.cur.property_current.get("geschwindigkeit").intValue()/2);
+                    in_reach.add(p); // to know, who is in the center
+                    
+                    String imp_fac = "attackenreichweite";
+                    if (show_move_radius) {
+                        imp_fac = "geschwindigkeit";
+                    }
+                    
+                    int max_dist = (int)Math.floor(p.cur.property_current.get(imp_fac).intValue()/2);
 
                     for (Object ob : field) {
                         ArrayList l = (ArrayList) ob;
@@ -345,6 +362,13 @@ public class fight_handler
                 unit_selected= false;
                 multiple_units_selected = false;
                 in_reach.clear();
+            }
+        }
+        else if (button.equals("RIGHT")) {
+            show_move_radius = !show_move_radius;
+            if (in_reach.size() != 0) {
+                // Little trick, makes a new calculation
+                in_reach.get(0).checked = true;
             }
         }
     }
