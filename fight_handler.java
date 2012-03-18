@@ -249,6 +249,10 @@ public class fight_handler
             }
         }
         if (!was_fighting) {
+            if (!show_move_radius) {
+                from.cur.did_something_this_round = false;
+                return;
+            }
             to.cur = from.cur;
             from.cur = null;
         }
