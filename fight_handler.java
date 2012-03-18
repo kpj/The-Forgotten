@@ -130,7 +130,7 @@ public class fight_handler
                 
                 // now characters + equipped items
                 if (p.cur != null) {
-                    g.drawImage(p.cur.fight_image, x, y, (int)p.cur.fight_image_width, (int)p.cur.fight_image_height, imo);
+                    g.drawImage(p.cur.fight_image, x, y, imo);
                 
                     if (p.cur.did_something_this_round) {
                         g.drawString("NO MOVES LEFT",x ,y+10);
@@ -139,7 +139,7 @@ public class fight_handler
                     for (Object obj : p.cur.get_equipped_items()) {
                         Item i = (Item)obj;
                         
-                        g.drawImage(i.equipped_image, x, y, Color.black, imo);
+                        g.drawImage(i.equipped_image, x, y, imo);
                     }
                 }
             }
