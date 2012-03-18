@@ -22,6 +22,7 @@ public class content_handler
     
     // Everywhere
     menu_handler menu;
+    applet_handler window;
     
     ArrayList<Char> characters = new ArrayList<Char>();
     int window_width = 1024;

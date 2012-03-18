@@ -5,13 +5,13 @@ import java.awt.*;
 public class god implements Runnable
 {
     content_handler content = new content_handler();
-    applet_handler window = new applet_handler(content);
     
     int t = 0;
     
     public god()
     {
         content.menu = new menu_handler(content);
+        content.window = new applet_handler(content);
         new Thread(this).start();
         
         // Little scene
@@ -95,23 +95,6 @@ public class god implements Runnable
         }
         else if (content.map_active) {
             // We are in map
-            check_mouse();
-            
-        }
-    }
-    
-    public void check_mouse() {
-        if (window.left_mouse) {
-            window.left_mouse = false;
-            
-            System.out.println("POKE");
-        }
-        else if (window.right_mouse) {
-            window.right_mouse = false;
-            
-        }
-        else if (window.middle_mouse) {
-            window.middle_mouse = false;
             
         }
     }
@@ -160,7 +143,7 @@ public class god implements Runnable
     }
     
     public void draw() {
-        window.repaint();
+        content.window.repaint();
     }
     
     public void sleep(int t) {
