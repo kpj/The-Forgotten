@@ -36,15 +36,16 @@ public class god implements Runnable
         if (content.fight_active){
             // Fight is taking place
             
+            ((fight_handler)content.get_active_environment()).compute_selection();
+            
             if (content.fight.is_over) {
                 content.rm_environment(content.fight);
             }
         }
         else if (content.world_active) {
             // Running around in world
-            check_collisions();
+            content.world.check_collisions();
             content.world.calc_movement();
-     
             
             if (content.world.is_over) {
                 content.rm_environment(content.world);
@@ -53,49 +54,6 @@ public class god implements Runnable
         else if (content.map_active) {
             // We are in map
             
-        }
-    }
-    
-    public void check_collisions() {
-        for (int i = 0 ; i < content.get_objects().size() ; i++) {
-            for (int u = 0 ; u < content.get_characters().size() ; u++) {
-                Thing o = (Thing)content.get_objects().get(i);
-                Char c = (Char)content.get_characters().get(u);
-
-                //System.out.println(o.get_rect().toString() +"    "+ c.get_rect().toString());
-                
-                if (o.get_rect().intersects(c.get_rect())) {
-                    o.on_touch();
-                }
-            }
-        }
-        
-        check_actions();
-    }
-    
-    public void check_actions() {
-        Thing to_rm = null;
-        for (Object ob : content.get_objects()) {
-            Thing o = (Thing)ob;
-            
-            if (o.get_touched()) {
-                String type = o.get_type();
-                
-                if (type == "NOTHING") {
-                    // Well, nothing...
-                }
-                else if (type == "RANDOM_FIGHT") {
-                    // START FIGHT
-                    //create_fight();
-                }
-                
-                to_rm = o;
-                o.set_touched(false);
-            }
-        }
-        if (to_rm != null) {
-            content.rm_object(to_rm);
-            to_rm = null;
         }
     }
     

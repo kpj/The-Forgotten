@@ -53,6 +53,8 @@ public class draw_anything extends JComponent
     @Override
     protected void paintComponent( Graphics g )
     {
+        content.g = (Graphics2D)g;
+        
         if (content.fight_active)
             ((fight_handler)content.get_active_environment()).draw_stuff(g, this);
         if (content.world_active)

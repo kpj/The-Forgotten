@@ -164,8 +164,6 @@ public class fight_handler
             g.setColor(Color.blue);
             g.drawRect(select_x_tmp, select_y_tmp, select_width, select_height);
         }
-        
-        compute_selection(g, checked);
     }
     public void draw_place(Graphics2D g, Place p, int thickness, Color col) {
         int x = calc_offset(p.index).get(0);
@@ -291,7 +289,10 @@ public class fight_handler
         }
     }
     
-    public void compute_selection(Graphics2D g, ArrayList<Place> sel) {
+    public void compute_selection() {
+        ArrayList<Place> sel = checked;
+        if (sel == null)
+            return;
         if (sel.size() == 0) {
             
         }

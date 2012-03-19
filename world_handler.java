@@ -35,6 +35,49 @@ public class world_handler
         
     }
     
+    public void check_collisions() {
+        for (int i = 0 ; i < content.get_objects().size() ; i++) {
+            for (int u = 0 ; u < content.get_characters().size() ; u++) {
+                Thing o = (Thing)content.get_objects().get(i);
+                Char c = (Char)content.get_characters().get(u);
+
+                //System.out.println(o.get_rect().toString() +"    "+ c.get_rect().toString());
+                
+                if (o.get_rect().intersects(c.get_rect())) {
+                    o.on_touch();
+                }
+            }
+        }
+        
+        check_actions();
+    }
+    
+    public void check_actions() {
+        Thing to_rm = null;
+        for (Object ob : content.get_objects()) {
+            Thing o = (Thing)ob;
+            
+            if (o.get_touched()) {
+                String type = o.get_type();
+                
+                if (type == "NOTHING") {
+                    // Well, nothing...
+                }
+                else if (type == "RANDOM_FIGHT") {
+                    // START FIGHT
+                    //create_fight();
+                }
+                
+                to_rm = o;
+                o.set_touched(false);
+            }
+        }
+        if (to_rm != null) {
+            content.rm_object(to_rm);
+            to_rm = null;
+        }
+    }
+    
     public void calc_movement() {
         window_w = content.window_width;
         window_h = content.window_height;

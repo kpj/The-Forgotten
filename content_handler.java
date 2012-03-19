@@ -1,7 +1,9 @@
 import java.util.*;
+import java.awt.*;
 
 public class content_handler
 {
+    Graphics2D g;
     public String lol = "lol";
 
     // Imp
