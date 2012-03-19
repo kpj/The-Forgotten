@@ -57,12 +57,13 @@ public class fight_handler
         
         
         bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
-        field_width = field_w;
-        field_height = field_h;
+        field_width = 10;//field_w;
+        field_height = 10;//field_h;
         
         // Create fighting place
         field = new ArrayList<ArrayList>();
-        //System.out.println(field_width+"x"+field_height);
+        System.out.println(field_width+"x"+field_height);
+        
         for (int i = 0; i < field_width ; i++) {
             field.add(new ArrayList<Place>());
         }
@@ -124,7 +125,7 @@ public class fight_handler
                     checked.add(p);
                 }
                 g.drawRect(x, y, place_width, place_height);
-                //g.drawString(""+p.index,x+15,y+15);
+                g.drawString(""+p.index,x+15,y+15);
                 
                 // now characters + equipped items
                 if (p.cur != null) {
@@ -218,9 +219,9 @@ public class fight_handler
     
     public int get_distance(Place p1, Place p2) {
         int xi1 = p1.index % field_width;
-        int yi1 = (int)Math.floor(p1.index / 100);
+        int yi1 = (int)Math.floor(p1.index / field_height);
         int xi2 = p2.index % field_width;
-        int yi2 = (int)Math.floor(p2.index / 100);
+        int yi2 = (int)Math.floor(p2.index / field_height);
         return Math.abs(xi1-xi2)+Math.abs(yi1-yi2);
     }
     

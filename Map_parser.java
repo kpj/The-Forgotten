@@ -58,6 +58,9 @@ public class Map_parser
             parsing_map = true;
             return;
         }
+        if (line[0] == '#') {
+            return;
+        }
 
         if (!parsing_map) {
             ArrayList<String> args = new ArrayList<String>();
