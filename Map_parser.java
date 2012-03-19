@@ -125,7 +125,7 @@ public class Map_parser
             ArrayList<String> l = (ArrayList<String>)o;
             
             if (l.get(0).charAt(0) == c) {
-                Char ret = new Char(l.get(1), (float)0, (float)0, "", l.get(2), null, 2, null);
+                Char ret = new Char(l.get(1), (float)0, (float)0, "", l.get(2), null, Integer.parseInt(l.get(3)), null);
                 
                 for (Map.Entry<String, ArrayList<Integer>> ob : get_items.entrySet()) {
                     for (Map.Entry<String, ArrayList<Boolean>> oo : get_items_equipped.entrySet()) {

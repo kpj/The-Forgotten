@@ -233,14 +233,18 @@ public class fight_handler
         boolean successful_combat = false;
         if (to.cur != null) {
             if (from.cur.team == to.cur.team) {
+                // Won't interact with same team
                 from.cur.did_something_this_round = false;
                 return;
             }
             else {
+                // Is from different team
                 if (show_move_radius) {
+                    // Cannot move to used field
                     from.cur.did_something_this_round = false;
                     return;
                 }
+                // Attack used field
                 was_fighting = true;
                 successful_combat = attack_char(from, to);
             }
