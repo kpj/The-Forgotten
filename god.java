@@ -72,7 +72,7 @@ public class god implements Runnable
         content.characters.get(11).equip_item(1);
         
         
-        create_fight();
+        create_fight("data/fights/test.txt");
     }
     
     public static void main (String[] args)
@@ -144,7 +144,7 @@ public class god implements Runnable
                 }
                 else if (type == "RANDOM_FIGHT") {
                     // START FIGHT
-                    create_fight();
+                    //create_fight();
                 }
                 
                 to_rm = o;
@@ -183,8 +183,9 @@ public class god implements Runnable
         return new Item(id);
     }
     
-    public void create_fight() {
-        content.add_fight(new fight_handler("pics/fight_bg_image.png", content));
+    public void create_fight(String path2fight) {
+        content.add_fight((new Map_parser(path2fight, content)).get_fight());
+        //content.add_fight(new fight_handler("pics/fight_bg_image.png", content));
     }
     public void create_world() {
         content.add_world(new world_handler("pics/world_bg_image.png", content));

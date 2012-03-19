@@ -13,8 +13,8 @@ public class fight_handler
     boolean is_over = false;
     
     // field
-    int field_width = 100;
-    int field_height = 100;
+    int field_width;
+    int field_height;
     int place_width = 100;
     int place_height = 100;
     int spacing = 3;
@@ -33,8 +33,8 @@ public class fight_handler
     int drag_y = 0;
     int drag_start_x = 0;
     int drag_start_y = 0;
-    int move_x = -500;
-    int move_y = -500;
+    int move_x = 0; // CHANGE HERE
+    int move_y = 0; // CHANGE HERE
     int move_x_tmp = move_x;
     int move_y_tmp = move_y;
     int old_move_x = move_x;
@@ -51,14 +51,18 @@ public class fight_handler
     ArrayList<Place> unchecked;
     
     @SuppressWarnings("unchecked")
-    public fight_handler(String bg_img, content_handler con)
+    public fight_handler(String bg_img, int field_w, int field_h, HashMap<Integer, Char> to_insert, content_handler con)
     {
         content = con;
         
+        
         bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
+        field_width = field_w;
+        field_height = field_h;
         
         // Create fighting place
         field = new ArrayList<ArrayList>();
+        //System.out.println(field_width+"x"+field_height);
         for (int i = 0; i < field_width ; i++) {
             field.add(new ArrayList<Place>());
         }
@@ -70,25 +74,19 @@ public class fight_handler
             }
         }
         
-        // Little scene
-        place_char2(506, content.characters.get(0));
-        place_char2(605, content.characters.get(1));
-        place_char2(607, content.characters.get(2));
-        place_char2(406, content.characters.get(3));
-        place_char2(505, content.characters.get(4));
-        place_char2(707, content.characters.get(5));
-        place_char2(708, content.characters.get(6));
-        place_char2(709, content.characters.get(7));
-        place_char2(808, content.characters.get(8));
-        place_char2(807, content.characters.get(9));
-        place_char2(806, content.characters.get(10));
-        place_char2(908, content.characters.get(11));
+        // Adding chars
+        for (Map.Entry<Integer, Char> o : to_insert.entrySet()) {
+            place_char2(o.getKey(), o.getValue());
+        }
     }
     
     public void place_char(Place p, Char c) {
         p.cur = c;
     }
     public void place_char2(int pos, Char c) {
+        if (c == null) {
+            return;
+        }
         for (Object o : field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {

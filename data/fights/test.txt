@@ -1,0 +1,4 @@
+S:Soldier:pics/Character/soldier.png:
+
+SS
+  

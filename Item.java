@@ -77,7 +77,7 @@ public class Item
             entity_image = ImageIO.read(new File(i_i));;
         }
         catch (IOException e) {
-            System.out.println("Error with images: "+e);
+            //System.out.println("Error with images: "+e);
         }
         effect = property;
     }

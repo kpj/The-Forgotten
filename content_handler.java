@@ -79,7 +79,7 @@ public class content_handler
     public void rm_object(Thing o) {
         objects.remove(o);
     }
-    public void rm_character(Character c) {
+    public void rm_character(Char c) {
         characters.remove(c);
     }
     public void region(Region r) {
