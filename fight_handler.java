@@ -57,8 +57,8 @@ public class fight_handler
         
         
         bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
-        field_width = 10;//field_w;
-        field_height = 10;//field_h;
+        field_width = field_w;
+        field_height = field_h;
         
         // Create fighting place
         field = new ArrayList<ArrayList>();
