@@ -1,4 +1,5 @@
 S:Soldier:pics/Character/soldier.png:
+backgroundimg:pics/fight_bg_image.png:
 
 S_____
 _____S

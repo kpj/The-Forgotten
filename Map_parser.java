@@ -58,8 +58,13 @@ public class Map_parser
             parsing_map = true;
             return;
         }
-        if (line[0] == '#') {
-            return;
+        // Find extra things
+        String[] splitted = l.split(":");
+        String imp = splitted[0];
+        if (imp.length() != 0) {
+            if (imp.equals("backgroundimg")) {
+                path2bg = splitted[1];
+            }
         }
 
         if (!parsing_map) {

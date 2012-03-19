@@ -62,7 +62,7 @@ public class fight_handler
         
         // Create fighting place
         field = new ArrayList<ArrayList>();
-        System.out.println(field_width+"x"+field_height);
+        //System.out.println(field_width+"x"+field_height);
         
         for (int i = 0; i < field_width ; i++) {
             field.add(new ArrayList<Place>());
