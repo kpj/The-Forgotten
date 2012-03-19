@@ -20,7 +20,7 @@ public class Char
     
     boolean did_something_this_round = false;
     
-    public Char(String n, float x, float y, String w_i, String f_i, key_set kset, int t)
+    public Char(String n, float x, float y, String w_i, String f_i, key_set kset, int t, HashMap<String, Float> prop)
     {
         name = n;
         
@@ -41,16 +41,21 @@ public class Char
         team = t;
         set = kset;
         
-        // Properties
-        property_std.put("geschwindigkeit", (float)5);
-        property_std.put("lebenspunkte", (float)10);
-        property_std.put("manapunkte", (float)10);
-        property_std.put("ausdauerpunkte", (float)5);
-        property_std.put("initiative", (float)8);
-        property_std.put("magieresistenz", (float)9);
-        property_std.put("angriffskraft", (float)2);
-        property_std.put("attackenreichweite", (float)2);
-        property_std.put("verteidigungspunkte", (float)1);
+        if (prop == null) {
+            // Properties
+            property_std.put("geschwindigkeit", (float)5);
+            property_std.put("lebenspunkte", (float)10);
+            property_std.put("manapunkte", (float)10);
+            property_std.put("ausdauerpunkte", (float)5);
+            property_std.put("initiative", (float)8);
+            property_std.put("magieresistenz", (float)9);
+            property_std.put("angriffskraft", (float)2);
+            property_std.put("attackenreichweite", (float)2);
+            property_std.put("verteidigungspunkte", (float)1);
+        }
+        else {
+            property_std = prop;
+        }
         calc_property_max();
     }
     

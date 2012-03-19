@@ -125,7 +125,7 @@ public class fight_handler
                     checked.add(p);
                 }
                 g.drawRect(x, y, place_width, place_height);
-                g.drawString(""+p.index,x+15,y+15);
+                //g.drawString(""+p.index,x+15,y+15);
                 
                 // now characters + equipped items
                 if (p.cur != null) {

@@ -8,9 +8,13 @@ public class Map_parser
     String path;
     boolean parsing_map = false;
     int map_index = 0;
+    
+    int arg_num;
 
     ArrayList<ArrayList> elements = new ArrayList<ArrayList>();
     HashMap<Integer, Char> map = new HashMap<Integer, Char>();
+    HashMap<String, ArrayList<Integer>> get_items = new HashMap<String, ArrayList<Integer>>();
+    HashMap<String, ArrayList<Boolean>> get_items_equipped = new HashMap<String, ArrayList<Boolean>>();
 
     int field_width = 0;;
     int field_height = 0;
@@ -46,10 +50,6 @@ public class Map_parser
         catch (Exception e) {
             System.out.println(e);
         }
-        //System.out.println(elements);
-        //System.out.println();
-        //System.out.println(field_width + ":" + field_height);
-        //System.out.println(map);
     }
 
     public void parse_line(String l) {
@@ -60,10 +60,29 @@ public class Map_parser
         }
         // Find extra things
         String[] splitted = l.split(":");
+        arg_num = splitted.length;
         String imp = splitted[0];
         if (imp.length() != 0) {
             if (imp.equals("backgroundimg")) {
                 path2bg = splitted[1];
+            }
+            else if (imp.equals("Item")) {
+                ArrayList<Integer> il = new ArrayList<Integer>();
+                ArrayList<Boolean> iel = new ArrayList<Boolean>();
+                for (int i = 2 ; i < splitted.length ; i++) {
+                    String parse_me;
+                    if (splitted[i].length() >= 2) {
+                        parse_me = Character.toString(splitted[i].toCharArray()[0]);
+                        iel.add(true);
+                    }
+                    else {
+                        parse_me = splitted[i];
+                        iel.add(false);
+                    }
+                    il.add(Integer.parseInt(parse_me));
+                }
+                get_items.put(splitted[1], il);
+                get_items_equipped.put(splitted[1], iel);
             }
         }
 
@@ -91,7 +110,6 @@ public class Map_parser
             for (Object o : line) {
                 Character c = (Character)o;
 
-                
                 Char real_char = gen_char(c);
                 
                 map.put(map_index, real_char);
@@ -107,7 +125,30 @@ public class Map_parser
             ArrayList<String> l = (ArrayList<String>)o;
             
             if (l.get(0).charAt(0) == c) {
-                return new Char(l.get(1), (float)0, (float)0, "", l.get(2), null, 2);
+                Char ret = new Char(l.get(1), (float)0, (float)0, "", l.get(2), null, 2, null);
+                
+                for (Map.Entry<String, ArrayList<Integer>> ob : get_items.entrySet()) {
+                    for (Map.Entry<String, ArrayList<Boolean>> oo : get_items_equipped.entrySet()) {
+                        if (l.get(1).equals(ob.getKey()) && l.get(1).equals(oo.getKey())) {
+                            int counter = 0;
+                            for (Object obj : ob.getValue()) {
+                                int lol = Integer.parseInt(obj.toString()); // <- really ?!
+                                ret.collect_item(new Item(lol));
+                                if(oo.getValue().get(counter)) {
+                                    ret.equip_item(counter);
+                                }
+                                counter++;
+                            }
+                        }
+                    }
+                }
+                //System.out.println(arg_num);
+                //if (arg_num == 3)
+                    return ret;
+                    
+                //HashMap<String, Float> prop = new HashMap<String, Float>();
+                
+                //return new Char(l.get(1), (float)0, (float)0, "", l.get(2), null, 2, prop);
             }
         }
         return null;

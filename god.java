@@ -14,64 +14,6 @@ public class god implements Runnable
         content.window = new applet_handler(content);
         new Thread(this).start();
         
-        // Little scene
-        create_character("King Arthur", 200,200,"pics/GedrehtPre.png", "pics/Character/king.png", 1);
-        create_character("Jeremy", 300,200,"pics/GedrehtPre.png", "pics/Character/soldier.png", 1);
-        create_character("Ken", 400,200,"pics/GedrehtPre.png", "pics/Character/soldier.png", 1);
-        create_character("Isaac", 100,200,"pics/GedrehtPre.png", "pics/Character/soldier.png", 1);
-        create_character("Shroon", 100,200,"pics/GedrehtPre.png", "pics/Character/soldier_mean.png", 1);
-        
-        create_character("K'Hraa", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
-        create_character("Fou'Dsirlag", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
-        create_character("Rha'Thou", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
-        create_character("Sri'Lanka", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
-        create_character("Ha'Tschi", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
-        create_character("Rums'Tara", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
-        create_character("De'Brook", 100,200,"pics/GedrehtPre.png", "pics/Character/orc.png", 2);
-        
-        
-        content.characters.get(0).collect_item(new Item(0));
-        content.characters.get(0).equip_item(0);
-        content.characters.get(0).collect_item(new Item(1));
-        content.characters.get(0).equip_item(1);
-        content.characters.get(0).collect_item(new Item(3));
-        content.characters.get(0).equip_item(2);
-        
-        content.characters.get(1).collect_item(new Item(6));
-        content.characters.get(1).equip_item(0);
-        content.characters.get(2).collect_item(new Item(6));
-        content.characters.get(2).equip_item(0);
-        content.characters.get(3).collect_item(new Item(0));
-        content.characters.get(3).equip_item(0);
-        
-        content.characters.get(4).collect_item(new Item(5));
-        content.characters.get(4).equip_item(0);
-        content.characters.get(4).collect_item(new Item(1));
-        content.characters.get(4).collect_item(new Item(3));
-        content.characters.get(4).equip_item(2);
-        
-        content.characters.get(5).collect_item(new Item(4));
-        content.characters.get(5).collect_item(new Item(0));
-        content.characters.get(5).equip_item(0);
-        content.characters.get(5).equip_item(1);
-        content.characters.get(6).collect_item(new Item(4));
-        content.characters.get(6).collect_item(new Item(5));
-        content.characters.get(6).equip_item(0);
-        content.characters.get(6).equip_item(1);
-        content.characters.get(7).collect_item(new Item(4));
-        content.characters.get(7).equip_item(0);
-        content.characters.get(8).collect_item(new Item(4));
-        content.characters.get(8).equip_item(0);
-        content.characters.get(9).collect_item(new Item(4));
-        content.characters.get(9).equip_item(0);
-        content.characters.get(10).collect_item(new Item(4));
-        content.characters.get(10).equip_item(0);
-        content.characters.get(11).collect_item(new Item(6));
-        content.characters.get(11).collect_item(new Item(1));
-        content.characters.get(11).equip_item(0);
-        content.characters.get(11).equip_item(1);
-        
-        
         create_fight("data/fights/test.txt");
     }
     
@@ -176,7 +118,7 @@ public class god implements Runnable
     
     public void create_character(String name, float x_pos, float y_pos, String world_image_path, String fight_image_path, int team) {
         key_set set = new key_set(name);
-        content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set, team));
+        content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set, team, null));
     }
     
     public Item create_item(int id) {
