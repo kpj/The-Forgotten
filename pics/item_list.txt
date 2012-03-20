@@ -1,3 +1,133 @@
+#
+# WAFFEN
+#
+#ID:
+#
+#0
 Item:Eiserne Axt:pics/Items/Waffen/Axt1.png:undef:
 geschwindigkeit:-5:
-angriffskraft:10:
+angriffskraft:+10:
+#
+#1
+#
+Item:Eiserne Schlachtaxt:pics/Items/Waffen/Axt2.png:undef:
+geschwindigkeit:-8:
+angriffskraft:+15:
+#
+#2
+#
+Item:Stählernes Schwert:pics/Items/Waffen/Schwert1.png:undef:
+geschwindigkeit:-3:
+angriffskraft:+7:
+#
+#3
+#
+Item:Stählernes Prachtschwert:pics/Items/Waffen/Schwert2.png:undef:
+geschwindigkeit:-5:
+angriffskraft:+13:
+#
+#4
+#
+Item:Hölzener Bogen:pics/Items/Waffen/Bogen1.png:undef:
+geschwindigkeit:-3:
+angriffskraft:+13:
+attackenreichweite:+5:
+#
+#5
+#
+Item:Eisernes Schild:pics/Items/Waffen/Schild1.png:undef:
+geschwindigkeit:-5:
+verteidigungspunkte:+5:
+#
+#6
+#
+Item:Einfache Lederhose:pics/Kleidung/Ruestung/Hose1.png:undef:
+verteidigungspunkte:+2:
+#
+#7
+#
+Item:Einfache Kurze Lederhose:pics/Kleidung/Ruestung/Hose3.png:undef:
+verteidigungspunkte:+1:
+#
+#8
+#
+Item:Eiserne Kettenhose:pics/Kleidung/Ruestung/Hose2.png:undef:
+geschwindigkeit:-4:
+verteidigungspunkte:+5:
+#
+#9
+#
+Item:Feines Lederhemd:pics/Kleidung/Ruestung/Torso1.png:undef:
+verteidigungspunkte:4:
+#
+#10
+#
+Item:Feines Kettenhemd:pics/Kleidung/Ruestung/Torso2.png:undef:
+geschwindigkeit:-3:
+verteidigungspunkte:+6:
+#
+#11
+#
+Item:Eisernes Kettenhemd:pics/Kleidung/Ruestung/Torso3.png:undef:
+geschwindigkeit:-5:
+verteidigungspunkte:+5:
+#
+#12
+#
+Item:Einfacher Lederharnisch:pics/Kleidung/Ruestung/Torso4.png:undef:
+geschwindigkeit:-3:
+verteidigungspunkte:+3:
+#
+#13
+#
+Item:Guter Lederharnisch:pics/Kleidung/Ruestung/Torso5.png:undef:
+geschwindigkeit:-3:
+verteidigungspunkte:+5:
+#
+#14
+#
+Item:Edler Lederharnisch:pics/Kleidung/Ruestung/Torso6.png:undef:
+geschwindigkeit:-4:
+verteidigungspunkte:+6:
+#
+#15
+#
+Item:Militaerischer Lederharnisch:pics/Kleidung/Ruestung/Torso7.png:undef:
+geschwindigkeit:-3:
+verteidigungspunkte:5:
+#
+#16
+#
+Item:Guter Lederpanzer:pics/Kleidung/Ruestung/Torso8.png:undef:
+geschwindigkeit:-2:
+verteidigungspunkte:+6:
+#
+#17
+#
+Item:Einfache Eisenhaube:pics/Kleidung/Ruestung/Helm1.png:undef:
+geschwindigkeit:-2:
+verteidigungspunkte:+2:
+#
+#18
+#
+Item:Gute Eisenhaube:pics/Kleidung/Ruestung/Helm2.png:undef:
+geschwindigkeit:-2:
+verteidigungspunkte:+3:
+#
+#19
+#
+Item:Edle Eisenhaube:pics/Kleidung/Ruestung/Helm3.png:undef:
+geschwindigkeit:-2:
+verteidigungspunkte:+3:
+#
+#20
+#
+Item:Gute Eisenschuhe:pics/Kleidung/Ruestung/Schuhe1.png:undef:
+geschwindigkeit:-1:
+verteidigungspunkte:+2:
+#
+#21
+#
+Item:Gute Eisenstiefel:pics/Kleidung/Ruestung/Schuhe2.png:undef:
+geschwindigkeit:-4:
+verteidigungspunkte:+4:
