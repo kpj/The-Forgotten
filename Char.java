@@ -17,13 +17,13 @@ public class Char
     key_set set;
     
     ArrayList<Item> items = new ArrayList<Item>();
-    HashMap<String, Float> property_std = new HashMap<String, Float>(); // standard values
-    HashMap<String, Float> property_max = new HashMap<String, Float>(); // values with equipped items
-    HashMap<String, Float> property_current = new HashMap<String, Float>(); // values during fight
+    HashMap<String, Integer> property_std = new HashMap<String, Integer>(); // standard values
+    HashMap<String, Integer> property_max = new HashMap<String, Integer>(); // values with equipped items
+    HashMap<String, Integer> property_current = new HashMap<String, Integer>(); // values during fight
     
     boolean did_something_this_round = false;
     
-    public Char(String n, float x, float y, String w_i, ArrayList<String> f_i, key_set kset, int t, HashMap<String, Float> prop)
+    public Char(String n, float x, float y, String w_i, ArrayList<String> f_i, key_set kset, int t, HashMap<String, Integer> prop)
     {
         name = n;
         
@@ -44,15 +44,15 @@ public class Char
         
         if (prop == null) {
             // Properties
-            property_std.put("geschwindigkeit", (float)5);
-            property_std.put("lebenspunkte", (float)10);
-            property_std.put("manapunkte", (float)10);
-            property_std.put("ausdauerpunkte", (float)5);
-            property_std.put("initiative", (float)8);
-            property_std.put("magieresistenz", (float)9);
-            property_std.put("angriffskraft", (float)2);
-            property_std.put("attackenreichweite", (float)2);
-            property_std.put("verteidigungspunkte", (float)1);
+            property_std.put("geschwindigkeit", 5);
+            property_std.put("lebenspunkte", 10);
+            property_std.put("manapunkte", 10);
+            property_std.put("ausdauerpunkte", 5);
+            property_std.put("initiative", 8);
+            property_std.put("magieresistenz", 9);
+            property_std.put("angriffskraft", 2);
+            property_std.put("attackenreichweite", 2);
+            property_std.put("verteidigungspunkte", 1);
         }
         else {
             property_std = prop;
@@ -88,7 +88,7 @@ public class Char
         }
     }
     
-    public void deal_damage(float val) {
+    public void deal_damage(int val) {
         property_current.put("lebenspunkte", property_current.get("lebenspunkte") - val);
     }
     
@@ -123,8 +123,8 @@ public class Char
             Item i = (Item)o;
             
             if (i.is_in_use) {
-                for (Map.Entry<String, Float> ob : i.effect.entrySet()) {
-                    for (Map.Entry<String, Float> obj : property_std.entrySet()) {
+                for (Map.Entry<String, Integer> ob : i.effect.entrySet()) {
+                    for (Map.Entry<String, Integer> obj : property_std.entrySet()) {
                         
                         String item_key = ob.getKey();
                         String char_key = obj.getKey();

@@ -1,0 +1,3 @@
+Item:Eiserne Axt:pics/Items/Waffen/Axt1.png:undef:
+geschwindigkeit:-5:
+angriffskraft:10:

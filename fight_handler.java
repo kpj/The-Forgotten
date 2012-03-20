@@ -267,8 +267,8 @@ public class fight_handler
     }
     public boolean attack_char(Place attacker, Place defender) {
         // very simple system
-        float att = attacker.cur.property_current.get("angriffskraft");
-        float def = defender.cur.property_current.get("verteidigungspunkte");
+        int att = attacker.cur.property_current.get("angriffskraft");
+        int def = defender.cur.property_current.get("verteidigungspunkte");
         
         if (att > def) {
             defender.cur.deal_damage(att - def);

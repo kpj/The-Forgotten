@@ -6,79 +6,91 @@ import javax.imageio.*;
 
 public class Item
 {
-    String name, n;
-    String e_i, i_i;
-    HashMap<String, Float> effect = new HashMap<String, Float>();
-    HashMap<String, Float> property = new HashMap<String, Float>();
+    ArrayList<ArrayList<String>> item_list = new ArrayList<ArrayList<String>>();
+    HashMap<Integer, HashMap<String, Integer>> item_effects = new HashMap<Integer, HashMap<String, Integer>>();
+
+    String name;
+    HashMap<String, Integer> effect = new HashMap<String, Integer>();
     BufferedImage equipped_image;
     BufferedImage entity_image;
     
     boolean is_in_use = false;
+    
+    int item_counter = -1;
+    HashMap<String, Integer> now = new HashMap<String, Integer>();
 
     public Item(int id)
     {   
-        if (id == 0) {
-            n = "Normales Holzschwert";
-            e_i = "pics/Items/Waffen/Schwert1.png";
-            i_i = "path/to/pic";
-            
-            property.put("angriffskraft", (float)1);
-        }
-        else if (id == 1) {
-            n = "Normales Holzschild";
-            e_i = "pics/Items/Normales_Holzschild.png";
-            i_i = "path/to/pic";
-            
-            property.put("verteidigungspunkte", (float)1);
-        }
-        else if (id == 2) {
-            n = "Gemeine Reiserobe";
-            e_i = "path/to/pic";
-            i_i = "path/to/pic";
-            
-            property.put("verteidigungspunkte", (float)0.3);
-        }
-        else if (id == 3) {
-            n = "Schwere Schuhe";
-            e_i = "pics/Items/Schwere_Schuhe.png";
-            i_i = "path/to/pic";
-            
-            property.put("geschwindigkeit", (float)-1);
-        }
-        else if (id == 4) {
-            n = "Leichte Schuhe";
-            e_i = "pics/Items/Leichte_Schuhe.png";
-            i_i = "path/to/pic";
-            
-            property.put("geschwindigkeit", (float)1);
-        }
-        else if (id == 5) {
-            n = "Normale Axt";
-            e_i = "pics/Items/Waffen/Axt1.png";
-            i_i = "path/to/pic";
-            
-            property.put("angriffskraft", (float)3);
-        }
-        else if (id == 6) {
-            n = "Langbogen";
-            e_i = "pics/Items/Waffen/Bogen1.png";
-            i_i = "path/to/pic";
-            
-            property.put("angriffskraft", (float)2);
-            property.put("attackenreichweite", (float)6);
-        }
+        parse_items("pics/item_list.txt");
         
-        
-        
-        name = n;
-        //equipped_image = Toolkit.getDefaultToolkit().getImage(e_i);
+        ArrayList<String> cur_item;
         try {
-            equipped_image = ImageIO.read(new File(e_i));
-            entity_image = ImageIO.read(new File(i_i));;
+            cur_item = item_list.get(id);
+        }
+        catch (IndexOutOfBoundsException e) {
+            System.out.println(e);
+            return;
+        }
+        
+        name = cur_item.get(0);
+        
+        try {
+            equipped_image = ImageIO.read(new File(cur_item.get(1)));
+            entity_image = ImageIO.read(new File(cur_item.get(2)));;
         }
         catch (IOException e) {
             //System.out.println("Error with images: "+e);
         }
-        effect = property;
+        
+        effect = item_effects.get(id);
+    }
+    
+    public void parse_items(String path) {
+        FileReader fr;
+        try {
+            fr = new FileReader(path);
+
+            BufferedReader bufRead = new BufferedReader(fr);
+
+            String line = "";
+            int counter = 0;
+
+            line = bufRead.readLine();
+            counter++;
+
+            while (line != null) {
+                parse_line(line);
+
+                //System.out.println(counter + ". " + line);
+                line = bufRead.readLine();
+                counter++;
+            }
+
+            bufRead.close();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void parse_line(String l) {
+        String[] line = l.split(":");
+        
+        ArrayList<String> cur = new ArrayList<String>();
+        if (line[0].equals("Item")) {
+            now.clear();
+            item_counter++;
+            cur.add(line[1]); // Name
+            cur.add(line[2]); // equipped image
+            cur.add(line[3]); // entity image
+            item_list.add(cur);
+        }
+        else {
+            now.put(line[0], Integer.parseInt(line[1]));
+            item_effects.put(item_counter, now);
+        }
+        
+        
+        item_list.add(cur);
     }
 }

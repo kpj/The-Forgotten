@@ -37,7 +37,7 @@ public class menu_handler
             g.drawString(c.name, x + 5, y + 15);
             
             int upper = 0;
-            for (Map.Entry<String, Float> ob : c.property_current.entrySet()) {
+            for (Map.Entry<String, Integer> ob : c.property_current.entrySet()) {
                 g.drawString(ob.getKey() + " : " + ob.getValue(), x + 100, y + 50 + upper);
                 upper += 12;
             }
