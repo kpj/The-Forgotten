@@ -19,7 +19,7 @@ public class Item
     {   
         if (id == 0) {
             n = "Normales Holzschwert";
-            e_i = "pics/Items/Normales_Holzschwert.png";
+            e_i = "pics/Items/Waffen/Schwert1.png";
             i_i = "path/to/pic";
             
             property.put("angriffskraft", (float)1);
@@ -53,15 +53,15 @@ public class Item
             property.put("geschwindigkeit", (float)1);
         }
         else if (id == 5) {
-            n = "Doppel Axt";
-            e_i = "pics/Items/Doppel_Axt.png";
+            n = "Normale Axt";
+            e_i = "pics/Items/Waffen/Axt1.png";
             i_i = "path/to/pic";
             
             property.put("angriffskraft", (float)3);
         }
         else if (id == 6) {
             n = "Langbogen";
-            e_i = "pics/Items/Langbogen.png";
+            e_i = "pics/Items/Waffen/Bogen1.png";
             i_i = "path/to/pic";
             
             property.put("angriffskraft", (float)2);
