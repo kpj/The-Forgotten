@@ -53,6 +53,9 @@ public class Map_parser
     }
 
     public void parse_line(String l) {
+        if (l.length() != 0 && l.charAt(0) == '#')
+            return;
+        
         char[] line = l.toCharArray();
         if (line.length == 0) {
             parsing_map = true;

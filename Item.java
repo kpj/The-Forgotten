@@ -74,6 +74,9 @@ public class Item
     }
     
     public void parse_line(String l) {
+        if (l.charAt(0) == '#')
+            return;
+        System.out.println(l);
         String[] line = l.split(":");
         
         ArrayList<String> cur = new ArrayList<String>();
