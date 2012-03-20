@@ -355,10 +355,19 @@ public class fight_handler
                         for (Object oOo : get_bordering_places(current_p)) {
                             Place pl = (Place)oOo;
                             
-                            if (current_i < max_dist && pl.cur == null && !pl.special.equals("NON-WALKABLE")) {
-                                //System.out.println(current_p.index+": "+pl.index);
-                                working_p.add(pl);
-                                working_i.add(working_i.get(0) + 1);
+                            if (show_move_radius) {
+                                if (current_i < max_dist && pl.cur == null && !pl.special.equals("NON-WALKABLE")) {
+                                    //System.out.println(current_p.index+": "+pl.index);
+                                    working_p.add(pl);
+                                    working_i.add(working_i.get(0) + 1);
+                                }
+                            }
+                            else {
+                                if (current_i < max_dist && (pl.cur == null || pl.cur.team != in_reach.get(0).cur.team) && !pl.special.equals("NON-WALKABLE")) {
+                                    //System.out.println(current_p.index+": "+pl.index);
+                                    working_p.add(pl);
+                                    working_i.add(working_i.get(0) + 1);
+                                }
                             }
                         }
                         //System.out.println(current_p.index+": "+current_i + "/"+max_dist +"  ("+working_p.size()+")");

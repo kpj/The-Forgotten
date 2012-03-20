@@ -13,10 +13,10 @@ C:Name:Pfad_zu_Bild1,Pfad_zu_Bild2,Pfad_zu_Bild3,...:Team:
 # Nun kann man diesem Character über das Schlüsselwort 'Item' Gegenstände geben
 # Wird an die Item-ID ein 'e' angehängt, so wird dieses ausgerüstet
 # Die Item-Liste kann beliebig lang sein
-Item:Name:Item1[e]:Item2[e]:...:
+Item:Name:ItemID1[e]:ItemID2[e]:...:
 
 # Man kann auch ein Hintergrundbild festlegen
-backgroundimg:Background:
+backgroundimg:Pfad_zum_Background:
 
 
 # Nun kann man die Karte erstellen
