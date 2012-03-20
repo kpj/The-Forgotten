@@ -22,9 +22,6 @@ public class Item
     public Item(int id)
     {   
         parse_items("pics/item_list.txt");
-        System.out.println(item_list);
-        System.out.println(item_effects);
-        System.out.println(item_counter+" "+ item_list.size());
         
         ArrayList<String> cur_item;
         try {
