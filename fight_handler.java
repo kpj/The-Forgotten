@@ -46,6 +46,7 @@ public class fight_handler
     
     boolean show_move_radius = true;
     ArrayList<Place> in_reach = new ArrayList<Place>();
+    boolean can_modify_list = true;
     
     ArrayList<Place> checked;
     ArrayList<Place> unchecked;
@@ -125,7 +126,7 @@ public class fight_handler
                     checked.add(p);
                 }
                 g.drawRect(x, y, place_width, place_height);
-                //g.drawString(""+p.index,x+15,y+15);
+                g.drawString(""+p.index,x+15,y+15);
                 
                 // now characters + equipped items
                 if (p.cur != null) {
@@ -154,8 +155,10 @@ public class fight_handler
         if (show_move_radius) {
             reach_col = Color.green;
         }
-        for (Object o : in_reach) {
-            draw_place(g, (Place)o, 4, reach_col);
+        if (can_modify_list) {
+            for (Object o : in_reach) {
+                draw_place(g, (Place)o, 4, reach_col);
+            }
         }
         
         // draw selector
@@ -191,7 +194,7 @@ public class fight_handler
         if (pos >= field_width) {
             border.add(get_place(pos - field_width));
         }
-        if (pos % field_width != 4) {
+        if (pos % field_width != field_width - 1) {
             border.add(get_place(pos + 1));
         }
         if (pos % field_width != 0) {
@@ -323,19 +326,42 @@ public class fight_handler
                     
                     int max_dist = (int)Math.floor(p.cur.property_current.get(imp_fac).intValue()/2);
 
-                    for (Object ob : field) {
-                        ArrayList l = (ArrayList) ob;
-                        for (Object obj : l) {
-                            Place pl = (Place)obj;
-                            if (max_dist >= get_distance(p, pl)) {
-                                in_reach.add(pl);
+                    ArrayList<Place> working_p = new ArrayList<Place>();
+                    ArrayList<Integer> working_i = new ArrayList<Integer>();
+                    
+                    working_p.add(p);
+                    working_i.add(0);
+                    
+                    can_modify_list = false;
+                    while (working_p.size() > 0) {
+                        Place current_p = working_p.get(0);
+                        int current_i = working_i.get(0);
+                        
+                        for (Object oOo : get_bordering_places(current_p)) {
+                            Place pl = (Place)oOo;
+                            
+                            if (current_i < max_dist && pl.cur == null) {
+                                //System.out.println(current_p.index+": "+pl.index);
+                                working_p.add(pl);
+                                working_i.add(working_i.get(0) + 1);
                             }
                         }
+                        //System.out.println(current_p.index+": "+current_i + "/"+max_dist +"  ("+working_p.size()+")");
+                        
+                        in_reach.add(current_p);
+                        working_p.remove(0);
+                        working_i.remove(0);
                     }
+                    can_modify_list = true;
                     p.checked = false;
                 }
             }
         }
+    }
+    public HashMap<Place, Integer> make_hashmap(Place p, int i) {
+        HashMap<Place, Integer> ret = new HashMap<Place, Integer>();
+        ret.put(p, i);
+        return ret;
     }
     
     public void on_click(String button) {

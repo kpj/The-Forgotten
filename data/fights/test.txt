@@ -1,14 +1,8 @@
 B:Bowman:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart1.png,pics/Character/Gesicht/Braue2.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur2.png:1:
-Item:Bowman:4e:6e:
 K:King:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart1.png,pics/Character/Gesicht/Braue2.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur2.pn:1:
-Item:King:3e:5e:
 S:Soldier:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart1.png,pics/Character/Gesicht/Braue2.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur2.pn:1:
-Item:Soldier:1e:0e:
 M:Mean:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart1.png,pics/Character/Gesicht/Braue2.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur2.pn:1:
-Item:Mean:3e:5e:
 O:Ork:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart2.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur3.pn:2:
-Item:Ork:5e:
-backgroundimg:pics/fight_bg_image.png:
 
 ____________
 _SS___OO____
@@ -22,4 +16,3 @@ _B_S____OO__
 _SS____OO___
 _____OO_____
 __OO________
-____________

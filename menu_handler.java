@@ -33,7 +33,14 @@ public class menu_handler
             g.drawString("No character selected.", x + 5, y + 15);
         }
         else {
-            Char c = content.current_selected.cur;
+            Char c;
+            try {
+                c = content.current_selected.cur;
+            }
+            catch (java.lang.NullPointerException e) {
+                return;
+            }
+
             g.drawString(c.name, x + 5, y + 15);
             
             int upper = 0;
