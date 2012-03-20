@@ -22,6 +22,9 @@ public class Item
     public Item(int id)
     {   
         parse_items("pics/item_list.txt");
+        System.out.println(item_list);
+        System.out.println(item_effects);
+        System.out.println(item_counter+" "+ item_list.size());
         
         ArrayList<String> cur_item;
         try {
@@ -76,7 +79,7 @@ public class Item
     public void parse_line(String l) {
         if (l.charAt(0) == '#')
             return;
-        System.out.println(l);
+        //System.out.println(l);
         String[] line = l.split(":");
         
         ArrayList<String> cur = new ArrayList<String>();
@@ -92,8 +95,5 @@ public class Item
             now.put(line[0], Integer.parseInt(line[1]));
             item_effects.put(item_counter, now);
         }
-        
-        
-        item_list.add(cur);
     }
 }
