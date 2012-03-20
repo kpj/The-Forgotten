@@ -53,6 +53,8 @@ public class Char
             property_std.put("angriffskraft", 2);
             property_std.put("attackenreichweite", 2);
             property_std.put("verteidigungspunkte", 1);
+            property_std.put("attackenmodifikator", 10);
+            property_std.put("verteidigungmodifikator", 10);
         }
         else {
             property_std = prop;

@@ -285,7 +285,12 @@ public class fight_handler
     }
     public boolean attack_char(Place attacker, Place defender) {
         // very simple system
-        int att = attacker.cur.property_current.get("angriffskraft");
+        float high = 1 + (float)attacker.cur.property_current.get("attackenmodifikator")/(float)100;
+        float low = 1 - (float)attacker.cur.property_current.get("attackenmodifikator")/(float)100;
+        if (low < 0) low = 0;
+        float att_mod = ((float)Math.random() * (high - low) + low);
+        
+        int att = (int)Math.round(attacker.cur.property_current.get("angriffskraft") * att_mod);
         int def = defender.cur.property_current.get("verteidigungspunkte");
         
         if (att > def) {
