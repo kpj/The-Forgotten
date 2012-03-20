@@ -18,7 +18,7 @@ public class Image_parser
                 imgs.add(ImageIO.read(new File(s)));
             }
             catch (IOException e) {
-                System.out.println("Error with images: "+e);
+                //System.out.println("Error with images: "+e);
             }
         }
         

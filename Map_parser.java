@@ -149,13 +149,8 @@ public class Map_parser
                         }
                     }
                 }
-                //System.out.println(arg_num);
-                //if (arg_num == 3)
-                    return ret;
-                    
-                //HashMap<String, Float> prop = new HashMap<String, Float>();
-                
-                //return new Char(l.get(1), (float)0, (float)0, "", l.get(2), null, 2, prop);
+
+                return ret;
             }
         }
         return null;

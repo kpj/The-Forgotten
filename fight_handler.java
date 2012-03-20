@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class fight_handler
 {
-    Image bg_image;
+    Image bg_image, non_walkable_image;
     
     content_handler content;
 
@@ -58,6 +58,9 @@ public class fight_handler
         
         
         bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
+        
+        non_walkable_image = Toolkit.getDefaultToolkit().getImage("pics/non_walkable.png");
+        
         field_width = field_w;
         field_height = field_h;
         
@@ -78,7 +81,16 @@ public class fight_handler
         
         // Adding chars
         for (Map.Entry<Integer, Char> o : to_insert.entrySet()) {
-            place_char2(o.getKey(), o.getValue());
+            // Add special fields
+            if (o.getValue() == null) {
+                place_char2(o.getKey(), o.getValue());
+            }
+            else if (o.getValue().name.equals("NON-WALKABLE")) {
+                (get_place(o.getKey())).special = "NON-WALKABLE";
+            }
+            else {
+                place_char2(o.getKey(), o.getValue());
+            }
         }
     }
     
@@ -141,6 +153,9 @@ public class fight_handler
                         
                         g.drawImage(i.equipped_image, x, y, imo);
                     }
+                }
+                else if (p.special.equals("NON-WALKABLE")) {
+                    g.drawImage(non_walkable_image, x, y, imo);
                 }
             }
         }
@@ -340,7 +355,7 @@ public class fight_handler
                         for (Object oOo : get_bordering_places(current_p)) {
                             Place pl = (Place)oOo;
                             
-                            if (current_i < max_dist && pl.cur == null) {
+                            if (current_i < max_dist && pl.cur == null && !pl.special.equals("NON-WALKABLE")) {
                                 //System.out.println(current_p.index+": "+pl.index);
                                 working_p.add(pl);
                                 working_i.add(working_i.get(0) + 1);

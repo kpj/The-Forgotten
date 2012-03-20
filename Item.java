@@ -28,7 +28,7 @@ public class Item
             cur_item = item_list.get(id);
         }
         catch (IndexOutOfBoundsException e) {
-            System.out.println(e);
+            //System.out.println(e);
             return;
         }
         

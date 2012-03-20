@@ -3,16 +3,17 @@ K:King:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character
 S:Soldier:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart1.png,pics/Character/Gesicht/Braue2.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur2.pn:1:
 M:Mean:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart1.png,pics/Character/Gesicht/Braue2.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur2.pn:1:
 O:Ork:pics/Character/Nackt.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart2.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur3.pn:2:
+N:NON-WALKABLE:undef:-1:
 
-____________
-_SS___OO____
-_B_S____OO__
-_B__S____OO_
+____N_______
+_SS__NOO____
+_B_S_N__OO__
+_B__SN___OO_
 _B_M_S___OO_
 __K___S__OO_
 _B_M_S___OO_
-_B__S____OO_
-_B_S____OO__
-_SS____OO___
-_____OO_____
+_B__SN___OO_
+_B_S_N__OO__
+_SS_N__OO___
+NNNN_OO_____
 __OO________
