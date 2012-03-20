@@ -5,7 +5,9 @@
 # Man achte auf den abschließenden ':'
 
 # Zuerst werden bestimmte Zeichen mit einem Character verbunden
-C:Name:Pfad_zum_Bild:Team:
+# Hierbei wird das Endbild aus verschiedenen Einzelbildern zusammengesetzt
+# Es ist kein abschließendes Komma nötig
+C:Name:Pfad_zu_Bild1,Pfad_zu_Bild2,Pfad_zu_Bild3,...:Team:
 
 # Nun kann man diesem Character über das Schlüsselwort 'Item' Gegenstände geben
 # Wird an die Item-ID ein 'e' angehängt, so wird dieses ausgerüstet

@@ -1,12 +1,15 @@
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
 
 public class Char
 {
     String name;
-    String fighti;
-    Image world_image, fight_image;
+    Image world_image;
+    BufferedImage fight_image;
     ImageIcon icon;
     int team;
     float x_pos, y_pos;
@@ -20,7 +23,7 @@ public class Char
     
     boolean did_something_this_round = false;
     
-    public Char(String n, float x, float y, String w_i, String f_i, key_set kset, int t, HashMap<String, Float> prop)
+    public Char(String n, float x, float y, String w_i, ArrayList<String> f_i, key_set kset, int t, HashMap<String, Float> prop)
     {
         name = n;
         
@@ -29,12 +32,10 @@ public class Char
         world_image_height = icon.getIconHeight();
         world_image_width = icon.getIconWidth();
         
-        fight_image = Toolkit.getDefaultToolkit().getImage(f_i);
+        fight_image = (new Image_parser(f_i)).get_img();
         icon = new ImageIcon(fight_image);
         fight_image_height = icon.getIconHeight();
         fight_image_width = icon.getIconWidth();
-        
-        fighti = f_i;
         
         x_pos = x;
         y_pos = y;

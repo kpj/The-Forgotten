@@ -76,7 +76,10 @@ public class god implements Runnable
     
     public void create_character(String name, float x_pos, float y_pos, String world_image_path, String fight_image_path, int team) {
         key_set set = new key_set(name);
-        content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_image_path, set, team, null));
+        ArrayList<String> fight_img = new ArrayList<String>();
+        fight_img.add(fight_image_path);
+        
+        content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_img, set, team, null));
     }
     
     public Item create_item(int id) {
@@ -85,7 +88,6 @@ public class god implements Runnable
     
     public void create_fight(String path2fight) {
         content.add_fight((new Map_parser(path2fight, content)).get_fight());
-        //content.add_fight(new fight_handler("pics/fight_bg_image.png", content));
     }
     public void create_world() {
         content.add_world(new world_handler("pics/world_bg_image.png", content));
