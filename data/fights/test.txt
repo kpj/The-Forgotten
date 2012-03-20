@@ -10,14 +10,16 @@ O:Ork:pics/Character/orc.png:2:
 Item:Ork:5e:
 backgroundimg:pics/fight_bg_image.png:
 
-SS___OO____
-B_S____OO__
-B__S____OO_
-B_M_S___OO_
-_K___S__OO_
-B_M_S___OO_
-B__S____OO_
-B_S____OO__
-SS____OO___
-____OO_____
-_OO________
+____________
+_SS___OO____
+_B_S____OO__
+_B__S____OO_
+_B_M_S___OO_
+__K___S__OO_
+_B_M_S___OO_
+_B__S____OO_
+_B_S____OO__
+_SS____OO___
+_____OO_____
+__OO________
+____________

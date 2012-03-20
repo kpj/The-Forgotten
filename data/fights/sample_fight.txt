@@ -6,6 +6,7 @@
 
 # Zuerst werden bestimmte Zeichen mit einem Character verbunden
 # Hierbei wird das Endbild aus verschiedenen Einzelbildern zusammengesetzt
+# Die Liste kann belienig lang sein
 # Es ist kein abschließendes Komma nötig
 C:Name:Pfad_zu_Bild1,Pfad_zu_Bild2,Pfad_zu_Bild3,...:Team:
 
@@ -19,9 +20,8 @@ backgroundimg:Pfad_zum_Bild:
 
 
 # Nun kann man die Karte erstellen
-# Aus technischen Gründen muss sie quadratisch sein
 # Als freies Feld können alle nicht definierten Zeichen genutzt werden
-C___
-____
-____
-___C
+C____
+_____
+_____
+___C_
