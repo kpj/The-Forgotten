@@ -1,5 +1,5 @@
 output="The-Forgotten.jar"
 
-echo "Main-Class: god" > mainClass
-jar cmf mainClass $output *.class pics data
-rm mainClass
+echo "Main-Class: god" > manifest
+jar cmf manifest $output *.class pics data
+rm manifest

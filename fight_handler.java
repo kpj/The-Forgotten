@@ -369,10 +369,19 @@ public class fight_handler
                                 }
                             }
                             else {
-                                if (current_i < max_dist && (pl.cur == null || pl.cur.team != in_reach.get(0).cur.team) && !pl.special.equals("NON-WALKABLE")) {
-                                    //System.out.println(current_p.index+": "+pl.index);
-                                    working_p.add(pl);
-                                    working_i.add(working_i.get(0) + 1);
+                                if (pl.cur == null) {
+                                    if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
+                                        //System.out.println(current_p.index+": "+pl.index);
+                                        working_p.add(pl);
+                                        working_i.add(working_i.get(0) + 1);
+                                    }
+                                }
+                                else if (pl.cur.team != in_reach.get(0).cur.team || pl.cur.team == in_reach.get(0).cur.team){
+                                    if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
+                                        //System.out.println(current_p.index+": "+pl.index);
+                                        working_p.add(pl);
+                                        working_i.add(working_i.get(0) + 1);
+                                    }
                                 }
                             }
                         }

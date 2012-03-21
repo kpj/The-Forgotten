@@ -15,9 +15,14 @@ public class Image_parser
             String s = (String)o;
             
             try {
-                imgs.add(ImageIO.read(new File(s)));
+                //imgs.add(ImageIO.read(new File(s)));
+                //System.out.println(s);
+                imgs.add(ImageIO.read(this.getClass().getResource("/"+s)));
             }
-            catch (IOException e) {
+            catch (IllegalArgumentException e) {
+                //System.out.println("Error with images: "+e);
+            }
+            catch(IOException e) {
                 //System.out.println("Error with images: "+e);
             }
         }
