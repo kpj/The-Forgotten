@@ -31,8 +31,8 @@ angriffskraft:13:
 #
 Item:Hoelzener Bogen:pics/Items/Waffen/Bogen1.png:undef:
 geschwindigkeit:-3:
-angriffskraft:13:
-attackenreichweite:5:
+angriffskraft:8:
+attackenreichweite:10:
 #
 #5
 #

@@ -44,7 +44,7 @@ public class Char
         
         if (prop == null) {
             // Properties
-            property_std.put("geschwindigkeit", 5);
+            property_std.put("geschwindigkeit", 10);
             property_std.put("lebenspunkte", 10);
             property_std.put("manapunkte", 10);
             property_std.put("ausdauerpunkte", 5);
@@ -119,8 +119,9 @@ public class Char
         return equi;
     }
     
+    @SuppressWarnings("unchecked")
     public void calc_property_max() {
-        property_max = property_std;
+        property_max = (HashMap<String, Integer>)property_std.clone();
         for (Object o : items) {
             Item i = (Item)o;
             
@@ -133,13 +134,13 @@ public class Char
                         
                         if (item_key.equals(char_key)) {
                             property_max.put(item_key, ob.getValue() + obj.getValue());
+                            //System.out.println(name + ": "+item_key +" ->"+(ob.getValue() + obj.getValue()));
                         }
                         
                     }
                 }
             }
         }
-        
         property_current = property_max; // CHANGE, QUICK!!!
     }
 }

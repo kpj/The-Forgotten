@@ -7,8 +7,8 @@ import javax.imageio.*;
 public class Item
 {
     ArrayList<ArrayList<String>> item_list = new ArrayList<ArrayList<String>>();
-    HashMap<Integer, HashMap<String, Integer>> item_effects = new HashMap<Integer, HashMap<String, Integer>>();
-
+    ArrayList<HashMap<String, Integer>> item_effects = new ArrayList<HashMap<String, Integer>>();
+    
     String name;
     HashMap<String, Integer> effect = new HashMap<String, Integer>();
     BufferedImage equipped_image;
@@ -41,10 +41,10 @@ public class Item
         catch (IOException e) {
             //System.out.println("Error with images: "+e);
         }
-        
         effect = item_effects.get(id);
     }
     
+    @SuppressWarnings("unchecked")
     public void parse_items(String path) {
         FileReader fr;
         try {
@@ -65,14 +65,16 @@ public class Item
                 line = bufRead.readLine();
                 counter++;
             }
+            item_effects.add( (HashMap<String, Integer>)now.clone() );
 
             bufRead.close();
         }
-        catch (Exception e) {
-            System.out.println(e);
+        catch (IOException e) {
+            System.out.println("In parse_items: "+e);
         }
     }
     
+    @SuppressWarnings("unchecked")
     public void parse_line(String l) {
         if (l.charAt(0) == '#')
             return;
@@ -81,6 +83,8 @@ public class Item
         
         ArrayList<String> cur = new ArrayList<String>();
         if (line[0].equals("Item")) {
+            if (now.size() != 0)
+                item_effects.add( (HashMap<String, Integer>)now.clone() );
             now.clear();
             item_counter++;
             cur.add(line[1]); // Name
@@ -90,7 +94,6 @@ public class Item
         }
         else {
             now.put(line[0], Integer.parseInt(line[1]));
-            item_effects.put(item_counter, now);
         }
     }
 }

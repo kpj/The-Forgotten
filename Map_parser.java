@@ -30,7 +30,7 @@ public class Map_parser
             fr = new FileReader(path);
 
             BufferedReader bufRead = new BufferedReader(fr);
-
+            
             String line = "";
             int counter = 0;
 
@@ -39,7 +39,7 @@ public class Map_parser
 
             while (line != null) {
                 parse_line(line);
-
+                
                 //System.out.println(counter + ". " + line);
                 line = bufRead.readLine();
                 counter++;
@@ -47,8 +47,8 @@ public class Map_parser
 
             bufRead.close();
         }
-        catch (Exception e) {
-            System.out.println(e);
+        catch (IOException e) {
+            System.out.println("Mapper: "+e);
         }
     }
 
@@ -61,7 +61,7 @@ public class Map_parser
             parsing_map = true;
             return;
         }
-
+        
         if (!parsing_map) {
             // Find extra things
             String[] splitted = l.split(":");
@@ -75,9 +75,11 @@ public class Map_parser
                     ArrayList<Integer> il = new ArrayList<Integer>();
                     ArrayList<Boolean> iel = new ArrayList<Boolean>();
                     for (int i = 2 ; i < splitted.length ; i++) {
-                        String parse_me;
-                        if (splitted[i].length() >= 2) {
-                            parse_me = Character.toString(splitted[i].toCharArray()[0]);
+                        String parse_me = "";
+                        if (splitted[i].charAt(splitted[i].length()-1) == 'e') {
+                            for (int ii = 0 ; ii < splitted[i].length()-1 ; ii++) {
+                                parse_me += Character.toString(splitted[i].charAt(ii));
+                            }
                             iel.add(true);
                         }
                         else {

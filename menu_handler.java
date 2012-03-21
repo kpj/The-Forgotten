@@ -45,7 +45,14 @@ public class menu_handler
             
             int upper = 0;
             for (Map.Entry<String, Integer> ob : c.property_current.entrySet()) {
-                g.drawString(ob.getKey() + " : " + ob.getValue(), x + 100, y + 50 + upper);
+                g.drawString(ob.getKey() + " : " + ob.getValue(), x + 100, y + 40 + upper);
+                upper += 12;
+            }
+            
+            upper = 0;
+            for (Object o : c.items) {
+                Item i = (Item)o;
+                g.drawString(i.name + " " + i.effect + " ("+c.property_std+")", x + 300, y + 40 + upper);
                 upper += 12;
             }
         }
