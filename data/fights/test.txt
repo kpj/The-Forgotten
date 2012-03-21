@@ -4,7 +4,7 @@ S:Soldier:pics/Character/Basis2.png,pics/Character/Gesicht/Augen1.png,pics/Chara
 M:Heavy:pics/Character/Basis2.png,pics/Character/Gesicht/Augen1.png,pics/Character/Gesicht/Bart1.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur3.png:1:
 W:Wild:pics/Character/Basis5.png,pics/Character/Gesicht/Augen2.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur5.png:2:
 N:NON-WALKABLE:undef:-1:
-backgroundimg:Background:
+backgroundimg:pics/Background.png:
 #
 Item:Bowman:4e:6e:15e:
 Item:King:3e:6e:14e:19e:20e:
