@@ -24,6 +24,7 @@ public class content_handler
     
     // Everywhere
     menu_handler menu;
+    notification_handler notification;
     applet_handler window;
     
     ArrayList<Char> characters = new ArrayList<Char>();

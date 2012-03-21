@@ -63,6 +63,7 @@ public class draw_anything extends JComponent
             ((map_handler)content.get_active_environment()).draw_stuff(g, this);
             
         content.menu.draw_stuff(g, this);
+        content.notification.draw_stuff(g, this);
     }
     
     public void help_with_bg(Image bg_img, int ww, int wh, int cx, int cy) {

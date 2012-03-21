@@ -243,7 +243,7 @@ public class fight_handler
     
     public void move_char(Place from, Place to) {
         if (from.cur.did_something_this_round) {
-            System.out.println("This character can only act in the next round.");
+            content.notification.add_noti("This character can only act in the next round.");
             return;
         }
         from.cur.did_something_this_round = true;
@@ -297,14 +297,14 @@ public class fight_handler
             defender.cur.deal_damage(att - def);
         }
         
-        System.out.println(attacker.cur.name + " dealt " + (att-def) + " damage to " + defender.cur.name);
-        System.out.println(defender.cur.name + " has now " + defender.cur.property_current.get("lebenspunkte") + " life points");
+        content.notification.add_noti(attacker.cur.name + " dealt " + (att-def) + " damage to " + defender.cur.name);
+        content.notification.add_noti(defender.cur.name + " has now " + defender.cur.property_current.get("lebenspunkte") + " life points");
         if (defender.cur.property_current.get("lebenspunkte") <= 0)
             return true;
         return false;
     }
     public void next_round() {
-        System.out.println("Let the next round begin!");
+        content.notification.add_noti("Let the next round begin!");
         for (Object o : field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {

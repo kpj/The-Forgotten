@@ -11,6 +11,7 @@ public class god implements Runnable
     public god()
     {
         content.menu = new menu_handler(content);
+        content.notification = new notification_handler(content);
         content.window = new applet_handler(content);
         new Thread(this).start();
         
