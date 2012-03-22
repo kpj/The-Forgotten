@@ -44,7 +44,7 @@ public class Char
         
         if (prop == null) {
             // Properties
-            property_std.put("geschwindigkeit", 10);
+            property_std.put("geschwindigkeit", 5);
             property_std.put("lebenspunkte", 10);
             property_std.put("manapunkte", 10);
             property_std.put("ausdauerpunkte", 5);
@@ -93,9 +93,7 @@ public class Char
     public void deal_damage(int val) {
         property_current.put("lebenspunkte", property_current.get("lebenspunkte") - val);
     }
-    
-    // Erzeugt benötigte Item-Listen-Struktur: [Item. boolean], [Item, boolean], ...
-    // Item: jeweiliges Item-Objekt, boolean: Ausgerüstet oder nicht
+
     @SuppressWarnings("unchecked")
     public void collect_item(Item it) {
         items.add(it);
@@ -124,23 +122,21 @@ public class Char
         property_max = (HashMap<String, Integer>)property_std.clone();
         for (Object o : items) {
             Item i = (Item)o;
-            
             if (i.is_in_use) {
                 for (Map.Entry<String, Integer> ob : i.effect.entrySet()) {
-                    for (Map.Entry<String, Integer> obj : property_std.entrySet()) {
-                        
+                    for (Map.Entry<String, Integer> obj : property_max.entrySet()) {
                         String item_key = ob.getKey();
                         String char_key = obj.getKey();
                         
                         if (item_key.equals(char_key)) {
                             property_max.put(item_key, ob.getValue() + obj.getValue());
-                            //System.out.println(name + ": "+item_key +" ->"+(ob.getValue() + obj.getValue()));
+                            break;
                         }
                         
                     }
                 }
             }
         }
-        property_current = property_max; // CHANGE, QUICK!!!
+        property_current = (HashMap<String, Integer>)property_max.clone(); // CHANGE, QUICK!!!
     }
 }

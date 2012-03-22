@@ -45,8 +45,8 @@ public class fight_handler
     boolean multiple_units_selected = false;
     
     boolean show_move_radius = true;
-    ArrayList<Place> in_reach = new ArrayList<Place>();
-    boolean can_modify_list = true;
+    boolean can_modify = true;
+    java.util.List<Place> in_reach = Collections.synchronizedList(new ArrayList<Place>());
     
     ArrayList<Place> checked;
     ArrayList<Place> unchecked;
@@ -170,7 +170,7 @@ public class fight_handler
         if (show_move_radius) {
             reach_col = Color.green;
         }
-        if (can_modify_list) {
+        if (can_modify) {
             for (Object o : in_reach) {
                 draw_place(g, (Place)o, 4, reach_col);
             }
@@ -337,7 +337,8 @@ public class fight_handler
                         multiple_units_selected = true;
                         return;
                     }
-                    in_reach = new ArrayList<Place>();
+                    can_modify = false;
+                    in_reach = Collections.synchronizedList(new ArrayList<Place>());
                     in_reach.add(p); // to know, who is in the center
                     
                     String imp_fac = "attackenreichweite";
@@ -345,7 +346,7 @@ public class fight_handler
                         imp_fac = "geschwindigkeit";
                     }
                     
-                    int max_dist = (int)Math.floor(p.cur.property_current.get(imp_fac).intValue()/2);
+                    int max_dist = (int)Math.floor(p.cur.property_current.get(imp_fac).intValue());
 
                     ArrayList<Place> working_p = new ArrayList<Place>();
                     ArrayList<Integer> working_i = new ArrayList<Integer>();
@@ -353,7 +354,7 @@ public class fight_handler
                     working_p.add(p);
                     working_i.add(0);
                     
-                    can_modify_list = false;
+                    can_modify = false;
                     while (working_p.size() > 0) {
                         Place current_p = working_p.get(0);
                         int current_i = working_i.get(0);
@@ -376,7 +377,7 @@ public class fight_handler
                                         working_i.add(working_i.get(0) + 1);
                                     }
                                 }
-                                else if (pl.cur.team != in_reach.get(0).cur.team || pl.cur.team == in_reach.get(0).cur.team){
+                                else if (!in_reach.isEmpty() && (pl.cur.team != in_reach.get(0).cur.team || pl.cur.team == in_reach.get(0).cur.team)) {
                                     if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
                                         //System.out.println(current_p.index+": "+pl.index);
                                         working_p.add(pl);
@@ -391,7 +392,7 @@ public class fight_handler
                         working_p.remove(0);
                         working_i.remove(0);
                     }
-                    can_modify_list = true;
+                    can_modify = true;
                     p.checked = false;
                 }
             }
