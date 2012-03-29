@@ -132,3 +132,7 @@ verteidigungspunkte:2:
 Item:Gute Eisenstiefel:pics/Kleidung/Ruestung/Schuhe2.png:undef:
 geschwindigkeit:-1:
 verteidigungspunkte:4:
+#
+#22
+#
+Item:Roter Umhang:pics/Character/Kleidung/Kleidung/Umhang1.png,:undef:
