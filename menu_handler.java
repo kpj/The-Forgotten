@@ -52,7 +52,7 @@ public class menu_handler
             upper = 0;
             for (Object o : c.items) {
                 Item i = (Item)o;
-                g.drawString(i.name + " " + i.effect, x + 300, y + 40 + upper);
+                g.drawString(i.name + " (" + ((i.is_in_use)?"Equipped":"Not equipped") + ")", x + 300, y + 40 + upper);
                 upper += 12;
             }
         }

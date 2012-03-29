@@ -26,7 +26,7 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         keyer = new key_handler(content);
         
         f = new JFrame("The Forgotten");
-        f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(content.window_width, content.window_height);
         f.add(drawer);
         f.setVisible(true);
