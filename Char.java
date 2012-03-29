@@ -45,17 +45,17 @@ public class Char
         
         if (prop == null) {
             // Properties
-            property_std.put("geschwindigkeit", 5);
-            property_std.put("lebenspunkte", 10);
-            property_std.put("manapunkte", 10);
-            property_std.put("ausdauerpunkte", 5);
-            property_std.put("initiative", 8);
-            property_std.put("magieresistenz", 9);
-            property_std.put("angriffskraft", 2);
-            property_std.put("attackenreichweite", 2);
-            property_std.put("verteidigungspunkte", 1);
-            property_std.put("attackenmodifikator", 10);
-            property_std.put("verteidigungmodifikator", 10);
+            property_std.put("geschwindigkeit", 500);
+            property_std.put("lebenspunkte", 1000);
+            property_std.put("manapunkte", 1000);
+            property_std.put("ausdauerpunkte", 500);
+            property_std.put("initiative", 800);
+            property_std.put("magieresistenz", 900);
+            property_std.put("angriffskraft", 200);
+            property_std.put("attackenreichweite", 200);
+            property_std.put("verteidigungspunkte", 100);
+            property_std.put("attackenmodifikator", 1000);
+            property_std.put("verteidigungmodifikator", 1000);
         }
         else {
             property_std = new HashMap<String, Integer>(prop);

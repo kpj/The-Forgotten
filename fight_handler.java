@@ -349,7 +349,7 @@ public class fight_handler
                         imp_fac = "geschwindigkeit";
                     }
                     
-                    int max_dist = (int)Math.floor(p.cur.property_current.get(imp_fac).intValue());
+                    int max_dist = (int)Math.floor((p.cur.property_current.get(imp_fac)/100));
 
                     ArrayList<Place> working_p = new ArrayList<Place>();
                     ArrayList<Integer> working_i = new ArrayList<Integer>();
