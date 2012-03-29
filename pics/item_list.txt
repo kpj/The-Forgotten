@@ -130,7 +130,7 @@ verteidigungspunkte:2:
 #21
 #
 Item:Gute Eisenstiefel:pics/Kleidung/Ruestung/Schuhe2.png:undef:
-geschwindigkeit:-1:
+geschwindigkeit:-10:
 verteidigungspunkte:4:
 #
 #22
