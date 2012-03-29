@@ -23,6 +23,7 @@ public class Char
     
     boolean did_something_this_round = false;
     
+    @SuppressWarnings("unchecked")
     public Char(String n, float x, float y, String w_i, ArrayList<String> f_i, key_set kset, int t, HashMap<String, Integer> prop)
     {
         name = n;
@@ -60,6 +61,8 @@ public class Char
             property_std = prop;
         }
         calc_property_max();
+        property_current = (HashMap<String, Integer>)property_max.clone();
+        //System.out.println(property_max);
     }
     
     public Image get_image() {
@@ -118,8 +121,9 @@ public class Char
     }
     
     @SuppressWarnings("unchecked")
-    public void calc_property_max() {
-        property_max = (HashMap<String, Integer>)property_std.clone();
+    public synchronized void calc_property_max() {
+        property_max = new HashMap<String, Integer>(property_std);
+        //System.out.println(name);
         for (Object o : items) {
             Item i = (Item)o;
             if (i.is_in_use) {
@@ -129,7 +133,9 @@ public class Char
                         String char_key = obj.getKey();
                         
                         if (item_key.equals(char_key)) {
+                            //System.out.println(">"+obj.getKey()+"\n>>"+obj.getValue());
                             property_max.put(item_key, ob.getValue() + obj.getValue());
+                            //System.out.println(">>v\n>>"+obj.getValue());
                             break;
                         }
                         
@@ -137,6 +143,6 @@ public class Char
                 }
             }
         }
-        property_current = (HashMap<String, Integer>)property_max.clone(); // CHANGE, QUICK!!!
+        //System.out.println(property_max);
     }
 }

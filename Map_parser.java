@@ -23,13 +23,11 @@ public class Map_parser
     public Map_parser(String p, content_handler con) {
         content = con;
         path = p;
+        InputStream file_stream = getClass().getResourceAsStream(path);
         FileReader fr = null;
 
-        //System.out.println("Loading: "+path);
         try {
-            fr = new FileReader(path);
-
-            BufferedReader bufRead = new BufferedReader(fr);
+            BufferedReader bufRead = new BufferedReader(new InputStreamReader(file_stream));
             
             String line = "";
             int counter = 0;

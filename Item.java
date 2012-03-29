@@ -33,14 +33,14 @@ public class Item
         }
         
         name = cur_item.get(0);
-        
-        try {
-            equipped_image = ImageIO.read(new File(cur_item.get(1)));
-            entity_image = ImageIO.read(new File(cur_item.get(2)));;
-        }
-        catch (IOException e) {
-            //System.out.println("Error with images: "+e);
-        }
+
+        ArrayList<String> tmp = new ArrayList<String>();
+        tmp.add(cur_item.get(1));
+        equipped_image = (new Image_parser(tmp)).get_img();
+        tmp.clear();
+        tmp.add(cur_item.get(2));
+        entity_image = (new Image_parser(tmp)).get_img();
+            
         effect = item_effects.get(id);
     }
     
@@ -48,9 +48,9 @@ public class Item
     public void parse_items(String path) {
         FileReader fr;
         try {
-            fr = new FileReader(path);
+            InputStream file_stream = getClass().getResourceAsStream(path);
 
-            BufferedReader bufRead = new BufferedReader(fr);
+            BufferedReader bufRead = new BufferedReader(new InputStreamReader(file_stream));
 
             String line = "";
             int counter = 0;

@@ -6,6 +6,8 @@ import javax.imageio.*;
 
 public class Image_parser
 {
+    // Always scales to size of first image given
+
     BufferedImage output;
     ArrayList<BufferedImage> imgs = new ArrayList<BufferedImage>();
 
@@ -15,8 +17,6 @@ public class Image_parser
             String s = (String)o;
             
             try {
-                //imgs.add(ImageIO.read(new File(s)));
-                //System.out.println(s);
                 imgs.add(ImageIO.read(this.getClass().getResource("/"+s)));
             }
             catch (IllegalArgumentException e) {
@@ -33,6 +33,10 @@ public class Image_parser
     public void merge_imgs() {
         int w = 100;
         int h = 100;
+        if (!imgs.isEmpty()) {
+            w = imgs.get(0).getWidth();
+            h = imgs.get(0).getHeight();
+        }
         
         output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         

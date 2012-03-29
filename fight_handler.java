@@ -1,10 +1,11 @@
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
+import java.awt.image.*;
 
 public class fight_handler
 {
-    Image bg_image, non_walkable_image;
+    BufferedImage bg_image, non_walkable_image;
     
     content_handler content;
 
@@ -56,10 +57,12 @@ public class fight_handler
     {
         content = con;
         
-        
-        bg_image = Toolkit.getDefaultToolkit().getImage(bg_img);
-        
-        non_walkable_image = Toolkit.getDefaultToolkit().getImage("pics/non_walkable.png");
+        ArrayList<String> tmp = new ArrayList<String>();
+        tmp.add(bg_img);
+        bg_image = (new Image_parser(tmp)).get_img();
+        tmp.clear();
+        tmp.add("pics/non_walkable.png");
+        non_walkable_image = (new Image_parser(tmp)).get_img();
         
         field_width = field_w;
         field_height = field_h;
