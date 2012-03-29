@@ -79,8 +79,10 @@ public class god implements Runnable
         key_set set = new key_set(name);
         ArrayList<String> fight_img = new ArrayList<String>();
         fight_img.add(fight_image_path);
+        ArrayList<String> world_img = new ArrayList<String>();
+        world_img.add(world_image_path);
         
-        content.add_character(new Char (name, x_pos, y_pos, world_image_path, fight_img, set, team, null));
+        content.add_character(new Char (name, x_pos, y_pos, world_img, fight_img, set, team, null));
     }
     
     public Item create_item(int id) {

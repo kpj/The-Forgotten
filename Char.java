@@ -24,11 +24,11 @@ public class Char
     boolean did_something_this_round = false;
     
     @SuppressWarnings("unchecked")
-    public Char(String n, float x, float y, String w_i, ArrayList<String> f_i, key_set kset, int t, HashMap<String, Integer> prop)
+    public Char(String n, float x, float y, ArrayList<String> w_i, ArrayList<String> f_i, key_set kset, int t, HashMap<String, Integer> prop)
     {
         name = n;
         
-        world_image = Toolkit.getDefaultToolkit().getImage(w_i);
+        world_image = (new Image_parser(w_i)).get_img();
         icon = new ImageIcon(world_image);
         world_image_height = icon.getIconHeight();
         world_image_width = icon.getIconWidth();
@@ -58,11 +58,10 @@ public class Char
             property_std.put("verteidigungmodifikator", 10);
         }
         else {
-            property_std = prop;
+            property_std = new HashMap<String, Integer>(prop);
         }
         calc_property_max();
-        property_current = (HashMap<String, Integer>)property_max.clone();
-        //System.out.println(property_max);
+        property_current = new HashMap<String, Integer>(property_max);
     }
     
     public Image get_image() {
@@ -104,10 +103,12 @@ public class Char
     public void equip_item(int pos) {
         items.get(pos).is_in_use = true;
         calc_property_max();
+        property_current = new HashMap<String, Integer>(property_max); //CHANGE FAST
     }
     public void unequip_item(int pos) {
         items.get(pos).is_in_use = false;
         calc_property_max();
+        property_current = new HashMap<String, Integer>(property_max); //CHANGE FAST
     }
     
     public ArrayList get_equipped_items() {
@@ -121,9 +122,9 @@ public class Char
     }
     
     @SuppressWarnings("unchecked")
-    public synchronized void calc_property_max() {
+    public void calc_property_max() {
         property_max = new HashMap<String, Integer>(property_std);
-        //System.out.println(name);
+        //System.out.println("------\n"+name+"\n------");
         for (Object o : items) {
             Item i = (Item)o;
             if (i.is_in_use) {
@@ -133,7 +134,7 @@ public class Char
                         String char_key = obj.getKey();
                         
                         if (item_key.equals(char_key)) {
-                            //System.out.println(">"+obj.getKey()+"\n>>"+obj.getValue());
+                            //System.out.println(">"+obj.getKey()+" ("+i.name+")\n>>"+obj.getValue());
                             property_max.put(item_key, ob.getValue() + obj.getValue());
                             //System.out.println(">>v\n>>"+obj.getValue());
                             break;
@@ -143,6 +144,5 @@ public class Char
                 }
             }
         }
-        //System.out.println(property_max);
     }
 }
