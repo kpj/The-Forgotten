@@ -18,8 +18,6 @@ public class god implements Runnable
         content.notification = new notification_handler(content);
         content.window = new applet_handler(content);
         new Thread(this).start();
-        
-        create_fight("data/fights/test.txt", true);
     }
     
     public static void main (String[] args)
@@ -29,6 +27,7 @@ public class god implements Runnable
         if (args.length == 0) {
             System.out.println("Starting game");
             god good = new god(); 
+            create_fight("data/fights/test.txt", true);
         }
         else if (args[0].equals("--server")) {
             System.out.println("Starting server");
@@ -108,7 +107,7 @@ public class god implements Runnable
         return new Item(id);
     }
     
-    public void create_fight(String path2fight, boolean online) {
+    public static void create_fight(String path2fight, boolean online) {
         content.add_fight((new Map_parser(path2fight, content, online)).get_fight());
     }
     public void create_world() {

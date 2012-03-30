@@ -65,7 +65,7 @@ public class Client extends Thread
             
             int read_bytes = in.read(ba, cur_size, Math.min(read_size, size-cur_size));
             if (read_bytes == -1) {
-                System.out.println("No data received");
+                //System.out.println("No data received");
                 return null;
             }
             //System.out.println("Added "+read_bytes+" to "+cur_size+" bytes into "+ba.length);

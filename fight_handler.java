@@ -341,7 +341,7 @@ public class fight_handler
             while(field == null) {
                 field = client.recv_arraylist();
             }
-            System.out.println("Loaded new field ("+field.size()+")");
+            content.notification.add_noti("Loaded new field ("+field.size()+")");
             loading_field = false;
         }
         
