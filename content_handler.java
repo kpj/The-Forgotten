@@ -32,8 +32,6 @@ public class content_handler
     int window_width = 1024;
     int window_height = 768;
     int mouse_x, mouse_y;
-    
-    ArrayList<BufferedImage> imager = new ArrayList<BufferedImage>();
 
     // online stuff
     ArrayList<Client> connected = new ArrayList<Client>();

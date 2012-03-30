@@ -27,7 +27,7 @@ public class world_handler
         }
     
         for (Char current : content.characters) {
-            g.drawImage(current.get_image(), (int)current.x_pos, (int)current.y_pos, imo);
+            g.drawImage(current.get_image().getImage(), (int)current.x_pos, (int)current.y_pos, imo);
         }
     }
     

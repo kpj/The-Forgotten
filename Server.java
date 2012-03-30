@@ -31,7 +31,8 @@ public class Server
         }
         catch (IOException e) {
             System.out.println("error: "+e);
-            //e.printStackTrace();
+            e.printStackTrace();
+            System.exit(-1);
         }
         
     }

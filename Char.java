@@ -8,8 +8,8 @@ import javax.imageio.*;
 public class Char implements Serializable
 {
     String name;
-    Image world_image;
-    BufferedImage fight_image;
+    ImageIcon world_image;
+    ImageIcon fight_image;
     ImageIcon icon;
     int team;
     float x_pos, y_pos;
@@ -28,15 +28,13 @@ public class Char implements Serializable
     {
         name = n;
         
-        world_image = (new Image_parser(w_i)).get_img();
-        icon = new ImageIcon(world_image);
-        world_image_height = icon.getIconHeight();
-        world_image_width = icon.getIconWidth();
+        world_image = new ImageIcon((new Image_parser(w_i)).get_img());
+        world_image_height = world_image.getIconHeight();
+        world_image_width = world_image.getIconWidth();
         
-        fight_image = (new Image_parser(f_i)).get_img();
-        icon = new ImageIcon(fight_image);
-        fight_image_height = icon.getIconHeight();
-        fight_image_width = icon.getIconWidth();
+        fight_image = new ImageIcon((new Image_parser(f_i)).get_img());
+        fight_image_height = fight_image.getIconHeight();
+        fight_image_width = fight_image.getIconWidth();
         
         x_pos = x;
         y_pos = y;
@@ -64,7 +62,7 @@ public class Char implements Serializable
         property_current = new HashMap<String, Integer>(property_max);
     }
     
-    public Image get_image() {
+    public ImageIcon get_image() {
         return world_image;
     }
     

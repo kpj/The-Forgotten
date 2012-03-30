@@ -24,80 +24,65 @@ public class Client extends Thread
     public void run() {
         ArrayList<ArrayList> l = new ArrayList<ArrayList>();
         while (true) {
-            System.out.println("["+name+"] Waiting for input");
             ArrayList<ArrayList> cur = recv_arraylist();
+
+            if (cur == null) {
+                continue;
+            }
             
-            System.out.println("["+name+"] Got "+cur);
+            System.out.println("Received valid data ("+cur.size()+")");
+            
             for (Object o : content.connected) {
                 Client c = (Client)o;
                 //if (c == this)
                 //    break;
-                    
-                try {
-                    ObjectOutputStream out = new ObjectOutputStream(c.client.getOutputStream());
-                    out.writeObject(cur);
-                    /*System.out.println("["+name+"] Sending to "+c.name);
-                    PrintStream os = new PrintStream(c.client.getOutputStream());
-                    os.println(cur);*/
-                }
-                catch (IOException e) {
-                    System.out.println("error: "+e);
-                    //e.printStackTrace();
-                }
+                c.send_arraylist(cur);
             }
         }
-    }
-    
-    public void process_input(ArrayList<ArrayList> inp) {
-        System.out.println(inp);
     }
     
     public void send_arraylist(ArrayList<ArrayList> list) {
         try {
             OutputStream out = client.getOutputStream();
-            byte[] ba = serialize(list);
-            System.out.println(ba);
-            out.write(ba);
+            byte[] bal = serialize(list);
+            System.out.println("Sending "+bal.length+" bytes");
+            out.write(bal);
         }
         catch (IOException e) {
             System.out.println("error: "+e);
             e.printStackTrace();
         }
     }
-    public void send_string(String data) {
-        try {
-            PrintStream os = new PrintStream(client.getOutputStream());
-            os.println(data);
-        }
-        catch (IOException e) {
-            System.out.println("error: "+e);
-            //e.printStackTrace();
-        }
-    }
-    public String recv_string() {
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            return in.readLine();
-        }
-        catch (IOException e) {
-            System.out.println("error: "+e);
-            //e.printStackTrace();
-            return "";
-        }
-    }
+    
+    int size = 11533830;
+    int cur_size = 0;
+    int read_size = 65536;
+    byte[] ba = new byte[size];
     @SuppressWarnings("unchecked")
     public ArrayList<ArrayList> recv_arraylist() {
         try {
             InputStream in = client.getInputStream();
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bos.write(in.read());
-            byte[] ba = bos.toByteArray();
-            ArrayList<ArrayList> al = (ArrayList<ArrayList>)deserialize(ba);
-            return al;
+            
+            int read_bytes = in.read(ba, cur_size, Math.min(read_size, size-cur_size));
+            if (read_bytes == -1) {
+                System.out.println("No data received");
+                return null;
+            }
+            //System.out.println("Added "+read_bytes+" to "+cur_size+" bytes into "+ba.length);
+            
+            cur_size += read_bytes;
+            if (cur_size == size) {
+                cur_size = 0;
+                ArrayList<ArrayList> al = (ArrayList<ArrayList>)deserialize(ba);
+                return al;
+            }
+            else {
+                return null;
+            }
         }
         catch (IOException e) {
             System.out.println("error: "+e);
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
@@ -110,8 +95,8 @@ public class Client extends Thread
             return out.toByteArray();
         }
         catch (IOException e) {
-            System.out.println("error: "+e);
-            //e.printStackTrace();
+            System.out.println("[S] error: "+e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -122,13 +107,13 @@ public class Client extends Thread
             return is.readObject();
         }
         catch (IOException e) {
-            System.out.println("error: "+e);
-            //e.printStackTrace();
+            System.out.println("[DES] error: "+e);
+            e.printStackTrace();
             return null;
         }
         catch (ClassNotFoundException e) {
             System.out.println("error: "+e);
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }

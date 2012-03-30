@@ -17,6 +17,7 @@ public class fight_handler
     Client client;
     String ip = "localhost";
     int port = 4223;
+    boolean loading_field = false;
     
     boolean is_over = false;
     
@@ -147,39 +148,41 @@ public class fight_handler
         unchecked = new ArrayList<Place>();
         
         // draw boxes + characters
-        for (Object o : field) {
-            ArrayList l = (ArrayList) o;
-            for (Object ob : l) {
-                Place p = (Place) ob;
+        if (!loading_field) {
+            for (Object o : field) {
+                ArrayList l = (ArrayList) o;
+                for (Object ob : l) {
+                    Place p = (Place) ob;
                 
-                int x = calc_offset(p.index).get(0);
-                int y = calc_offset(p.index).get(1);
-                
-                //System.out.println(p.index + " at: " + x + " | " + y);
-                g.setStroke(new BasicStroke(4));
-                g.setColor(Color.black);
-                if (p.checked) {
-                    checked.add(p);
-                }
-                g.drawRect(x, y, place_width, place_height);
-                //g.drawString(""+p.index,x+15,y+15);
-                
-                // now characters + equipped items
-                if (p.cur != null) {
-                    g.drawImage(p.cur.fight_image, x, y, imo);
-                
-                    if (p.cur.did_something_this_round) {
-                        g.drawString("NO MOVES LEFT",x ,y+10);
-                    }
+                    int x = calc_offset(p.index).get(0);
+                    int y = calc_offset(p.index).get(1);
                     
-                    for (Object obj : p.cur.get_equipped_items()) {
-                        Item i = (Item)obj;
-                        
-                        g.drawImage(i.equipped_image, x, y, imo);
+                    //System.out.println(p.index + " at: " + x + " | " + y);
+                    g.setStroke(new BasicStroke(4));
+                    g.setColor(Color.black);
+                    if (p.checked) {
+                        checked.add(p);
                     }
-                }
-                else if (p.special.equals("NON-WALKABLE")) {
-                    g.drawImage(non_walkable_image, x, y, imo);
+                    g.drawRect(x, y, place_width, place_height);
+                    //g.drawString(""+p.index,x+15,y+15);
+                    
+                    // now characters + equipped items
+                    if (p.cur != null) {
+                        g.drawImage(p.cur.fight_image.getImage(), x, y, imo);
+                    
+                        if (p.cur.did_something_this_round) {
+                            g.drawString("NO MOVES LEFT",x ,y+10);
+                        }
+                        
+                        for (Object obj : p.cur.get_equipped_items()) {
+                            Item i = (Item)obj;
+                            
+                            g.drawImage(i.equipped_image.getImage(), x, y, imo);
+                        }
+                    }
+                    else if (p.special.equals("NON-WALKABLE")) {
+                        g.drawImage(non_walkable_image, x, y, imo);
+                    }
                 }
             }
         }
@@ -333,6 +336,13 @@ public class fight_handler
         if (online) {
             // Do online stuff
             client.send_arraylist(field);
+            loading_field = true;
+            field = null;
+            while(field == null) {
+                field = client.recv_arraylist();
+            }
+            System.out.println("Loaded new field ("+field.size()+")");
+            loading_field = false;
         }
         
         for (Object o : field) {
@@ -435,7 +445,7 @@ public class fight_handler
     }
     
     public void do_online_stuff() {
-        //client.send_string("alive");
+        
     }
     
     public void on_click(String button) {

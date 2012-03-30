@@ -2,17 +2,17 @@ import java.awt.*;
 import java.util.*;
 import java.awt.image.*;
 import java.io.*;
-import javax.imageio.*;
+import javax.swing.*;
 
-public class Item
+public class Item implements Serializable
 {
     ArrayList<ArrayList<String>> item_list = new ArrayList<ArrayList<String>>();
     ArrayList<HashMap<String, Integer>> item_effects = new ArrayList<HashMap<String, Integer>>();
     
     String name;
     HashMap<String, Integer> effect = new HashMap<String, Integer>();
-    BufferedImage equipped_image;
-    BufferedImage entity_image;
+    ImageIcon equipped_image;
+    ImageIcon entity_image;
     
     boolean is_in_use = false;
     
@@ -36,10 +36,10 @@ public class Item
 
         ArrayList<String> tmp = new ArrayList<String>();
         tmp.add(cur_item.get(1));
-        equipped_image = (new Image_parser(tmp)).get_img();
+        equipped_image = new ImageIcon((new Image_parser(tmp)).get_img());
         tmp.clear();
         tmp.add(cur_item.get(2));
-        entity_image = (new Image_parser(tmp)).get_img();
+        entity_image = new ImageIcon((new Image_parser(tmp)).get_img());
             
         effect = item_effects.get(id);
     }
