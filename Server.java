@@ -15,7 +15,7 @@ public class Server
     public Server(int p, content_handler con)
     {
         content = con;
-        port = p;
+        //port = p;
         
         try {
             server = new ServerSocket(port);
