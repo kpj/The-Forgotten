@@ -25,17 +25,40 @@ public class god implements Runnable
         content = new content_handler();
         
         if (args.length == 0) {
-            System.out.println("Starting game");
-            god good = new god(); 
-            create_fight("data/fights/test.txt", true);
+            usage();
         }
-        else if (args[0].equals("--server")) {
-            System.out.println("Starting server");
-            Server serv = new Server(content);
+        else if(args.length == 1) {
+            if (args[0].equals("true") || args[0].equals("false")) {
+                boolean mode = Boolean.parseBoolean(args[0]);
+                System.out.println("Starting game ("+((mode)?"online":"offline")+")");
+                god good = new god(); 
+                create_fight("data/fights/test.txt", mode);
+            }
+            else {
+                usage();
+            }
+        }
+        else if (args.length == 2) {
+            if (args[0].equals("--server")) {
+                System.out.println("Starting server");
+                Server serv = new Server(Integer.parseInt(args[1]), content);
+            }
+            else {
+                usage();
+            }
         }
         else {
-            System.out.println("Unkown option");
+            usage();
         }
+    }
+    
+    public static void usage() {
+        System.out.println("OPTIONS: ");
+        System.out.println("To play:");
+        System.out.println("true (online)");
+        System.out.println("false (offline)");
+        System.out.println("To host server:");
+        System.out.println("--server <port>");
     }
     
     public void run() {

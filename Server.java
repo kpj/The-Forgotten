@@ -12,9 +12,10 @@ public class Server
     
     boolean listening = true;
     
-    public Server(content_handler con)
+    public Server(int p, content_handler con)
     {
         content = con;
+        port = p;
         
         try {
             server = new ServerSocket(port);
@@ -32,7 +33,6 @@ public class Server
         catch (IOException e) {
             System.out.println("error: "+e);
             e.printStackTrace();
-            System.exit(-1);
         }
         
     }
