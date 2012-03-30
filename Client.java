@@ -12,6 +12,9 @@ public class Client extends Thread
     
     boolean disconnected = false;
     
+    ArrayList<ArrayList> cur = null;
+    ArrayList<ArrayList> old = null;
+    
     public Client(Socket socket, content_handler con) {
         super("Client");
         
@@ -19,26 +22,37 @@ public class Client extends Thread
 
         client = socket;
         name = socket.getInetAddress().getHostAddress();
+        
+        Field_getter fg = new Field_getter(this, content);
+        fg.start();
     }
-    
+    @SuppressWarnings("unchecked")
     public void run() {
-        ArrayList<ArrayList> l = new ArrayList<ArrayList>();
+        ArrayList<ArrayList> tmp = new ArrayList<ArrayList>();
         while (true) {
-            ArrayList<ArrayList> cur = recv_arraylist();
-
-            if (cur == null) {
-                continue;
-            }
+            tmp = recv_arraylist();
             
-            System.out.println("Received valid data ("+cur.size()+")");
-            
-            for (Object o : content.connected) {
-                Client c = (Client)o;
-                //if (c == this)
-                //    break;
-                c.send_arraylist(cur);
+            if (tmp != null) {
+                cur = (ArrayList<ArrayList>)tmp.clone();
+                tmp = null;
             }
         }
+    }
+    @SuppressWarnings("unchecked")
+    public synchronized void send_field() {
+        if (cur == null || cur == old) {
+            return;
+        }
+        
+        System.out.println("Received valid data ("+cur.size()+")");
+        
+        for (Object o : content.connected) {
+            Client c = (Client)o;
+            //if (c == this)
+            //    break;
+            c.send_arraylist(cur);
+        }
+        old = (ArrayList<ArrayList>)cur.clone();
     }
     
     public void send_arraylist(ArrayList<ArrayList> list) {
@@ -115,6 +129,23 @@ public class Client extends Thread
             System.out.println("error: "+e);
             e.printStackTrace();
             return null;
+        }
+    }
+    
+    
+    
+    public class Field_getter extends Thread {
+        content_handler content;
+        Client parent;
+        public Field_getter(Client par, content_handler con) {
+            content = con;
+            parent = par;
+        }
+        
+        public void run() {
+            while (true) {
+                parent.send_field();
+            }
         }
     }
 }

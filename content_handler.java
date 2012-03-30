@@ -14,6 +14,7 @@ public class content_handler
     map_handler map; public boolean map_active = false;
 
     // In fight
+    ArrayList<ArrayList> field;
     Place current_selected = null;
     
     // In world

@@ -10,8 +10,6 @@ public class fight_handler
     BufferedImage bg_image, non_walkable_image;
     
     content_handler content;
-
-    ArrayList<ArrayList> field;
     
     boolean online;
     Client client;
@@ -75,16 +73,16 @@ public class fight_handler
         field_height = field_h;
         
         // Create fighting place
-        field = new ArrayList<ArrayList>();
+        content.field = new ArrayList<ArrayList>();
         //System.out.println(field_width+"x"+field_height);
         
         for (int i = 0; i < field_width ; i++) {
-            field.add(new ArrayList<Place>());
+            content.field.add(new ArrayList<Place>());
         }
         int ind = 0;
-        for (int i = 0 ; i < field.size() ; i++) {
+        for (int i = 0 ; i < content.field.size() ; i++) {
             for (int o = 0 ; o < field_height ; o++) {
-                field.get(i).add(new Place(null, ind));
+                content.field.get(i).add(new Place(null, ind));
                 ind++;
             }
         }
@@ -114,6 +112,9 @@ public class fight_handler
                 System.exit(-1);
             }
             System.out.println("Connected to \""+content.ip+":"+content.port+"\"");
+            
+            Field_getter fg = new Field_getter(this, content);
+            fg.start();
         }
     }
     
@@ -124,7 +125,7 @@ public class fight_handler
         if (c == null) {
             return;
         }
-        for (Object o : field) {
+        for (Object o : content.field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
                 Place p = (Place) ob;
@@ -147,7 +148,7 @@ public class fight_handler
         
         // draw boxes + characters
         if (!loading_field) {
-            for (Object o : field) {
+            for (Object o : content.field) {
                 ArrayList l = (ArrayList) o;
                 for (Object ob : l) {
                     Place p = (Place) ob;
@@ -247,7 +248,7 @@ public class fight_handler
         return border;
     }
     public Place get_place(int pos) {
-        for (Object o : field) {
+        for (Object o : content.field) {
             ArrayList l = (ArrayList)o;
             for (Object ob : l) {
                 if (pos == ((Place)ob).index) {
@@ -333,17 +334,10 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
-            client.send_arraylist(field);
-            loading_field = true;
-            field = null;
-            while(field == null) {
-                field = client.recv_arraylist();
-            }
-            content.notification.add_noti("Loaded new field ("+field.size()+")");
-            loading_field = false;
+            client.send_arraylist(content.field);
         }
         
-        for (Object o : field) {
+        for (Object o : content.field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
                 Place p = (Place) ob;
@@ -352,6 +346,18 @@ public class fight_handler
                 }
             }
         }
+    }
+    @SuppressWarnings("unchecked")
+    public void update_field() {
+        ArrayList<ArrayList> tmp = null;
+        while(tmp == null) {
+            tmp = client.recv_arraylist();
+        }
+        System.out.println("in updt");
+        loading_field = true;
+        content.field = (ArrayList<ArrayList>)tmp.clone();
+        loading_field = false;
+        content.notification.add_noti("Loaded new field ("+content.field.size()+")");
     }
     
     public void compute_selection() {
@@ -449,7 +455,7 @@ public class fight_handler
     public void on_click(String button) {
         if (button.equals("LEFT")) {
             if (!unit_selected) {
-                for (Object o : field) {
+                for (Object o : content.field) {
                     ArrayList l = (ArrayList) o;
                     for (Object ob : l) {
                         Place p = (Place) ob;
@@ -462,7 +468,7 @@ public class fight_handler
                 }
             }
             else if (unit_selected){
-                for (Object o : field) {
+                for (Object o : content.field) {
                     ArrayList l = (ArrayList) o;
                     for (Object ob : l) {
                         Place p = (Place) ob;
@@ -545,14 +551,16 @@ public class fight_handler
             selecting = false;
         
             Rectangle selection_rect = new Rectangle(select_x_tmp, select_y_tmp, select_width, select_height);
-            for (Object o : field) {
-                ArrayList l = (ArrayList) o;
-                for (Object ob : l) {
-                    Place p = (Place) ob;
-                    Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
-                
-                    if(selection_rect.intersects(r)) {
-                        p.checked = !p.checked;
+            if (!loading_field) {
+                for (Object o : content.field) {
+                    ArrayList l = (ArrayList) o;
+                    for (Object ob : l) {
+                        Place p = (Place) ob;
+                        Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
+                    
+                        if(selection_rect.intersects(r)) {
+                            p.checked = !p.checked;
+                        }
                     }
                 }
             }
@@ -571,6 +579,24 @@ public class fight_handler
             case 'n': {
                 next_round();
                 break;
+            }
+        }
+    }
+    
+    
+    
+    public class Field_getter extends Thread {
+        content_handler content;
+        fight_handler parent;
+        public Field_getter(fight_handler par, content_handler con) {
+            content = con;
+            parent = par;
+        }
+        
+        public void run() {
+            while (true) {
+                System.out.print(".");
+                parent.update_field();
             }
         }
     }
