@@ -61,9 +61,11 @@ public class draw_anything extends JComponent
             ((world_handler)content.get_active_environment()).draw_stuff(g, this);
         if (content.map_active)
             ((map_handler)content.get_active_environment()).draw_stuff(g, this);
-            
-        content.menu.draw_stuff(g, this);
-        content.notification.draw_stuff(g, this);
+        
+        if (content.menu != null)
+            content.menu.draw_stuff(g, this);
+        if (content.notification != null)
+            content.notification.draw_stuff(g, this);
     }
     
     public void help_with_bg(Image bg_img, int ww, int wh, int cx, int cy) {

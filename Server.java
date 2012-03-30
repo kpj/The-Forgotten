@@ -7,19 +7,16 @@ public class Server
     content_handler content;
 
     ServerSocket server;
-
-    int port = 4223;
     
     boolean listening = true;
     
-    public Server(int p, content_handler con)
+    public Server(content_handler con)
     {
         content = con;
-        //port = p;
         
         try {
-            server = new ServerSocket(port);
-            System.out.println("Listening on port "+port);
+            server = new ServerSocket(content.port);
+            System.out.println("Listening on port "+content.port);
             while (listening) {
               Socket s = server.accept();
               Client c = new Client(s, content);

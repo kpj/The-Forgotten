@@ -1,6 +1,7 @@
 import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
+import javax.swing.*;
 
 public class content_handler
 {
@@ -24,9 +25,11 @@ public class content_handler
     ArrayList<Region> regions = new ArrayList<Region>();
     
     // Everywhere
-    menu_handler menu;
-    notification_handler notification;
+    menu_handler menu = null;
+    notification_handler notification = null;
     applet_handler window;
+    
+    JFrame f = new JFrame("The Forgotten");
     
     ArrayList<Char> characters = new ArrayList<Char>();
     int window_width = 1024;
@@ -35,6 +38,8 @@ public class content_handler
 
     // online stuff
     ArrayList<Client> connected = new ArrayList<Client>();
+    String ip = "localhost";
+    int port = 4223;
     
     public content_handler()
     {

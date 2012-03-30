@@ -25,18 +25,17 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         drawer = new draw_anything(content);
         keyer = new key_handler(content);
         
-        f = new JFrame("The Forgotten");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setSize(content.window_width, content.window_height);
-        f.add(drawer);
-        f.setVisible(true);
+        content.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        content.f.setSize(content.window_width, content.window_height);
+        content.f.add(drawer);
+        content.f.setVisible(true);
         
-        f.addMouseListener(this);
-        f.addMouseMotionListener(this);
-        f.addKeyListener(this);
+        content.f.addMouseListener(this);
+        content.f.addMouseMotionListener(this);
+        content.f.addKeyListener(this);
         
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        f.setLocation((int)d.getWidth()/2 - content.window_width/2, (int)d.getHeight()/2 - content.window_height/2);
+        content.f.setLocation((int)d.getWidth()/2 - content.window_width/2, (int)d.getHeight()/2 - content.window_height/2);
         
         keyer.start();
     }
@@ -146,8 +145,8 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         }
     }
     public void get_mouse_pos() {
-        content.mouse_x = (int) MouseInfo.getPointerInfo().getLocation().x - f.getLocationOnScreen().x;
-        content.mouse_y = (int) MouseInfo.getPointerInfo().getLocation().y - f.getLocationOnScreen().y;
+        content.mouse_x = (int) MouseInfo.getPointerInfo().getLocation().x - content.f.getLocationOnScreen().x;
+        content.mouse_y = (int) MouseInfo.getPointerInfo().getLocation().y - content.f.getLocationOnScreen().y;
     }
     
     

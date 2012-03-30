@@ -15,8 +15,6 @@ public class fight_handler
     
     boolean online;
     Client client;
-    String ip = "localhost";
-    int port = 4223;
     boolean loading_field = false;
     
     boolean is_over = false;
@@ -108,14 +106,14 @@ public class fight_handler
         // if online, connect to server
         if (online) {
             try {
-                client = new Client(new Socket(ip, port), content);
+                client = new Client(new Socket(content.ip, content.port), content);
             }
             catch (IOException e) {
                 System.out.println("error: "+e);
                 //e.printStackTrace();
                 System.exit(-1);
             }
-            System.out.println("Connected to \""+ip+":"+port+"\"");
+            System.out.println("Connected to \""+content.ip+":"+content.port+"\"");
         }
     }
     
