@@ -4,23 +4,39 @@ import java.awt.*;
 
 public class god implements Runnable
 {
-    content_handler content = new content_handler();
+    static content_handler content = null;
     
     int t = 0;
     
     public god()
     {
+        if (content == null) {
+            content = new content_handler();
+        }
+        
         content.menu = new menu_handler(content);
         content.notification = new notification_handler(content);
         content.window = new applet_handler(content);
         new Thread(this).start();
         
-        create_fight("data/fights/test.txt");
+        create_fight("data/fights/test.txt", true);
     }
     
     public static void main (String[] args)
     {
-        god good = new god();
+        content = new content_handler();
+        
+        if (args.length == 0) {
+            System.out.println("Starting game");
+            god good = new god(); 
+        }
+        else if (args[0].equals("--server")) {
+            System.out.println("Starting server");
+            Server serv = new Server(content);
+        }
+        else {
+            System.out.println("Unkown option");
+        }
     }
     
     public void run() {
@@ -37,7 +53,10 @@ public class god implements Runnable
         if (content.fight_active){
             // Fight is taking place
             
-            ((fight_handler)content.get_active_environment()).compute_selection();
+            content.fight.compute_selection();
+            
+            if (content.fight.online)
+                content.fight.do_online_stuff();
             
             if (content.fight.is_over) {
                 content.rm_environment(content.fight);
@@ -89,8 +108,8 @@ public class god implements Runnable
         return new Item(id);
     }
     
-    public void create_fight(String path2fight) {
-        content.add_fight((new Map_parser(path2fight, content)).get_fight());
+    public void create_fight(String path2fight, boolean online) {
+        content.add_fight((new Map_parser(path2fight, content, online)).get_fight());
     }
     public void create_world() {
         content.add_world(new world_handler("pics/world_bg_image.png", content));

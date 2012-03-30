@@ -1,4 +1,6 @@
-public class Place
+import java.io.*;
+
+public class Place implements Serializable
 {
     Char cur;
     int index;

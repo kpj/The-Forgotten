@@ -2,6 +2,8 @@ import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
+import java.net.*;
+import java.io.*;
 
 public class fight_handler
 {
@@ -10,6 +12,11 @@ public class fight_handler
     content_handler content;
 
     ArrayList<ArrayList> field;
+    
+    boolean online;
+    Client client;
+    String ip = "localhost";
+    int port = 4223;
     
     boolean is_over = false;
     
@@ -53,9 +60,10 @@ public class fight_handler
     ArrayList<Place> unchecked;
     
     @SuppressWarnings("unchecked")
-    public fight_handler(String bg_img, int field_w, int field_h, HashMap<Integer, Char> to_insert, content_handler con)
+    public fight_handler(String bg_img, int field_w, int field_h, HashMap<Integer, Char> to_insert, content_handler con, boolean on)
     {
         content = con;
+        online = on;
         
         ArrayList<String> tmp = new ArrayList<String>();
         tmp.add(bg_img);
@@ -94,6 +102,19 @@ public class fight_handler
             else {
                 place_char2(o.getKey(), o.getValue());
             }
+        }
+        
+        // if online, connect to server
+        if (online) {
+            try {
+                client = new Client(new Socket(ip, port), content);
+            }
+            catch (IOException e) {
+                System.out.println("error: "+e);
+                //e.printStackTrace();
+                System.exit(-1);
+            }
+            System.out.println("Connected to \""+ip+":"+port+"\"");
         }
     }
     
@@ -308,6 +329,12 @@ public class fight_handler
     }
     public void next_round() {
         content.notification.add_noti("Let the next round begin!");
+        
+        if (online) {
+            // Do online stuff
+            client.send_arraylist(field);
+        }
+        
         for (Object o : field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
@@ -405,6 +432,10 @@ public class fight_handler
         HashMap<Place, Integer> ret = new HashMap<Place, Integer>();
         ret.put(p, i);
         return ret;
+    }
+    
+    public void do_online_stuff() {
+        //client.send_string("alive");
     }
     
     public void on_click(String button) {

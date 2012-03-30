@@ -7,7 +7,7 @@ import javax.imageio.*;
 public class Image_parser
 {
     // Always scales to size of first image given
-
+    
     BufferedImage output;
     ArrayList<BufferedImage> imgs = new ArrayList<BufferedImage>();
 

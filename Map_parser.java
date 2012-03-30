@@ -19,9 +19,12 @@ public class Map_parser
     int field_width = 0;;
     int field_height = 0;
     String path2bg = "";
+    
+    boolean online;
 
-    public Map_parser(String p, content_handler con) {
+    public Map_parser(String p, content_handler con, boolean on) {
         content = con;
+        online = on;
         path = p;
         InputStream file_stream = getClass().getResourceAsStream(path);
         FileReader fr = null;
@@ -170,6 +173,6 @@ public class Map_parser
     }
     
     public fight_handler get_fight() {
-        return new fight_handler(path2bg, field_width, field_height, map, content);
+        return new fight_handler(path2bg, field_width, field_height, map, content, online);
     }
 }

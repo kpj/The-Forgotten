@@ -5,7 +5,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 
-public class Char
+public class Char implements Serializable
 {
     String name;
     Image world_image;
@@ -52,7 +52,7 @@ public class Char
             property_std.put("initiative", 800);
             property_std.put("magieresistenz", 900);
             property_std.put("angriffskraft", 200);
-            property_std.put("attackenreichweite", 200);
+            property_std.put("attackenreichweite", 100);
             property_std.put("verteidigungspunkte", 100);
             property_std.put("attackenmodifikator", 1000);
             property_std.put("verteidigungmodifikator", 1000);
@@ -79,16 +79,16 @@ public class Char
     
     public void move(String direction) {
         if (direction == "UP") {
-            y_pos -= property_current.get("geschwindigkeit");
+            y_pos -= property_current.get("geschwindigkeit")/100;
         }
         else if (direction == "DOWN") {
-            y_pos += property_current.get("geschwindigkeit");
+            y_pos += property_current.get("geschwindigkeit")/100;
         }
         else if (direction == "LEFT") {
-            x_pos -= property_current.get("geschwindigkeit");
+            x_pos -= property_current.get("geschwindigkeit")/100;
         }
         else if (direction == "RIGHT") {
-            x_pos += property_current.get("geschwindigkeit");
+            x_pos += property_current.get("geschwindigkeit")/100;
         }
     }
     
