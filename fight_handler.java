@@ -332,11 +332,6 @@ public class fight_handler
     public void next_round() {
         content.notification.add_noti("Let the next round begin!");
         
-        if (online) {
-            // Do online stuff
-            client.send_data(new Data_packet(content.field));
-        }
-        
         for (Object o : content.field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
@@ -346,17 +341,11 @@ public class fight_handler
                 }
             }
         }
-    }
-    @SuppressWarnings("unchecked")
-    public void update_field() {
-        ArrayList<ArrayList> tmp = null;
-        while(tmp == null) {
-            tmp = client.recv_data().field;
+        
+        if (online) {
+            // Do online stuff
+            client.send_data(new Data_packet(content.field));
         }
-        loading_field = true;
-        content.field = (ArrayList<ArrayList>)tmp.clone();
-        loading_field = false;
-        content.notification.add_noti("Loaded new field ("+content.field.size()+")");
     }
     
     public void compute_selection() {
@@ -596,7 +585,12 @@ public class fight_handler
             while (true) {
                 Data_packet cur = parent.client.get_existing_data();
             
-                System.out.println("Received data | "+cur.field.size());
+                System.out.println("Received data");
+                
+                parent.loading_field = true;
+                content.field = new ArrayList<ArrayList>(cur.field);
+                parent.loading_field = false;
+                content.notification.add_noti("Updated field");
             }
         }
     }

@@ -26,7 +26,7 @@ public class Client extends Thread
         while (true) {
             Data_packet data = get_existing_data();
             
-            System.out.println("Received data | "+data.field.size());
+            //System.out.println("Received data");
             
             send_to_all(data);
         }
@@ -44,7 +44,7 @@ public class Client extends Thread
             
             in.read(ba, 0, length_size);
             size = ((Integer)deserialize(ba)).intValue();
-            System.out.println("Will read "+size+" bytes");
+            //System.out.println("Will read "+size+" bytes");
             ba = new byte[size];
             
             int read_bytes = 0;
@@ -75,7 +75,7 @@ public class Client extends Thread
             Client c = (Client)o;
             //if (c == this)
             //    break;
-            System.out.println("Sending to "+c.name);
+            //System.out.println("Sending to "+c.name);
             c.send_data(cur);
         }
     }
@@ -86,7 +86,7 @@ public class Client extends Thread
             byte[] bal = serialize(dp);
             Integer i = new Integer(bal.length + 81); // takes 81 bytes to store Integer object
             byte[] ball = serialize(i);
-            System.out.println("Sending "+i+" bytes");
+            //System.out.println("Sending "+i+" bytes");
             out.write(concat(ball, bal));
         }
         catch (IOException e) {
@@ -122,8 +122,9 @@ public class Client extends Thread
             return is.readObject();
         }
         catch (IOException e) {
-            System.out.println("[DES] error: "+e);
-            e.printStackTrace();
+            //System.out.println("[DES] error: "+e);
+            //e.printStackTrace();
+            System.out.println("I think somebody disconnected");
             return null;
         }
         catch (ClassNotFoundException e) {
