@@ -113,7 +113,7 @@ public class fight_handler
             }
             System.out.println("Connected to \""+content.ip+":"+content.port+"\"");
             
-            Field_getter fg = new Field_getter(this, content);
+            Data_getter fg = new Data_getter(this, content);
             fg.start();
         }
     }
@@ -334,7 +334,7 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
-            client.send_arraylist(content.field);
+            client.send_data(new Data_packet(content.field));
         }
         
         for (Object o : content.field) {
@@ -351,9 +351,8 @@ public class fight_handler
     public void update_field() {
         ArrayList<ArrayList> tmp = null;
         while(tmp == null) {
-            tmp = client.recv_arraylist();
+            tmp = client.recv_data().field;
         }
-        System.out.println("in updt");
         loading_field = true;
         content.field = (ArrayList<ArrayList>)tmp.clone();
         loading_field = false;
@@ -584,19 +583,20 @@ public class fight_handler
     }
     
     
-    
-    public class Field_getter extends Thread {
+    @SuppressWarnings("unchecked")
+    public class Data_getter extends Thread {
         content_handler content;
         fight_handler parent;
-        public Field_getter(fight_handler par, content_handler con) {
+        public Data_getter(fight_handler par, content_handler con) {
             content = con;
             parent = par;
         }
         
         public void run() {
             while (true) {
-                System.out.print(".");
-                parent.update_field();
+                Data_packet cur = parent.client.get_existing_data();
+            
+                System.out.println("Received data | "+cur.field.size());
             }
         }
     }

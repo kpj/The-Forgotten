@@ -12,9 +12,6 @@ public class Client extends Thread
     
     boolean disconnected = false;
     
-    ArrayList<ArrayList> cur = null;
-    ArrayList<ArrayList> old = null;
-    
     public Client(Socket socket, content_handler con) {
         super("Client");
         
@@ -22,77 +19,42 @@ public class Client extends Thread
 
         client = socket;
         name = socket.getInetAddress().getHostAddress();
-        
-        Field_getter fg = new Field_getter(this, content);
-        fg.start();
     }
     @SuppressWarnings("unchecked")
     public void run() {
         ArrayList<ArrayList> tmp = new ArrayList<ArrayList>();
         while (true) {
-            tmp = recv_arraylist();
+            Data_packet data = get_existing_data();
             
-            if (tmp != null) {
-                cur = (ArrayList<ArrayList>)tmp.clone();
-                tmp = null;
-            }
-        }
-    }
-    @SuppressWarnings("unchecked")
-    public synchronized void send_field() {
-        if (cur == null || cur == old) {
-            return;
-        }
-        
-        System.out.println("Received valid data ("+cur.size()+")");
-        
-        for (Object o : content.connected) {
-            Client c = (Client)o;
-            //if (c == this)
-            //    break;
-            c.send_arraylist(cur);
-        }
-        old = (ArrayList<ArrayList>)cur.clone();
-    }
-    
-    public void send_arraylist(ArrayList<ArrayList> list) {
-        try {
-            OutputStream out = client.getOutputStream();
-            byte[] bal = serialize(list);
-            System.out.println("Sending "+bal.length+" bytes");
-            out.write(bal);
-        }
-        catch (IOException e) {
-            System.out.println("error: "+e);
-            e.printStackTrace();
+            System.out.println("Received data | "+data.field.size());
+            
+            send_to_all(data);
         }
     }
     
-    int size = 11533830;
-    int cur_size = 0;
-    int read_size = 65536;
-    byte[] ba = new byte[size];
     @SuppressWarnings("unchecked")
-    public ArrayList<ArrayList> recv_arraylist() {
+    public Data_packet recv_data() {
+        int cur_size = 0;
+        int read_size = 65536;
+        int length_size = 81; // at first the length of length-field
+        int size = 0;
         try {
             InputStream in = client.getInputStream();
+            byte[] ba = new byte[length_size];
             
-            int read_bytes = in.read(ba, cur_size, Math.min(read_size, size-cur_size));
-            if (read_bytes == -1) {
-                //System.out.println("No data received");
-                return null;
-            }
-            //System.out.println("Added "+read_bytes+" to "+cur_size+" bytes into "+ba.length);
+            in.read(ba, 0, length_size);
+            size = ((Integer)deserialize(ba)).intValue();
+            System.out.println("Will read "+size+" bytes");
+            ba = new byte[size];
             
-            cur_size += read_bytes;
-            if (cur_size == size) {
-                cur_size = 0;
-                ArrayList<ArrayList> al = (ArrayList<ArrayList>)deserialize(ba);
-                return al;
+            int read_bytes = 0;
+            while (cur_size < size-length_size) {
+                read_bytes = in.read(ba, cur_size, Math.min(read_size, size-cur_size));
+                cur_size += read_bytes;
             }
-            else {
-                return null;
-            }
+            if (cur_size == -1) return null;
+            System.out.println("Read "+cur_size+" bytes");
+            return (Data_packet)deserialize(ba);
         }
         catch (IOException e) {
             System.out.println("error: "+e);
@@ -100,7 +62,46 @@ public class Client extends Thread
             return null;
         }
     }
+    public Data_packet get_existing_data() {
+        while (true) {
+            Data_packet data = recv_data();
+            if (data != null) return data;
+        }
+    }
     
+    @SuppressWarnings("unchecked")
+    public synchronized void send_to_all(Data_packet cur) {
+        for (Object o : content.connected) {
+            Client c = (Client)o;
+            //if (c == this)
+            //    break;
+            System.out.println("Sending to "+c.name);
+            c.send_data(cur);
+        }
+    }
+    
+    public void send_data(Data_packet dp) {
+        try {
+            OutputStream out = client.getOutputStream();
+            byte[] bal = serialize(dp);
+            Integer i = new Integer(bal.length + 81); // takes 81 bytes to store Integer object
+            byte[] ball = serialize(i);
+            System.out.println("Sending "+i+" bytes");
+            out.write(concat(ball, bal));
+        }
+        catch (IOException e) {
+            System.out.println("error: "+e);
+            e.printStackTrace();
+        }
+    }
+
+    public byte[] concat(byte[] A, byte[] B) {
+        byte[] C= new byte[A.length+B.length];
+        System.arraycopy(A, 0, C, 0, A.length);
+        System.arraycopy(B, 0, C, A.length, B.length);
+
+        return C;
+    }
     public static byte[] serialize(Object obj) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -129,23 +130,6 @@ public class Client extends Thread
             System.out.println("error: "+e);
             e.printStackTrace();
             return null;
-        }
-    }
-    
-    
-    
-    public class Field_getter extends Thread {
-        content_handler content;
-        Client parent;
-        public Field_getter(Client par, content_handler con) {
-            content = con;
-            parent = par;
-        }
-        
-        public void run() {
-            while (true) {
-                parent.send_field();
-            }
         }
     }
 }

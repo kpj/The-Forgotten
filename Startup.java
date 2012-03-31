@@ -37,18 +37,21 @@ public class Startup
         
         ActionListener asp = new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
+                content.f.dispose();
                 start_singleplayer();
             }
         };
         sp.addActionListener(asp);
         ActionListener msp = new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
+                content.f.dispose();
                 start_multiplayer();
             }
         };
         mp.addActionListener(msp);
         ActionListener servsp = new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
+                content.f.dispose();
                 start_server();
             }
         };
