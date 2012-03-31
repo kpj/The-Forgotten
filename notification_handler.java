@@ -11,7 +11,7 @@ public class notification_handler
     
     ArrayList<noti_box> noti = new ArrayList<noti_box>();
     ArrayList<noti_box> to_rm = new ArrayList<noti_box>();
-    long duration = 1;
+    long duration = 2;
     
     public notification_handler(content_handler con)
     {

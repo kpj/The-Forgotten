@@ -17,6 +17,8 @@ public class fight_handler
     
     boolean is_over = false;
     
+    int team = -1;
+    
     // field
     int field_width;
     int field_height;
@@ -272,6 +274,11 @@ public class fight_handler
             content.notification.add_noti("This character can only act in the next round.");
             return;
         }
+        if (!(from.cur.team == team || team == -1)) {
+            content.notification.add_noti("This character is not in your team");
+            return;
+        }
+        
         from.cur.did_something_this_round = true;
         boolean was_fighting = false;
         boolean successful_combat = false;
@@ -369,6 +376,7 @@ public class fight_handler
                         multiple_units_selected = true;
                         return;
                     }
+                    
                     can_modify = false;
                     in_reach = Collections.synchronizedList(new ArrayList<Place>());
                     in_reach.add(p); // to know, who is in the center
