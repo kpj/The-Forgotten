@@ -135,7 +135,7 @@ verteidigungspunkte:400:
 #
 #22
 #
-Item:Roter Umhang:pics/Character/Kleidung/Kleidung/Umhang1.png,:undef:
+Item:Roter Umhang:pics/Kleidung/Kleidung/Umhang1.png,:undef:
 #
 #23
 #
