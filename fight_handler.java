@@ -278,6 +278,10 @@ public class fight_handler
             content.notification.add_noti("This character is not in your team");
             return;
         }
+        if (!content.my_turn) {
+            content.notification.add_noti("It is not your turn");
+            return;
+        }
         
         from.cur.did_something_this_round = true;
         boolean was_fighting = false;
