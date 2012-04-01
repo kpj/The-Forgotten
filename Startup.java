@@ -18,6 +18,7 @@ public class Startup
     
     JButton servp = new JButton("Create Server");
     JTextField serv_port = new JTextField("4223");
+    JTextField serv_path = new JTextField("data/fights/test.txt");
 
     public Startup()
     {
@@ -34,6 +35,7 @@ public class Startup
         panel.add(new JSeparator());
         panel.add(servp);
         panel.add(serv_port);
+        panel.add(serv_path);
         
         ActionListener asp = new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
@@ -84,6 +86,6 @@ public class Startup
     public void start_server() {
         System.out.println("Starting server");
         content.port = Integer.parseInt(serv_port.getText());
-        Server serv = new Server(content);
+        Server serv = new Server(content, serv_path.getText());
     }
 }

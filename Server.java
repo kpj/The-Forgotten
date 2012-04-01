@@ -12,11 +12,12 @@ public class Server
     
     int num = 0;
     
-    String path2map = "data/fights/test.txt";
+    String path2map;
     
-    public Server(content_handler con)
+    public Server(content_handler con, String p)
     {
         content = con;
+        path2map = p;
         
         try {
             server = new ServerSocket(content.port);
