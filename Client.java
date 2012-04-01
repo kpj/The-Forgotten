@@ -75,7 +75,7 @@ public class Client extends Thread
             Client c = (Client)o;
             //if (c == this)
             //    break;
-            //System.out.println("Sending to "+c.name);
+            System.out.println("Sending to "+c.name);
             c.send_data(cur);
         }
     }

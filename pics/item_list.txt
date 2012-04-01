@@ -136,10 +136,12 @@ verteidigungspunkte:400:
 #22
 #
 Item:Roter Umhang:pics/Kleidung/Kleidung/Umhang1.png,:undef:
+verteidigungspunkte:1:
 #
 #23
 #
 Item:Blauer Novizenumhang:pics/Kleidung/Kleidung/Gewand1.png:undef:
+verteidigungspunkte:1:
 #
 #24
 #
@@ -154,6 +156,7 @@ verteidigungspunkte:100:
 #26
 #
 Item:Wilder Beinschmuck:pics/Kleidung/Kleidung/Schmuck1.png:undef:
+verteidigungspunkte:1:
 #
 #27
 #
@@ -164,6 +167,7 @@ verteidigungspunkte:400:
 #28
 #
 Item:Blauer Magierhut:pics/Kleidung/Kleidung/Hut1.png:undef:
+verteidigungspunkte:1:
 #
 #29
 #

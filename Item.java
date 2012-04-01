@@ -40,7 +40,7 @@ public class Item implements Serializable
         tmp.clear();
         tmp.add(cur_item.get(2));
         entity_image = new ImageIcon((new Image_parser(tmp)).get_img());
-            
+        
         effect = item_effects.get(id);
     }
     
@@ -83,9 +83,11 @@ public class Item implements Serializable
         
         ArrayList<String> cur = new ArrayList<String>();
         if (line[0].equals("Item")) {
-            if (now.size() != 0)
+            if (now.size() != 0) {
                 item_effects.add( (HashMap<String, Integer>)now.clone() );
-            now.clear();
+                System.out.println((item_effects.size()-1)+" "+now);
+                now.clear();
+            }
             item_counter++;
             cur.add(line[1]); // Name
             cur.add(line[2]); // equipped image

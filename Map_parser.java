@@ -45,7 +45,7 @@ public class Map_parser
                 line = bufRead.readLine();
                 counter++;
             }
-
+            
             bufRead.close();
         }
         catch (IOException e) {
@@ -92,6 +92,7 @@ public class Map_parser
                     get_items.put(splitted[1], il);
                     get_items_equipped.put(splitted[1], iel);
                 }
+                
                 return;
             }
             
