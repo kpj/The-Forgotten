@@ -90,6 +90,8 @@ public class fight_handler
    
             
             Data_packet cur = client.get_existing_data();
+            client.num = cur.num;
+            
             System.out.println("Acknowledged by server");
             my_turn = cur.my_turn;
             
@@ -332,6 +334,11 @@ public class fight_handler
         return false;
     }
     public void next_round() {
+        if (!my_turn) {
+            content.notification.add_noti("It is not your turn");
+            return;
+        }
+        
         content.notification.add_noti("Let the next round begin!");
         
         for (Object o : content.field) {
@@ -346,7 +353,7 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
-            client.send_data(new Data_packet(content.field, my_turn));
+            client.send_data(new Data_packet(content.field, my_turn, client.num));
         }
     }
     
@@ -595,7 +602,8 @@ public class fight_handler
                 parent.loading_field = true;
                 content.field = new ArrayList<ArrayList>(cur.field);
                 parent.loading_field = false;
-                content.notification.add_noti("Updated field");
+                
+                content.notification.add_noti((my_turn)?"Its your turn":"Wait for other players");
             }
         }
     }

@@ -39,6 +39,7 @@ public class content_handler
 
     // online stuff
     ArrayList<Client> connected = new ArrayList<Client>();
+    ArrayList<Boolean> turn = new ArrayList<Boolean>();
     String ip = "localhost";
     int port = 4223;
     

@@ -28,9 +28,33 @@ public class Client extends Thread
         while (true) {
             Data_packet data = get_existing_data();
             
-            //System.out.println("Received data");
-            
-            send_to_all(data);
+            if (data.my_turn) {
+                System.out.println("Received data from active player #"+data.num);
+                change_turn();
+                send_to_all(data);
+            }
+            else {
+                System.out.println("Received data from inactive player #"+data.num);
+            }
+        }
+    }
+    
+    public void change_turn() {
+        int c = 0;
+        int v = 0;
+        for (Object o : content.turn) {
+            boolean t = (Boolean)o;
+            if (t) v = c;
+            c++;
+        }
+        
+        if (v != content.turn.size() - 1) {
+            content.turn.set(v, false);
+            content.turn.set(v+1, true);
+        }
+        else {
+            content.turn.set(v, false);
+            content.turn.set(0, true);
         }
     }
     
@@ -73,12 +97,16 @@ public class Client extends Thread
     
     @SuppressWarnings("unchecked")
     public synchronized void send_to_all(Data_packet cur) {
+        int counter = 0;
         for (Object o : content.connected) {
             Client c = (Client)o;
             //if (c == this)
             //    break;
             System.out.println("Sending to "+c.name);
+            cur.my_turn = content.turn.get(counter);
             c.send_data(cur);
+            
+            counter++;
         }
     }
     

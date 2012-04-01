@@ -46,7 +46,8 @@ public class Server
         boolean turn = false;
         if (c.num == 1)
             turn = true;
-        Data_packet dp = new Data_packet(cur, turn, ma);
+        content.turn.add(turn);
+        Data_packet dp = new Data_packet(cur, turn, ma, c.num);
         c.send_data(dp);
     }
     
