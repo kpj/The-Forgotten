@@ -21,10 +21,25 @@ public class Image_parser
             }
             catch (IllegalArgumentException e) {
                 //System.out.println("Error with images: "+e);
+                //e.printStackTrace();
             }
             catch(IOException e) {
-                //System.out.println("Error with images: "+e);
+                System.out.println("Error with images: "+e);
             }
+        }
+        
+        merge_imgs();
+    }
+    public Image_parser(String path2img) {
+        try {
+            imgs.add(ImageIO.read(this.getClass().getResource("/"+path2img)));
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Error with image: "+e);
+            e.printStackTrace();
+        }
+        catch(IOException e) {
+            System.out.println("Error with image: "+e);
         }
         
         merge_imgs();

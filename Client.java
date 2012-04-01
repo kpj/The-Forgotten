@@ -12,11 +12,13 @@ public class Client extends Thread
     
     boolean disconnected = false;
     
-    public Client(Socket socket, content_handler con) {
+    int num;
+    
+    public Client(Socket socket, content_handler con, int n) {
         super("Client");
         
         content = con;
-
+        num = n;
         client = socket;
         name = socket.getInetAddress().getHostAddress();
     }
@@ -53,7 +55,7 @@ public class Client extends Thread
                 cur_size += read_bytes;
             }
             if (cur_size == -1) return null;
-            System.out.println("Read "+cur_size+" bytes");
+            System.out.println("[" + num + "] Read "+cur_size+" bytes");
             return (Data_packet)deserialize(ba);
         }
         catch (IOException e) {

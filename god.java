@@ -90,7 +90,7 @@ public class god implements Runnable
     }
     
     public static void create_fight(String path2fight, boolean online) {
-        content.add_fight((new Map_parser(path2fight, content, online)).get_fight());
+        content.add_fight(new fight_handler(path2fight, content, online));
     }
     public void create_world() {
         content.add_world(new world_handler("pics/world_bg_image.png", content));

@@ -41,7 +41,6 @@ public class content_handler
     ArrayList<Client> connected = new ArrayList<Client>();
     String ip = "localhost";
     int port = 4223;
-    boolean my_turn = true;
     
     public content_handler()
     {

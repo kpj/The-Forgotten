@@ -18,6 +18,7 @@ public class fight_handler
     boolean is_over = false;
     
     int team = -1;
+    boolean my_turn = true;
     
     // field
     int field_width;
@@ -59,54 +60,26 @@ public class fight_handler
     ArrayList<Place> unchecked;
     
     @SuppressWarnings("unchecked")
-    public fight_handler(String bg_img, int field_w, int field_h, HashMap<Integer, Char> to_insert, content_handler con, boolean on)
+    public fight_handler(String path2fight, content_handler con, boolean on)
     {
         content = con;
         online = on;
         
-        ArrayList<String> tmp = new ArrayList<String>();
-        tmp.add(bg_img);
-        bg_image = (new Image_parser(tmp)).get_img();
-        tmp.clear();
-        tmp.add("pics/non_walkable.png");
-        non_walkable_image = (new Image_parser(tmp)).get_img();
+        if (!online) {
+            Map_parser mapper = new Map_parser(path2fight);
         
-        field_width = field_w;
-        field_height = field_h;
-        
-        // Create fighting place
-        content.field = new ArrayList<ArrayList>();
-        //System.out.println(field_width+"x"+field_height);
-        
-        for (int i = 0; i < field_width ; i++) {
-            content.field.add(new ArrayList<Place>());
+            bg_image = (new Image_parser(mapper.path2bg)).get_img();
+
+            non_walkable_image = (new Image_parser("pics/non_walkable.png")).get_img();
+            
+            field_width = mapper.field_width;
+            field_height = mapper.field_height;
+            
+            content.field = mapper.get_field();
         }
-        int ind = 0;
-        for (int i = 0 ; i < content.field.size() ; i++) {
-            for (int o = 0 ; o < field_height ; o++) {
-                content.field.get(i).add(new Place(null, ind));
-                ind++;
-            }
-        }
-        
-        // Adding chars
-        for (Map.Entry<Integer, Char> o : to_insert.entrySet()) {
-            // Add special fields
-            if (o.getValue() == null) {
-                place_char2(o.getKey(), o.getValue());
-            }
-            else if (o.getValue().name.equals("NON-WALKABLE")) {
-                (get_place(o.getKey())).special = "NON-WALKABLE";
-            }
-            else {
-                place_char2(o.getKey(), o.getValue());
-            }
-        }
-        
-        // if online, connect to server
-        if (online) {
+        else {
             try {
-                client = new Client(new Socket(content.ip, content.port), content);
+                client = new Client(new Socket(content.ip, content.port), content, -1);
             }
             catch (IOException e) {
                 System.out.println("error: "+e);
@@ -114,10 +87,28 @@ public class fight_handler
                 System.exit(-1);
             }
             System.out.println("Connected to \""+content.ip+":"+content.port+"\"");
+   
+            
+            Data_packet cur = client.get_existing_data();
+            System.out.println("Acknowledged by server");
+            my_turn = cur.my_turn;
+            
+            field_width = cur.mapper.field_width;
+            field_height = cur.mapper.field_height;
+            bg_image = (new Image_parser(cur.mapper.path2bg)).get_img();
+            non_walkable_image = (new Image_parser("pics/non_walkable.png")).get_img();
+            
+            loading_field = true;
+            content.field = new ArrayList<ArrayList>(cur.field);
+            loading_field = false;
+            content.notification.add_noti("Updated field");
+            
             
             Data_getter fg = new Data_getter(this, content);
             fg.start();
         }
+        
+        //System.out.println(field_width+"x"+field_height);
     }
     
     public void place_char(Place p, Char c) {
@@ -278,7 +269,7 @@ public class fight_handler
             content.notification.add_noti("This character is not in your team");
             return;
         }
-        if (!content.my_turn) {
+        if (!my_turn) {
             content.notification.add_noti("It is not your turn");
             return;
         }
@@ -355,7 +346,7 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
-            client.send_data(new Data_packet(content.field));
+            client.send_data(new Data_packet(content.field, my_turn));
         }
     }
     
@@ -598,6 +589,8 @@ public class fight_handler
                 Data_packet cur = parent.client.get_existing_data();
             
                 System.out.println("Received data");
+                
+                my_turn = cur.my_turn;
                 
                 parent.loading_field = true;
                 content.field = new ArrayList<ArrayList>(cur.field);

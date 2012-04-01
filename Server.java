@@ -10,6 +10,10 @@ public class Server
     
     boolean listening = true;
     
+    int num = 0;
+    
+    String path2map = "data/fights/test.txt";
+    
     public Server(content_handler con)
     {
         content = con;
@@ -18,11 +22,13 @@ public class Server
             server = new ServerSocket(content.port);
             System.out.println("Listening on port "+content.port);
             while (listening) {
-              Socket s = server.accept();
-              Client c = new Client(s, content);
-              content.connected.add(c);
-              c.start();
-              System.out.println("Incoming connection: "+s.getInetAddress().getHostAddress());
+                num++;
+                Socket s = server.accept();
+                Client c = new Client(s, content, num);
+                make_playable(c);
+                content.connected.add(c);
+                c.start();
+                System.out.println("Incoming connection #"+num+": "+s.getInetAddress().getHostAddress());
             }
             
             server.close();
@@ -32,6 +38,16 @@ public class Server
             e.printStackTrace();
         }
         
+    }
+    
+    public void make_playable(Client c) {
+        Map_parser ma = new Map_parser(path2map);
+        ArrayList<ArrayList> cur = ma.get_field();
+        boolean turn = false;
+        if (c.num == 1)
+            turn = true;
+        Data_packet dp = new Data_packet(cur, turn, ma);
+        c.send_data(dp);
     }
     
     public void check_disconnected() {

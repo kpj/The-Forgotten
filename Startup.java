@@ -78,7 +78,7 @@ public class Startup
         good.content.ip = mp_ip.getText();
         good.content.port = Integer.parseInt(mp_port.getText());
         
-        good.create_fight("data/fights/test.txt", true);
+        good.create_fight("", true);
     }
     
     public void start_server() {
