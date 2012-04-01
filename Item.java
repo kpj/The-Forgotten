@@ -85,7 +85,6 @@ public class Item implements Serializable
         if (line[0].equals("Item")) {
             if (now.size() != 0) {
                 item_effects.add( (HashMap<String, Integer>)now.clone() );
-                System.out.println((item_effects.size()-1)+" "+now);
                 now.clear();
             }
             item_counter++;
