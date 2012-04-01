@@ -94,6 +94,7 @@ public class fight_handler
             
             System.out.println("Acknowledged by server");
             my_turn = cur.my_turn;
+            team = cur.num;
             
             field_width = cur.mapper.field_width;
             field_height = cur.mapper.field_height;
