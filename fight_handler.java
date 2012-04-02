@@ -18,7 +18,6 @@ public class fight_handler
     boolean is_over = false;
     
     int team = -1;
-    boolean my_turn = true;
     
     // field
     int field_width;
@@ -93,7 +92,7 @@ public class fight_handler
             client.num = cur.num;
             
             System.out.println("Acknowledged by server");
-            my_turn = cur.my_turn;
+            content.my_turn = cur.my_turn;
             team = cur.num;
             
             field_width = cur.mapper.field_width;
@@ -272,7 +271,7 @@ public class fight_handler
             content.notification.add_noti("This character is not in your team");
             return;
         }
-        if (!my_turn) {
+        if (!content.my_turn) {
             content.notification.add_noti("It is not your turn");
             return;
         }
@@ -335,7 +334,7 @@ public class fight_handler
         return false;
     }
     public void next_round() {
-        if (!my_turn) {
+        if (!content.my_turn) {
             content.notification.add_noti("It is not your turn");
             return;
         }
@@ -354,7 +353,7 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
-            client.send_data(new Data_packet(content.field, my_turn, client.num));
+            client.send_data(new Data_packet(content.field, content.my_turn, client.num));
         }
     }
     
@@ -598,13 +597,13 @@ public class fight_handler
             
                 System.out.println("Received data");
                 
-                my_turn = cur.my_turn;
+                content.my_turn = cur.my_turn;
                 
                 parent.loading_field = true;
                 content.field = new ArrayList<ArrayList>(cur.field);
                 parent.loading_field = false;
                 
-                content.notification.add_noti((my_turn)?"Its your turn":"Wait for other players");
+                content.notification.add_noti((content.my_turn)?"Its your turn":"Wait for other players");
             }
         }
     }

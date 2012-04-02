@@ -2,6 +2,7 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 public class Startup
 {
@@ -18,7 +19,11 @@ public class Startup
     
     JButton servp = new JButton("Create Server");
     JTextField serv_port = new JTextField("4223");
-    JTextField serv_path = new JTextField("data/fights/test.txt");
+    
+    String chosen_fight = "";
+    File fight_dir = new File(this.getClass().getResource("/"+"data/fights").getPath());
+    String[] fight_list = fight_dir.list();
+    JComboBox fights = new JComboBox(fight_list);
 
     public Startup()
     {
@@ -35,7 +40,7 @@ public class Startup
         panel.add(new JSeparator());
         panel.add(servp);
         panel.add(serv_port);
-        panel.add(serv_path);
+        panel.add(fights);
         
         ActionListener asp = new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
@@ -58,6 +63,16 @@ public class Startup
             }
         };
         servp.addActionListener(servsp);
+        
+        ActionListener fighties = new ActionListener() {
+            public void actionPerformed( ActionEvent e ) {
+                JComboBox cb = (JComboBox)e.getSource();
+                String choice = (String)cb.getSelectedItem();
+                chosen_fight = choice;
+            }
+        };
+        fights.addActionListener(fighties);
+        fights.setSelectedIndex(0);
         
         content.f.add(panel);
         content.f.pack();
@@ -86,6 +101,6 @@ public class Startup
     public void start_server() {
         System.out.println("Starting server");
         content.port = Integer.parseInt(serv_port.getText());
-        Server serv = new Server(content, serv_path.getText());
+        Server serv = new Server(content, chosen_fight);
     }
 }

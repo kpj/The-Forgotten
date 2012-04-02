@@ -21,6 +21,7 @@ public class Server
         
         try {
             server = new ServerSocket(content.port);
+            System.out.println("Loading "+p);
             System.out.println("Listening on port "+content.port);
             while (listening) {
                 num++;

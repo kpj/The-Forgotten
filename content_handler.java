@@ -42,6 +42,7 @@ public class content_handler
     ArrayList<Boolean> turn = new ArrayList<Boolean>();
     String ip = "localhost";
     int port = 4223;
+    boolean my_turn = true;
     
     public content_handler()
     {

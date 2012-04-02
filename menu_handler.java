@@ -27,7 +27,7 @@ public class menu_handler
         g.fillRect(x, y, content.window_width, menu_height);
         g.setColor(Color.black);
         
-        g.drawString("Press \"n\" for next round!", x + 700, y + 15);
+        g.drawString((content.my_turn)?"Press \"n\" for next round!":"Wait for other players", x + 700, y + 15);
         
         if (content.current_selected == null) {
             g.drawString("No character selected.", x + 5, y + 15);
