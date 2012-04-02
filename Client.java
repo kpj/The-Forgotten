@@ -75,11 +75,12 @@ public class Client extends Thread
             ba = new byte[size];
             
             int read_bytes = 0;
+            System.out.println("Incoming bytes");
             while (cur_size < size-length_size) {
                 read_bytes = in.read(ba, cur_size, Math.min(read_size, size-cur_size));
                 cur_size += read_bytes;
                 if (num == -1)
-                    System.out.println("["+cur_size+"|"+size+"]");
+                    System.out.println("["+cur_size+length_size+"|"+size+"]");
             }
             if (cur_size == -1) return null;
             System.out.println("[" + num + "] Read "+cur_size+" bytes");
@@ -119,7 +120,7 @@ public class Client extends Thread
             byte[] bal = serialize(dp);
             Integer i = new Integer(bal.length + length_size);
             byte[] ball = serialize(i);
-            //System.out.println("Sending "+i+" bytes");
+            System.out.println("Sending "+i+" bytes");
             out.write(concat(ball, bal));
         }
         catch (IOException e) {

@@ -45,11 +45,14 @@ public class Server
     public void make_playable(Client c) {
         Map_parser ma = new Map_parser(path2map);
         ArrayList<ArrayList> cur = ma.get_field();
+        int w = ma.field_width;
+        int h = ma.field_height;
+        String p2b = ma.path2bg;
         boolean turn = false;
         if (c.num == 1)
             turn = true;
         content.turn.add(turn);
-        Data_packet dp = new Data_packet(cur, turn, ma, c.num);
+        Data_packet dp = new Data_packet(cur, turn, w, h, p2b, c.num);
         c.send_data(dp);
     }
     

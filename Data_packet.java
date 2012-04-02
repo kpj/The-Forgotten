@@ -8,15 +8,20 @@ public class Data_packet implements Serializable
     
     boolean my_turn = false;
     int num;
+    
+    int field_width, field_height;
+    String path2bg;
 
     Map_parser mapper;
     
     @SuppressWarnings("unchecked")
-    public Data_packet(ArrayList<ArrayList> f, boolean turn, Map_parser ama, int n)
+    public Data_packet(ArrayList<ArrayList> f, boolean turn, int w, int h, String p2b, int n)
     {
         field = (ArrayList<ArrayList>)f.clone();
         my_turn = turn;
-        mapper = ama;
+        field_width = w;
+        field_height = h;
+        path2bg = p2b;
         num = n;
     }
     @SuppressWarnings("unchecked")

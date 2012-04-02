@@ -96,9 +96,9 @@ public class fight_handler
             content.my_turn = cur.my_turn;
             team = cur.num;
             
-            field_width = cur.mapper.field_width;
-            field_height = cur.mapper.field_height;
-            bg_image = cur.mapper.path2bg;
+            field_width = cur.field_width;
+            field_height = cur.field_height;
+            bg_image = cur.path2bg;
             non_walkable_image = "pics/non_walkable.png";
             
             loading_field = true;
@@ -355,6 +355,8 @@ public class fight_handler
             content.notification.add_noti("It is not your turn");
             return;
         }
+        
+        content.my_turn = false;
         
         content.notification.add_noti("Let the next round begin!");
         
