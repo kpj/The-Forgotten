@@ -1,22 +1,24 @@
 import java.lang.*;
 import java.util.*;
 import java.awt.*;
+import java.util.jar.JarEntry;
+import java.io.*;
 
 public class god implements Runnable
 {
-    static content_handler content = null;
+    content_handler content;
     
     int t = 0;
     
     public god()
     {
-        if (content == null) {
-            content = new content_handler();
-        }
+        content = new content_handler();
         
         content.menu = new menu_handler(content);
         content.notification = new notification_handler(content);
         content.window = new applet_handler(content);
+        content.iml = new Image_loader(list_all("png"));
+        
         draw();
         new Thread(this).start();
     }
@@ -72,6 +74,27 @@ public class god implements Runnable
         }
     }
     
+    public ArrayList<String> list_all(String end) {
+        String filename = "The-Forgotten.jar";
+        ArrayList<String> out = new ArrayList<String>();
+
+        try {
+            java.util.jar.JarFile jarFile = new java.util.jar.JarFile(filename);
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                java.util.zip.ZipEntry entry = entries.nextElement();
+                if (entry.getName().endsWith(end)) {
+                    out.add(entry.getName());
+                    //System.out.println(entry.getName());
+                }
+            }
+        }
+        catch (IOException e){
+            System.err.println("error: "+e.getMessage());
+        }
+        return out;
+    }
+    
     public void create_object(String name, float x_pos, float y_pos, String world_image_path, String t) {
         content.add_object(new Thing (name, x_pos, y_pos, world_image_path, t));
     }
@@ -90,7 +113,7 @@ public class god implements Runnable
         return new Item(id);
     }
     
-    public static void create_fight(String path2fight, boolean online) {
+    public void create_fight(String path2fight, boolean online) {
         content.add_fight(new fight_handler(path2fight, content, online));
     }
     public void create_world() {

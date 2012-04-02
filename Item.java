@@ -11,8 +11,8 @@ public class Item implements Serializable
     
     String name;
     HashMap<String, Integer> effect = new HashMap<String, Integer>();
-    ImageIcon equipped_image;
-    ImageIcon entity_image;
+    String equipped_image;
+    String entity_image;
     
     boolean is_in_use = false;
     
@@ -34,12 +34,8 @@ public class Item implements Serializable
         
         name = cur_item.get(0);
 
-        ArrayList<String> tmp = new ArrayList<String>();
-        tmp.add(cur_item.get(1));
-        equipped_image = new ImageIcon((new Image_parser(tmp)).get_img());
-        tmp.clear();
-        tmp.add(cur_item.get(2));
-        entity_image = new ImageIcon((new Image_parser(tmp)).get_img());
+        equipped_image = cur_item.get(1);
+        entity_image = cur_item.get(2);
         
         effect = item_effects.get(id);
     }

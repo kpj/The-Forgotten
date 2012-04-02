@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.net.URL;
 import java.util.jar.JarEntry;
 
 public class Startup
@@ -107,6 +106,7 @@ public class Startup
         Server serv = new Server(content, fight_directory+chosen_fight);
     }
     
+    
     public String[] dirList(String dir){
         try{
             //String filename = getClass().getClassLoader().getResource(getClass().getPackage().getName().replaceAll("\\.", "/")).getFile();
@@ -141,8 +141,8 @@ public class Startup
             }else{
                 return new File(dir).list();
             }
-        }catch (Exception e){
-            System.err.println("Fehler beim Listen des Verzeichnises: "+dir+"\n"+e.getMessage());
+        }catch (IOException e){
+            System.err.println("error: "+dir+"\n"+e.getMessage());
         }
         return null;
     }

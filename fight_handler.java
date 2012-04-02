@@ -7,7 +7,7 @@ import java.io.*;
 
 public class fight_handler
 {
-    BufferedImage bg_image, non_walkable_image;
+    String bg_image, non_walkable_image;
     
     content_handler content;
     
@@ -68,9 +68,9 @@ public class fight_handler
         if (!online) {
             Map_parser mapper = new Map_parser(path2fight);
         
-            bg_image = (new Image_parser(mapper.path2bg)).get_img();
+            bg_image = mapper.path2bg;
 
-            non_walkable_image = (new Image_parser("pics/non_walkable.png")).get_img();
+            non_walkable_image = "pics/non_walkable.png";
             
             field_width = mapper.field_width;
             field_height = mapper.field_height;
@@ -98,8 +98,8 @@ public class fight_handler
             
             field_width = cur.mapper.field_width;
             field_height = cur.mapper.field_height;
-            bg_image = (new Image_parser(cur.mapper.path2bg)).get_img();
-            non_walkable_image = (new Image_parser("pics/non_walkable.png")).get_img();
+            bg_image = cur.mapper.path2bg;
+            non_walkable_image = "pics/non_walkable.png";
             
             loading_field = true;
             content.field = new ArrayList<ArrayList>(cur.field);
@@ -147,7 +147,7 @@ public class fight_handler
         Graphics2D g = (Graphics2D)g3;
         
         // draw bg
-        g.drawImage(bg_image, 0 , 0, content.window_width, content.window_height, -move_x, -move_y, -move_x+content.window_width, -move_y+content.window_height, imo);
+        g.drawImage(content.iml.pimg.get(bg_image), 0 , 0, content.window_width, content.window_height, -move_x, -move_y, -move_x+content.window_width, -move_y+content.window_height, imo);
         
         // draw field
         checked = new ArrayList<Place>();
@@ -183,11 +183,11 @@ public class fight_handler
                         for (Object obj : p.cur.get_equipped_items()) {
                             Item i = (Item)obj;
                             
-                            g.drawImage(i.equipped_image.getImage(), x, y, imo);
+                            g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, imo);
                         }
                     }
                     else if (p.special.equals("NON-WALKABLE")) {
-                        g.drawImage(non_walkable_image, x, y, imo);
+                        g.drawImage(content.iml.pimg.get(non_walkable_image), x, y, imo);
                     }
                 }
             }

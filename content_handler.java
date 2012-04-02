@@ -38,6 +38,8 @@ public class content_handler
     int window_height = 768;
     int mouse_x, mouse_y;
 
+    Image_loader iml;
+    
     // online stuff
     ArrayList<Client> connected = new ArrayList<Client>();
     ArrayList<Boolean> turn = new ArrayList<Boolean>();
