@@ -111,6 +111,7 @@ public class fight_handler
             fg.start();
         }
         
+        content.fight_starting = false;
         //System.out.println(field_width+"x"+field_height);
     }
     
@@ -169,7 +170,7 @@ public class fight_handler
                         checked.add(p);
                     }
                     g.drawRect(x, y, place_width, place_height);
-                    g.drawString(""+p.index,x+15,y+15);
+                    //g.drawString(""+p.index,x+15,y+15);
                     
                     // now characters + equipped items
                     if (p.cur != null) {

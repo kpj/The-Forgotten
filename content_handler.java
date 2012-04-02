@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class content_handler
 {
-    Graphics2D g;
+    Graphics2D g = null;
     public String lol = "lol";
 
     // Imp
@@ -16,6 +16,7 @@ public class content_handler
     // In fight
     ArrayList<ArrayList> field;
     Place current_selected = null;
+    boolean fight_starting = true;
     
     // In world
     ArrayList<Thing> objects = new ArrayList<Thing>();

@@ -78,6 +78,8 @@ public class Client extends Thread
             while (cur_size < size-length_size) {
                 read_bytes = in.read(ba, cur_size, Math.min(read_size, size-cur_size));
                 cur_size += read_bytes;
+                if (num == -1)
+                    System.out.println("["+cur_size+"|"+size+"]");
             }
             if (cur_size == -1) return null;
             System.out.println("[" + num + "] Read "+cur_size+" bytes");
