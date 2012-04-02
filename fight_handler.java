@@ -621,7 +621,7 @@ public class fight_handler
                 
                 content.my_turn = cur.my_turn;
                 
-                content.notification.add_noti((content.my_turn)?"Its your turn":"Wait for other players");
+                content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
             }
         }
         
