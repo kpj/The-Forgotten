@@ -14,6 +14,9 @@ public class Client extends Thread
     
     int num;
     
+    int read_size = 65536;
+    int length_size = 81; // takes 81 bytes to store Integer object
+    
     public Client(Socket socket, content_handler con, int n) {
         super("Client");
         
@@ -61,8 +64,6 @@ public class Client extends Thread
     @SuppressWarnings("unchecked")
     public Data_packet recv_data() {
         int cur_size = 0;
-        int read_size = 65536;
-        int length_size = 81; // at first the length of length-field
         int size = 0;
         try {
             InputStream in = client.getInputStream();
@@ -80,6 +81,7 @@ public class Client extends Thread
             }
             if (cur_size == -1) return null;
             System.out.println("[" + num + "] Read "+cur_size+" bytes");
+            System.out.println(ba);
             return (Data_packet)deserialize(ba);
         }
         catch (IOException e) {
@@ -114,7 +116,7 @@ public class Client extends Thread
         try {
             OutputStream out = client.getOutputStream();
             byte[] bal = serialize(dp);
-            Integer i = new Integer(bal.length + 81); // takes 81 bytes to store Integer object
+            Integer i = new Integer(bal.length + length_size);
             byte[] ball = serialize(i);
             //System.out.println("Sending "+i+" bytes");
             out.write(concat(ball, bal));
