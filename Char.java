@@ -44,7 +44,7 @@ public class Char implements Serializable
         if (prop == null) {
             // Properties
             property_std.put("geschwindigkeit", 500);
-            property_std.put("lebenspunkte", 1000);
+            property_std.put("lebenspunkte", 10000);
             property_std.put("manapunkte", 1000);
             property_std.put("ausdauerpunkte", 500);
             property_std.put("initiative", 800);
