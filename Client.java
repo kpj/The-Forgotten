@@ -81,7 +81,6 @@ public class Client extends Thread
             }
             if (cur_size == -1) return null;
             System.out.println("[" + num + "] Read "+cur_size+" bytes");
-            System.out.println(ba);
             return (Data_packet)deserialize(ba);
         }
         catch (IOException e) {

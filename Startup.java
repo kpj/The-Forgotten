@@ -11,6 +11,8 @@ public class Startup
     content_handler content = new content_handler();
     applet_handler window;
     
+    String fight_directory = "data/fights/";
+    
     JPanel panel = new JPanel(new GridLayout(0,1));
     
     JButton sp = new JButton("Singleplayer");
@@ -31,7 +33,7 @@ public class Startup
         content.window_height = 300;
         
         window = new applet_handler(content);
-        fights = new JComboBox(dirList("data/fights/"));
+        fights = new JComboBox(dirList(fight_directory));
         
         panel.add(sp);
         panel.add(new JSeparator());
@@ -73,7 +75,7 @@ public class Startup
             }
         };
         fights.addActionListener(fighties);
-        //fights.setSelectedIndex(0);
+        fights.setSelectedIndex(0);
         
         content.f.add(panel);
         content.f.pack();
@@ -102,47 +104,7 @@ public class Startup
     public void start_server() {
         System.out.println("Starting server");
         content.port = Integer.parseInt(serv_port.getText());
-        Server serv = new Server(content, chosen_fight);
-    }
-    
-    public String[] list_items(String path) {
-        URL url = getClass().getClassLoader().getResource(path);
-        
-        //System.out.println(path);
-        //System.out.println(url.getPath());
-        
-        InputStream file_stream = getClass().getResourceAsStream(path);
-        BufferedReader bufRead = new BufferedReader(new InputStreamReader(file_stream));
-        
-        ArrayList<String> out = new ArrayList<String>();
-        
-        String line = "lolz";
-        try { 
-            //while(!bufRead.ready())
-            //    System.out.println(file_stream.available());
-            line = bufRead.readLine();
-            //System.out.println(line);
-            while (line != null) {
-                out.add(line);
-                System.out.println(line);
-                line = bufRead.readLine();
-                System.out.println(line);
-                line = bufRead.readLine();
-                System.out.println(line);
-            }
-            
-            bufRead.close();
-        }
-        catch (IOException e) {
-            System.out.println("Startup: "+e);
-        }
-        catch (NullPointerException e) {
-            System.out.println("Startup: "+e);
-            e.printStackTrace();
-        }
-        String[] outar = out.toArray(new String[]{});
-
-        return outar;
+        Server serv = new Server(content, fight_directory+chosen_fight);
     }
     
     public String[] dirList(String dir){

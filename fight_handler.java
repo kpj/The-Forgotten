@@ -14,6 +14,7 @@ public class fight_handler
     boolean online;
     Client client;
     boolean loading_field = false;
+    HashMap<Integer, Place> changes = new HashMap<Integer, Place>();
     
     boolean is_over = false;
     
@@ -117,18 +118,28 @@ public class fight_handler
         p.cur = c;
     }
     public void place_char2(int pos, Char c) {
-        if (c == null) {
-            return;
-        }
         for (Object o : content.field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
                 Place p = (Place) ob;
-                if (p.index == pos)
+                if (p.index == pos) {
                     p.cur = c;
+                    //System.out.println("Set "+p.index+"'s char to "+c);
+                }
             }
         }
     }
+    public void set_place(int pos, Place p) {
+        for (Object o : content.field) {
+            ArrayList l = (ArrayList) o;
+            for (Object ob : l) {
+                Place pl = (Place) ob;
+                if (pl.index == pos)
+                    pl = p;
+            }
+        }
+    }
+    
     
     public void draw_stuff(Graphics g3, draw_anything imo) {
         // For stroke thickness
@@ -158,7 +169,7 @@ public class fight_handler
                         checked.add(p);
                     }
                     g.drawRect(x, y, place_width, place_height);
-                    //g.drawString(""+p.index,x+15,y+15);
+                    g.drawString(""+p.index,x+15,y+15);
                     
                     // now characters + equipped items
                     if (p.cur != null) {
@@ -304,6 +315,9 @@ public class fight_handler
             }
             to.cur = from.cur;
             from.cur = null;
+            
+            changes.put(to.index, to);
+            changes.put(from.index, from);
         }
         else {
             if (successful_combat) {
@@ -311,6 +325,8 @@ public class fight_handler
                 //from.cur = null;
                 to.cur = null;
             }
+            changes.put(to.index, to);
+            changes.put(from.index, from);
         }
     }
     public boolean attack_char(Place attacker, Place defender) {
@@ -353,7 +369,8 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
-            client.send_data(new Data_packet(content.field, content.my_turn, client.num));
+            client.send_data(new Data_packet(changes, content.my_turn, client.num));
+            changes.clear();
         }
     }
     
@@ -597,13 +614,22 @@ public class fight_handler
             
                 System.out.println("Received data");
                 
-                content.my_turn = cur.my_turn;
-                
                 parent.loading_field = true;
-                content.field = new ArrayList<ArrayList>(cur.field);
+                apply_changes(cur.changes);
                 parent.loading_field = false;
                 
+                content.my_turn = cur.my_turn;
+                
                 content.notification.add_noti((content.my_turn)?"Its your turn":"Wait for other players");
+            }
+        }
+        
+        public void apply_changes(HashMap<Integer, Place> ch) {
+            for (Map.Entry<Integer, Place> ob : ch.entrySet()) {
+                int i = ob.getKey();
+                Place p = ob.getValue();
+                //System.out.println("Detected change on "+i+" ("+p.cur+")");
+                parent.place_char2(i, p.cur);
             }
         }
     }
