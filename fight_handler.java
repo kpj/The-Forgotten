@@ -371,6 +371,7 @@ public class fight_handler
         if (online) {
             // Do online stuff
             client.send_data(new Data_packet(changes, content.my_turn, client.num));
+            //apply_changes(changes);
             changes.clear();
         }
     }
@@ -599,6 +600,16 @@ public class fight_handler
         }
     }
     
+    public void apply_changes(HashMap<Integer, Place> ch) {
+        loading_field = true;
+        for (Map.Entry<Integer, Place> ob : ch.entrySet()) {
+            int i = ob.getKey();
+            Place p = ob.getValue();
+            //System.out.println("Detected change on "+i+" ("+p.cur+")");
+            place_char2(i, p.cur);
+        }
+        loading_field = false;
+    }
     
     @SuppressWarnings("unchecked")
     public class Data_getter extends Thread {
@@ -615,22 +626,11 @@ public class fight_handler
             
                 System.out.println("Received data");
                 
-                parent.loading_field = true;
-                apply_changes(cur.changes);
-                parent.loading_field = false;
+                parent.apply_changes(cur.changes);
                 
                 content.my_turn = cur.my_turn;
                 
                 content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
-            }
-        }
-        
-        public void apply_changes(HashMap<Integer, Place> ch) {
-            for (Map.Entry<Integer, Place> ob : ch.entrySet()) {
-                int i = ob.getKey();
-                Place p = ob.getValue();
-                //System.out.println("Detected change on "+i+" ("+p.cur+")");
-                parent.place_char2(i, p.cur);
             }
         }
     }
