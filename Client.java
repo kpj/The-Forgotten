@@ -38,6 +38,7 @@ public class Client extends Thread
             }
             else {
                 System.out.println("Received data from inactive player #"+data.num);
+                send_to_all(data);
             }
         }
     }
@@ -89,6 +90,9 @@ public class Client extends Thread
         catch (IOException e) {
             System.out.println("error: "+e);
             e.printStackTrace();
+            return null;
+        }
+        catch (NullPointerException e) {
             return null;
         }
     }

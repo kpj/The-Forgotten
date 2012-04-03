@@ -14,6 +14,8 @@ public class Data_packet implements Serializable
 
     Map_parser mapper;
     
+    boolean nr = true;
+    
     @SuppressWarnings("unchecked")
     public Data_packet(ArrayList<ArrayList> f, boolean turn, int w, int h, String p2b, int n)
     {

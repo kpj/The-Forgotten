@@ -17,6 +17,7 @@ public class fight_handler
     HashMap<Integer, Place> changes = new HashMap<Integer, Place>();
     
     boolean is_over = false;
+    boolean new_round_sending = false;
     
     int team = -1;
     
@@ -109,8 +110,10 @@ public class fight_handler
             content.notification.add_noti("Updated field");
             
             
-            Data_getter fg = new Data_getter(this, content);
-            fg.start();
+            Data_getter dg = new Data_getter(this, content);
+            dg.start();
+            Data_setter ds = new Data_setter(this, content);
+            ds.start();
         }
         
         // Generating char pics
@@ -189,7 +192,7 @@ public class fight_handler
                             g.drawString("FOUGHT",x ,y+10);
                         }
                         if (p.cur.did_walk) {
-                            g.drawString("WALKED",x ,y+30);
+                            g.drawString("WALKED",x+50 ,y+10);
                         }
                         
                         for (Object obj : p.cur.get_equipped_items()) {
@@ -395,9 +398,11 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
+            new_round_sending = true;
             client.send_data(new Data_packet(changes, true, client.num));
             //apply_changes(changes);
             changes.clear();
+            new_round_sending = false;
         }
     }
     
@@ -625,6 +630,16 @@ public class fight_handler
         }
     }
     
+    public synchronized void update_on_the_fly() {
+        if (new_round_sending)
+            return;
+            
+        Data_packet p = new Data_packet(changes, false, client.num);
+        p.nr = false;
+        client.send_data(p);
+        changes.clear();
+    }
+    
     public void apply_changes(HashMap<Integer, Place> ch) {
         updated_changes.clear();
         loading_field = true;
@@ -651,13 +666,38 @@ public class fight_handler
             while (true) {
                 Data_packet cur = parent.client.get_existing_data();
             
-                System.out.println("Received data");
-                
-                parent.apply_changes(cur.changes);
-                
-                content.my_turn = cur.my_turn;
-                
-                content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
+                if (cur.nr) {
+                    //A new round started
+                    
+                    System.out.println("Received data");
+                    
+                    parent.apply_changes(cur.changes);
+                    
+                    content.my_turn = cur.my_turn;
+                    
+                    content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
+                }
+                else {
+                    // just updating on the fly
+                    parent.apply_changes(cur.changes);
+                }
+            }
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public class Data_setter extends Thread {
+        content_handler content;
+        fight_handler parent;
+        public Data_setter(fight_handler par, content_handler con) {
+            content = con;
+            parent = par;
+        }
+        
+        public void run() {
+            while (true) {
+                parent.update_on_the_fly();
+                try{sleep(3000);}catch(InterruptedException e){};
             }
         }
     }
