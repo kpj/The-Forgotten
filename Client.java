@@ -59,7 +59,6 @@ public class Client extends Thread
             content.turn.set(v, false);
             content.turn.set(0, true);
         }
-        System.out.println(content.turn);
     }
     
     @SuppressWarnings("unchecked")

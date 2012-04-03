@@ -59,6 +59,8 @@ public class fight_handler
     ArrayList<Place> checked;
     ArrayList<Place> unchecked;
     
+    ArrayList<Place> updated_changes = new ArrayList<Place>();
+    
     @SuppressWarnings("unchecked")
     public fight_handler(String path2fight, content_handler con, boolean on)
     {
@@ -197,6 +199,14 @@ public class fight_handler
                         g.drawImage(content.iml.pimg.get(non_walkable_image), x, y, imo);
                     }
                 }
+            }
+        }
+        
+                
+        // draw lately updated
+        if (online) {
+            for (Object o : updated_changes) {
+                draw_place(g, (Place)o, 1, Color.pink);
             }
         }
         
@@ -363,6 +373,8 @@ public class fight_handler
             return;
         }
         
+        content.my_turn = false;
+        
         content.notification.add_noti("Let the next round begin!");
         
         for (Object o : content.field) {
@@ -377,7 +389,7 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
-            client.send_data(new Data_packet(changes, content.my_turn, client.num));
+            client.send_data(new Data_packet(changes, true, client.num));
             //apply_changes(changes);
             changes.clear();
         }
@@ -608,12 +620,14 @@ public class fight_handler
     }
     
     public void apply_changes(HashMap<Integer, Place> ch) {
+        updated_changes.clear();
         loading_field = true;
         for (Map.Entry<Integer, Place> ob : ch.entrySet()) {
             int i = ob.getKey();
             Place p = ob.getValue();
             //System.out.println("Detected change on "+i+" ("+p.cur+")");
             place_char2(i, p.cur);
+            updated_changes.add(p);
         }
         loading_field = false;
     }
