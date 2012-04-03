@@ -28,6 +28,8 @@ public class Startup
 
     public Startup()
     {
+        System.out.println(get_own_name());
+        
         content.window_width = 100;
         content.window_height = 300;
         
@@ -107,10 +109,14 @@ public class Startup
     }
     
     
+    public String get_own_name() {
+        String[] tmp = getClass().getClassLoader().getResource("data").toString().split("!")[0].split("/");
+        return tmp[tmp.length-1];
+    }
+    
     public String[] dirList(String dir){
-        try{
-            //String filename = getClass().getClassLoader().getResource(getClass().getPackage().getName().replaceAll("\\.", "/")).getFile();
-            String filename = "The-Forgotten.jar";
+        try {
+            String filename = get_own_name();
             if(filename.contains(".jar")){
                 ArrayList<String> files = new ArrayList<String>();
                 String[] tmp = filename.split("!");
