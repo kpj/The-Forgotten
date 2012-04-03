@@ -185,8 +185,11 @@ public class fight_handler
                     if (p.cur != null) {
                         g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, imo);
                     
-                        if (p.cur.did_something_this_round) {
-                            g.drawString("NO MOVES LEFT",x ,y+10);
+                        if (p.cur.did_fight) {
+                            g.drawString("FOUGHT",x ,y+10);
+                        }
+                        if (p.cur.did_walk) {
+                            g.drawString("WALKED",x ,y+30);
                         }
                         
                         for (Object obj : p.cur.get_equipped_items()) {
@@ -292,10 +295,6 @@ public class fight_handler
     }
     
     public void move_char(Place from, Place to) {
-        if (from.cur.did_something_this_round) {
-            content.notification.add_noti("This character can only act in the next round.");
-            return;
-        }
         if (!(from.cur.team == team || team == -1)) {
             content.notification.add_noti("This character is not in your team");
             return;
@@ -305,32 +304,38 @@ public class fight_handler
             return;
         }
         
-        from.cur.did_something_this_round = true;
         boolean was_fighting = false;
         boolean successful_combat = false;
         if (to.cur != null) {
             if (from.cur.team == to.cur.team) {
                 // Won't interact with same team
-                from.cur.did_something_this_round = false;
                 return;
             }
             else {
                 // Is from different team
                 if (show_move_radius) {
                     // Cannot move to used field
-                    from.cur.did_something_this_round = false;
+                    return;
+                }
+                if (from.cur.did_fight) {
+                    content.notification.add_noti("Cannot fight in this round anymore");
                     return;
                 }
                 // Attack used field
                 was_fighting = true;
                 successful_combat = attack_char(from, to);
+                from.cur.did_fight = true;
             }
         }
         if (!was_fighting) {
             if (!show_move_radius) {
-                from.cur.did_something_this_round = false;
                 return;
             }
+            if (from.cur.did_walk) {
+                content.notification.add_noti("Cannot walk in this round anymore");
+                return;
+            }
+            from.cur.did_walk = true;
             to.cur = from.cur;
             from.cur = null;
             
@@ -382,7 +387,8 @@ public class fight_handler
             for (Object ob : l) {
                 Place p = (Place) ob;
                 if (p.cur != null) {
-                    p.cur.did_something_this_round = false;
+                    p.cur.did_walk = false;
+                    p.cur.did_fight = false;
                 }
             }
         }

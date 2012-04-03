@@ -21,7 +21,8 @@ public class Char implements Serializable
     HashMap<String, Integer> property_max = new HashMap<String, Integer>(); // values with equipped items
     HashMap<String, Integer> property_current = new HashMap<String, Integer>(); // values during fight
     
-    boolean did_something_this_round = false;
+    boolean did_fight = false;
+    boolean did_walk = false;
     
     @SuppressWarnings("unchecked")
     public Char(String n, float x, float y, ArrayList<String> w_i, ArrayList<String> f_i, key_set kset, int t, HashMap<String, Integer> prop)
