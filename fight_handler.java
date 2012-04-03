@@ -111,6 +111,13 @@ public class fight_handler
             fg.start();
         }
         
+        // Generating char pics
+        for (int i = 0 ; i <= field_width * field_height - 1 ; i++) {
+            Char c = get_place(i).cur;
+            if (c != null)
+                content.iml.add_img(c.name+"_fight_image", new Image_parser(c.fight_image).get_img());
+        }
+        
         content.fight_starting = false;
         //System.out.println(field_width+"x"+field_height);
     }
@@ -174,7 +181,7 @@ public class fight_handler
                     
                     // now characters + equipped items
                     if (p.cur != null) {
-                        g.drawImage(p.cur.fight_image.getImage(), x, y, imo);
+                        g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, imo);
                     
                         if (p.cur.did_something_this_round) {
                             g.drawString("NO MOVES LEFT",x ,y+10);
@@ -355,8 +362,6 @@ public class fight_handler
             content.notification.add_noti("It is not your turn");
             return;
         }
-        
-        content.my_turn = false;
         
         content.notification.add_noti("Let the next round begin!");
         

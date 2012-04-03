@@ -59,6 +59,7 @@ public class Client extends Thread
             content.turn.set(v, false);
             content.turn.set(0, true);
         }
+        System.out.println(content.turn);
     }
     
     @SuppressWarnings("unchecked")
@@ -80,10 +81,10 @@ public class Client extends Thread
                 read_bytes = in.read(ba, cur_size, Math.min(read_size, size-cur_size));
                 cur_size += read_bytes;
                 if (num == -1)
-                    System.out.println("["+cur_size+length_size+"|"+size+"]");
+                    System.out.println("["+(cur_size+length_size)+"|"+size+"] ("+read_bytes+")");
             }
             if (cur_size == -1) return null;
-            System.out.println("[" + num + "] Read "+cur_size+" bytes");
+            System.out.println("[" + num + "] Read "+(cur_size+length_size)+" bytes");
             return (Data_packet)deserialize(ba);
         }
         catch (IOException e) {

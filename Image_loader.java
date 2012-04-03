@@ -13,7 +13,14 @@ public class Image_loader
     {
         for (Object o : paths) {
             String path = (String)o;
-            pimg.put(path, new Image_parser(path).get_img());
+            add_img(path, new Image_parser(path).get_img());
         }
+    }
+    
+    public void add_img (String path, BufferedImage img) {
+        pimg.put(path, img);
+    }
+    public BufferedImage get_img(String path) {
+        return pimg.get(path);
     }
 }

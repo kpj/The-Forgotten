@@ -26,8 +26,8 @@ public class world_handler
             g.drawImage(current.get_image(), (int)current.x_pos, (int)current.y_pos, imo);
         }
     
-        for (Char current : content.characters) {
-            g.drawImage(current.get_image().getImage(), (int)current.x_pos, (int)current.y_pos, imo);
+        for (Char current : content.characters) { // ÜBERARBEITEN, SONST MASSIVE LAGGS
+            g.drawImage(new Image_parser(current.get_image()).get_img(), (int)current.x_pos, (int)current.y_pos, imo);
         }
     }
     
