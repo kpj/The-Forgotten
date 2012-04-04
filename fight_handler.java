@@ -189,7 +189,7 @@ public class fight_handler
                         g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, imo);
                     
                         if (p.cur.did_fight) {
-                            g.drawString("FOUGHT",x ,y+10);
+                            g.drawImage(content.iml.get_img("pics/Geschlagen.png"), x, y, imo);
                         }
                         if (p.cur.did_walk) {
                             g.drawString("WALKED",x+50 ,y+10);
@@ -699,7 +699,7 @@ public class fight_handler
         public void run() {
             while (true) {
                 parent.update_on_the_fly();
-                try{sleep(3000);}catch(InterruptedException e){};
+                try{sleep(7000);}catch(InterruptedException e){};
             }
         }
     }
