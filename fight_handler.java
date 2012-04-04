@@ -375,13 +375,11 @@ public class fight_handler
             return true;
         return false;
     }
-    public void next_round() {
+    public synchronized void next_round() {
         if (!content.my_turn) {
             content.notification.add_noti("It is not your turn");
             return;
         }
-        
-        content.my_turn = false;
         
         content.notification.add_noti("Let the next round begin!");
         
@@ -398,11 +396,10 @@ public class fight_handler
         
         if (online) {
             // Do online stuff
-            new_round_sending = true;
-            client.send_data(new Data_packet(changes, true, client.num));
+            //client.send_data(new Data_packet(changes, true, client.num));
             //apply_changes(changes);
-            changes.clear();
-            new_round_sending = false;
+            //changes.clear();
+            new_round_sending = true;
         }
     }
     
@@ -631,11 +628,16 @@ public class fight_handler
     }
     
     public synchronized void update_on_the_fly() {
-        if (new_round_sending)
-            return;
-            
-        Data_packet p = new Data_packet(changes, false, client.num);
-        p.nr = false;
+        if (new_round_sending) {
+            System.out.println("WANT A NEW ROUND !");
+            System.out.println(content.my_turn);
+        }
+        
+        Data_packet p = new Data_packet(changes, content.my_turn, client.num);
+        
+        p.on_the_fly = !new_round_sending;
+        new_round_sending = false;
+        
         client.send_data(p);
         changes.clear();
     }
@@ -666,7 +668,7 @@ public class fight_handler
             while (true) {
                 Data_packet cur = parent.client.get_existing_data();
             
-                if (cur.nr) {
+                if (!cur.on_the_fly) {
                     //A new round started
                     
                     System.out.println("Received data");

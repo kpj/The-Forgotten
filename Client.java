@@ -31,15 +31,21 @@ public class Client extends Thread
         while (true) {
             Data_packet data = get_existing_data();
             
-            if (data.my_turn) {
-                System.out.println("Received data from active player #"+data.num);
-                change_turn();
+            if (data.on_the_fly) {
+                System.out.println("on the fly update");
                 send_to_all(data);
             }
             else {
-                System.out.println("Received data from inactive player #"+data.num);
-                send_to_all(data);
+                if (data.my_turn) {
+                    System.out.println("Received data from active player #"+data.num);
+                    change_turn();
+                    send_to_all(data);
+                }
+                else {
+                    System.out.println("Received data from inactive player #"+data.num);
+                }
             }
+            System.out.println("----");
         }
     }
     

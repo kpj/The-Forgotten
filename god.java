@@ -74,8 +74,12 @@ public class god implements Runnable
         }
     }
     
+    public String get_own_name() {
+        String[] tmp = getClass().getClassLoader().getResource("data").toString().split("!")[0].split("/");
+        return tmp[tmp.length-1];
+    }
     public ArrayList<String> list_all(String end) {
-        String filename = "The-Forgotten.jar";
+        String filename = get_own_name();
         ArrayList<String> out = new ArrayList<String>();
 
         try {
