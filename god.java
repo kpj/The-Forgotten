@@ -78,12 +78,23 @@ public class god implements Runnable
         String[] tmp = getClass().getClassLoader().getResource("data").toString().split("!")[0].split("/");
         return tmp[tmp.length-1];
     }
+    public String get_own_path() {
+        String tmp = getClass().getClassLoader().getResource("data").toString().split("!")[0];
+        tmp = tmp.replaceFirst("jar:file:", "");
+        String[] ump = tmp.split("/");
+        String out = "";
+        for (int i = 0 ; i < ump.length-1 ; i++) {
+            out += ump[i];
+            out += "/";
+        }
+        return out;
+    }
     public ArrayList<String> list_all(String end) {
         String filename = get_own_name();
         ArrayList<String> out = new ArrayList<String>();
 
         try {
-            java.util.jar.JarFile jarFile = new java.util.jar.JarFile(filename);
+            java.util.jar.JarFile jarFile = new java.util.jar.JarFile(get_own_path()+filename);
             Enumeration<JarEntry> entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 java.util.zip.ZipEntry entry = entries.nextElement();
