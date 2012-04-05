@@ -8,6 +8,7 @@ public class menu_handler
     int x, y, x2, y2;
     
     int menu_height = 170;
+    int menu_height_changer = 0;
 
     public menu_handler(content_handler con)
     {
@@ -18,6 +19,13 @@ public class menu_handler
     public void calc_edges() {
         x = 0;
         y = content.window_height - menu_height;
+        if (content.window_height - menu_height <= 20) {
+            y = (int)content.window_height/4;
+            menu_height_changer = content.window_height - y - menu_height;
+        }
+        else {
+            menu_height_changer = 0;
+        }
         
         x2 = content.window_width;
         y2 = content.window_height;
@@ -29,7 +37,7 @@ public class menu_handler
         Graphics2D g = (Graphics2D)g3;
         
         g.setColor(Color.darkGray);
-        g.fillRect(x, y, content.window_width, menu_height);
+        g.fillRect(x, y, content.window_width, menu_height + menu_height_changer);
         g.setColor(Color.black);
         
         g.drawString((content.my_turn)?"Press \"n\" for next round!":"Wait for other players", x2 - 200, y + 15);
