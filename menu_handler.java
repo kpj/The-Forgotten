@@ -5,7 +5,7 @@ public class menu_handler
 {
     content_handler content;
     
-    int x, y;
+    int x, y, x2, y2;
     
     int menu_height = 170;
 
@@ -18,16 +18,21 @@ public class menu_handler
     public void calc_edges() {
         x = 0;
         y = content.window_height - menu_height;
+        
+        x2 = content.window_width;
+        y2 = content.window_height;
     }
     
     public void draw_stuff(Graphics g3, draw_anything imo) {
+        calc_edges();
+        
         Graphics2D g = (Graphics2D)g3;
         
         g.setColor(Color.darkGray);
         g.fillRect(x, y, content.window_width, menu_height);
         g.setColor(Color.black);
         
-        g.drawString((content.my_turn)?"Press \"n\" for next round!":"Wait for other players", x + 700, y + 15);
+        g.drawString((content.my_turn)?"Press \"n\" for next round!":"Wait for other players", x2 - 200, y + 15);
         
         if (content.current_selected == null) {
             g.drawString("No character selected.", x + 5, y + 15);

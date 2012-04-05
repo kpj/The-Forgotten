@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
 
-public class applet_handler implements KeyListener, MouseListener, MouseMotionListener
+public class applet_handler implements KeyListener, MouseListener, MouseMotionListener, ComponentListener
 {
     content_handler content;
     draw_anything drawer;
@@ -33,6 +33,7 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         content.f.addMouseListener(this);
         content.f.addMouseMotionListener(this);
         content.f.addKeyListener(this);
+        content.f.addComponentListener(this);
         
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         content.f.setLocation((int)d.getWidth()/2 - content.window_width/2, (int)d.getHeight()/2 - content.window_height/2);
@@ -165,4 +166,38 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
 
     @Override
     public void keyTyped(KeyEvent e) {/* Not used */ }
+    
+    
+    public void componentHidden(ComponentEvent e) {
+	/*System.out.println("componentHidden event from "
+		       + e.getComponent().getClass().getName());*/
+    }
+
+    public void componentMoved(ComponentEvent e) {
+        Component c = e.getComponent();
+        /*System.out.println("componentMoved event from "
+                       + c.getClass().getName()
+                       + "; new location: "
+                       + c.getLocation().x
+                       + ", "
+                       + c.getLocation().y);*/
+    }
+
+    public void componentResized(ComponentEvent e) {
+        Component c = e.getComponent();
+        /*System.out.println("componentResized event from "
+                       + c.getClass().getName()
+                       + "; new size: "
+                       + c.getSize().width
+                       + ", "
+                       + c.getSize().height);*/
+        content.window_width = c.getSize().width;
+        content.window_height = c.getSize().height;
+    }
+
+    public void componentShown(ComponentEvent e) {
+	/*System.out.println("componentShown event from "
+		       + e.getComponent().getClass().getName());*/
+    }
+
 }

@@ -20,11 +20,13 @@ public class notification_handler
     }
     
     public void calc_edges() {
-        x = (int)content.window_width/3;
+        x = 3;
         y = 0;
     }
     
     public void draw_stuff(Graphics g3, draw_anything imo) {
+        calc_edges();
+        
         Graphics2D g = (Graphics2D)g3;
         
         for (Object o : noti) {
@@ -38,7 +40,7 @@ public class notification_handler
     }
     
     public void add_noti(String msg) {
-        noti.add(new noti_box(msg, duration, new Date().getTime(), x, y + noti.size()*15, content.window_width/3, 40));
+        noti.add(new noti_box(msg, duration, new Date().getTime(), x, noti.size()*17, 3, 40));
     }
 
 
@@ -68,9 +70,9 @@ public class notification_handler
         
         public void draw(Graphics2D g) {
             g.setColor(Color.blue);
-            g.fillRect(x, y, w, h);
+            g.fillRect((int)content.window_width/x, 0 + y, (int)content.window_width/w, h);
             g.setColor(Color.black);
-            g.drawString(cap, x + 20, y + 15);
+            g.drawString(cap, (int)content.window_width/x + 20, 0 + y + 15);
             
             if(!still_exists()) {
                 kill_me = true;
