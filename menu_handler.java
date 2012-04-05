@@ -49,24 +49,24 @@ public class menu_handler
             Char c;
             try {
                 c = content.current_selected.cur;
+    
+                g.drawString(c.name, x + 5, y + 15);
+                
+                int upper = 0;
+                for (Map.Entry<String, Integer> ob : c.property_current.entrySet()) {
+                    g.drawString(ob.getKey() + " : " + ob.getValue(), x + 100, y + 40 + upper);
+                    upper += 12;
+                }
+                
+                upper = 0;
+                for (Object o : c.items) {
+                    Item i = (Item)o;
+                    g.drawString(i.name + " (" + ((i.is_in_use)?"Equipped":"Not equipped") + ")", x + 300, y + 40 + upper);
+                    upper += 12;
+                }
             }
             catch (java.lang.NullPointerException e) {
                 return;
-            }
-
-            g.drawString(c.name, x + 5, y + 15);
-            
-            int upper = 0;
-            for (Map.Entry<String, Integer> ob : c.property_current.entrySet()) {
-                g.drawString(ob.getKey() + " : " + ob.getValue(), x + 100, y + 40 + upper);
-                upper += 12;
-            }
-            
-            upper = 0;
-            for (Object o : c.items) {
-                Item i = (Item)o;
-                g.drawString(i.name + " (" + ((i.is_in_use)?"Equipped":"Not equipped") + ")", x + 300, y + 40 + upper);
-                upper += 12;
             }
         }
     }
