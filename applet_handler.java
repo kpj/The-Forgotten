@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
 
-public class applet_handler implements KeyListener, MouseListener, MouseMotionListener, ComponentListener
+public class applet_handler implements KeyListener, MouseListener, MouseMotionListener, ComponentListener, MouseWheelListener
 {
     content_handler content;
     draw_anything drawer;
@@ -34,6 +34,7 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         content.f.addMouseMotionListener(this);
         content.f.addKeyListener(this);
         content.f.addComponentListener(this);
+        content.f.addMouseWheelListener(this);
         
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         content.f.setLocation((int)d.getWidth()/2 - content.window_width/2, (int)d.getHeight()/2 - content.window_height/2);
@@ -168,9 +169,11 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     public void keyTyped(KeyEvent e) {/* Not used */ }
     
     
+    
+    // stuff for window interactions
     public void componentHidden(ComponentEvent e) {
-	/*System.out.println("componentHidden event from "
-		       + e.getComponent().getClass().getName());*/
+    /*System.out.println("componentHidden event from "
+               + e.getComponent().getClass().getName());*/
     }
 
     public void componentMoved(ComponentEvent e) {
@@ -196,8 +199,16 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     }
 
     public void componentShown(ComponentEvent e) {
-	/*System.out.println("componentShown event from "
-		       + e.getComponent().getClass().getName());*/
+    /*System.out.println("componentShown event from "
+               + e.getComponent().getClass().getName());*/
     }
-
+    
+    
+    // stuff for mousewheel
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        int notches = e.getWheelRotation();
+       
+        if (content.fight_active)
+            content.fight.mousewheel_used(e.getUnitsToScroll());    
+    }
 }

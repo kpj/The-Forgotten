@@ -23,6 +23,8 @@ public class fight_handler
     boolean my_tmp_turn = true;
     
     // field
+    float scale = 0;
+    int scroll_speed = 2;
     int field_width;
     int field_height;
     int place_width = 100;
@@ -174,6 +176,8 @@ public class fight_handler
                 
                     int x = calc_offset(p.index).get(0);
                     int y = calc_offset(p.index).get(1);
+                    place_width = Math.round( 100 + scale );
+                    place_height = Math.round( 100 + scale );
                     
                     //System.out.println(p.index + " at: " + x + " | " + y);
                     g.setStroke(new BasicStroke(4));
@@ -186,10 +190,10 @@ public class fight_handler
                     
                     // now characters + equipped items
                     if (p.cur != null) {
-                        g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, imo);
+                        g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, place_width, place_height, imo);
                     
                         if (p.cur.did_fight) {
-                            g.drawImage(content.iml.get_img("pics/Geschlagen.png"), x, y, imo);
+                            g.drawImage(content.iml.get_img("pics/Geschlagen.png"), x, y, place_width, place_height, imo);
                         }
                         if (p.cur.did_walk) {
                             g.drawString("WALKED",x+50 ,y+10);
@@ -198,11 +202,11 @@ public class fight_handler
                         for (Object obj : p.cur.get_equipped_items()) {
                             Item i = (Item)obj;
                             
-                            g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, imo);
+                            g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
                         }
                     }
                     else if (p.special.equals("NON-WALKABLE")) {
-                        g.drawImage(content.iml.pimg.get(non_walkable_image), x, y, imo);
+                        g.drawImage(content.iml.pimg.get(non_walkable_image), x, y, place_width, place_height, imo);
                     }
                 }
             }
@@ -632,6 +636,11 @@ public class fight_handler
                 break;
             }
         }
+    }
+    
+    public void mousewheel_used (int amount) {
+        if (amount > 0) scale += scroll_speed;
+        if (amount < 0) scale -= scroll_speed;
     }
     
     public synchronized void update_on_the_fly() {
