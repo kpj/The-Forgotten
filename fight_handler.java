@@ -20,6 +20,7 @@ public class fight_handler
     boolean new_round_sending = false;
     
     int team = -1;
+    boolean my_tmp_turn = true;
     
     // field
     int field_width;
@@ -90,12 +91,11 @@ public class fight_handler
                 System.exit(-1);
             }
             System.out.println("Connected to \""+content.ip+":"+content.port+"\"");
-   
             
             Data_packet cur = client.get_existing_data();
             client.num = cur.num;
             
-            System.out.println("Acknowledged by server");
+            System.out.println("Acknowledged by server as #" + client.num);
             content.my_turn = cur.my_turn;
             team = cur.num;
             
@@ -383,6 +383,15 @@ public class fight_handler
         
         content.notification.add_noti("Let the next round begin!");
         
+        make_chars_ready();
+        
+        if (online) {
+            new_round_sending = true;
+            content.my_turn = false;
+        }
+    }
+    
+    public void make_chars_ready() {
         for (Object o : content.field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
@@ -392,14 +401,6 @@ public class fight_handler
                     p.cur.did_fight = false;
                 }
             }
-        }
-        
-        if (online) {
-            // Do online stuff
-            //client.send_data(new Data_packet(changes, true, client.num));
-            //apply_changes(changes);
-            //changes.clear();
-            new_round_sending = true;
         }
     }
     
@@ -634,15 +635,13 @@ public class fight_handler
     }
     
     public synchronized void update_on_the_fly() {
-        if (new_round_sending) {
-            System.out.println("WANT A NEW ROUND !");
-            System.out.println(content.my_turn);
-        }
-        
-        Data_packet p = new Data_packet(changes, content.my_turn, client.num);
+        Data_packet p = new Data_packet(changes, my_tmp_turn, client.num);
         
         p.on_the_fly = !new_round_sending;
-        new_round_sending = false;
+        if (new_round_sending) {
+            new_round_sending = false;
+            my_tmp_turn = false;
+        }
         
         client.send_data(p);
         changes.clear();
@@ -680,8 +679,10 @@ public class fight_handler
                     System.out.println("Received data");
                     
                     parent.apply_changes(cur.changes);
+                    parent.make_chars_ready();
                     
                     content.my_turn = cur.my_turn;
+                    my_tmp_turn = content.my_turn;
                     
                     content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
                 }

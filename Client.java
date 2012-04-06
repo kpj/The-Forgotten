@@ -17,6 +17,9 @@ public class Client extends Thread
     int read_size = 65536;
     int length_size = 81; // takes 81 bytes to store Integer object
     
+    int cur_size = 0;
+    int size = 0;
+    
     public Client(Socket socket, content_handler con, int n) {
         super("Client");
         
@@ -70,8 +73,8 @@ public class Client extends Thread
     
     @SuppressWarnings("unchecked")
     public Data_packet recv_data() {
-        int cur_size = 0;
-        int size = 0;
+        size = 0;
+        cur_size = 0;
         try {
             InputStream in = client.getInputStream();
             byte[] ba = new byte[length_size];
@@ -111,16 +114,19 @@ public class Client extends Thread
     
     @SuppressWarnings("unchecked")
     public synchronized void send_to_all(Data_packet cur) {
-        int counter = 0;
         for (Object o : content.connected) {
             Client c = (Client)o;
-            //if (c == this)
-            //    break;
-            System.out.println("Sending to "+c.name);
-            cur.my_turn = content.turn.get(counter);
-            c.send_data(cur);
+            System.out.print("["+num+"->"+c.num+"] ");
+            if (c.num == num && content.connected.size() > 1) {
+                System.out.println("!");
+                continue;
+            }
             
-            counter++;
+            System.out.println("Sending to "+c.name);
+            cur.my_turn = content.turn.get(c.num - 1);
+            //System.out.println(cur.my_turn +"->"+ c.num);
+            
+            c.send_data(cur);
         }
     }
     
@@ -130,7 +136,7 @@ public class Client extends Thread
             byte[] bal = serialize(dp);
             Integer i = new Integer(bal.length + length_size);
             byte[] ball = serialize(i);
-            System.out.println("Sending "+i+" bytes");
+            System.out.println(" Sending "+i+" bytes");
             out.write(concat(ball, bal));
         }
         catch (IOException e) {
@@ -168,7 +174,7 @@ public class Client extends Thread
         catch (IOException e) {
             //System.out.println("[DES] error: "+e);
             //e.printStackTrace();
-            System.out.println("I think somebody disconnected");
+            //System.out.println("I think somebody disconnected");
             return null;
         }
         catch (ClassNotFoundException e) {

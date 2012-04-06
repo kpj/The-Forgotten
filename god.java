@@ -19,7 +19,6 @@ public class god implements Runnable
         content.window = new applet_handler(content);
         content.iml = new Image_loader(list_all("png"));
         
-        draw();
         new Thread(this).start();
     }
     
@@ -32,8 +31,7 @@ public class god implements Runnable
     
     public void update() {
         t++;
-        draw();
-        
+        content.window.repaint();
         if (content.fight_active){
             // Fight is taking place
             
@@ -59,10 +57,6 @@ public class god implements Runnable
             // We are in map
             
         }
-    }
-    
-    public void draw() {
-        content.window.repaint();
     }
     
     public void sleep(int t) {
