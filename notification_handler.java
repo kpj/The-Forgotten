@@ -13,6 +13,8 @@ public class notification_handler
     ArrayList<noti_box> to_rm = new ArrayList<noti_box>();
     long duration = 2;
     
+    boolean is_drawing = false;
+    
     public notification_handler(content_handler con)
     {
         content = con;
@@ -24,19 +26,24 @@ public class notification_handler
         y = 0;
     }
     
-    public void draw_stuff(Graphics g3, draw_anything imo) {
-        calc_edges();
-        
-        Graphics2D g = (Graphics2D)g3;
-        
-        for (Object o : noti) {
-            noti_box n = (noti_box)o;
-            if (n.kill_me)
-                to_rm.add(n);
-            n.draw(g);
+    public synchronized void draw_stuff(Graphics g3, draw_anything imo) {
+        try {
+            calc_edges();
+            
+            Graphics2D g = (Graphics2D)g3;
+            
+            for (Object o : noti) {
+                noti_box n = (noti_box)o;
+                if (n.kill_me)
+                    to_rm.add(n);
+                n.draw(g);
+            }
+            noti.removeAll(to_rm);
+            to_rm.clear();
         }
-        noti.removeAll(to_rm);
-        to_rm.clear();
+        catch (ConcurrentModificationException e) {
+            
+        }
     }
     
     public void add_noti(String msg) {

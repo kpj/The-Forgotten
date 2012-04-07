@@ -186,28 +186,31 @@ public class fight_handler
                         checked.add(p);
                     }
                     g.drawRect(x, y, place_width, place_height);
-                    g.drawString(""+p.index,x+15,y+15);
+                    //g.drawString(""+p.index,x+15,y+15);
                     
                     // now characters + equipped items
-                    if (p.cur != null) {
-                        g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, place_width, place_height, imo);
-                    
-                        if (p.cur.did_fight) {
-                            g.drawImage(content.iml.get_img("pics/Geschlagen.png"), x, y, place_width, place_height, imo);
-                        }
-                        if (p.cur.did_walk) {
-                            g.drawString("WALKED",x+50 ,y+10);
-                        }
+                    try {
+                        if (p.cur != null) {
+                            g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, place_width, place_height, imo);
                         
-                        for (Object obj : p.cur.get_equipped_items()) {
-                            Item i = (Item)obj;
+                            if (p.cur.did_fight) {
+                                g.drawImage(content.iml.get_img("pics/Geschlagen.png"), x, y, place_width, place_height, imo);
+                            }
+                            if (p.cur.did_walk) {
+                                g.drawString("WALKED",x+50 ,y+10);
+                            }
                             
-                            g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
+                            for (Object obj : p.cur.get_equipped_items()) {
+                                Item i = (Item)obj;
+                                
+                                g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
+                            }
+                        }
+                        else if (p.special.equals("NON-WALKABLE")) {
+                            g.drawImage(content.iml.pimg.get(non_walkable_image), x, y, place_width, place_height, imo);
                         }
                     }
-                    else if (p.special.equals("NON-WALKABLE")) {
-                        g.drawImage(content.iml.pimg.get(non_walkable_image), x, y, place_width, place_height, imo);
-                    }
+                    catch (NullPointerException e ) {}
                 }
             }
         }
