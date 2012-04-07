@@ -304,14 +304,16 @@ public class fight_handler
         return Math.abs(xi1-xi2)+Math.abs(yi1-yi2);
     }
     
-    public void move_char(Place from, Place to) {
-        if (!(from.cur.team == team || team == -1)) {
-            content.notification.add_noti("This character is not in your team");
-            return;
-        }
-        if (!content.my_turn) {
-            content.notification.add_noti("It is not your turn");
-            return;
+    public void move_char(Place from, Place to, boolean human) {
+        if (human) {
+            if (!(from.cur.team == team || team == -1)) {
+                content.notification.add_noti("This character is not in your team");
+                return;
+            }
+            if (!content.my_turn) {
+                content.notification.add_noti("It is not your turn");
+                return;
+            }
         }
         
         boolean was_fighting = false;
@@ -328,7 +330,8 @@ public class fight_handler
                     return;
                 }
                 if (from.cur.did_fight) {
-                    content.notification.add_noti("Cannot fight in this round anymore");
+                    if (human)
+                        content.notification.add_noti("Cannot fight in this round anymore");
                     return;
                 }
                 // Attack used field
@@ -342,7 +345,8 @@ public class fight_handler
                 return;
             }
             if (from.cur.did_walk) {
-                content.notification.add_noti("Cannot walk in this round anymore");
+                if (human)
+                    content.notification.add_noti("Cannot walk in this round anymore");
                 return;
             }
             from.cur.did_walk = true;
@@ -537,10 +541,7 @@ public class fight_handler
                     
                     if( op.cur != null && op.cur.team != curp.cur.team) {
                         // Found char of different team
-                        curp.cur.did_fight = true;
-                        if (attack_char(curp, op)) {
-                            op.cur = null;
-                        }
+                        move_char(curp, op, false);
                     }
                 }
                 
@@ -563,9 +564,7 @@ public class fight_handler
                         Place pay = (Place)ob;
                         if (curp.cur != null && op.index == pay.index) {
                             //System.out.println(curp.index+" to "+op.index);
-                            curp.cur.did_walk = true;
-                            op.cur = curp.cur;
-                            curp.cur = null;
+                            move_char(curp, op, false);
                             break;
                         }
                     }
@@ -584,9 +583,7 @@ public class fight_handler
                         
                         if( op.cur != null && op.cur.team != curp.cur.team) {
                             // Found char of different team
-                            if (attack_char(curp, op)) {
-                                op.cur = null;
-                            }
+                            move_char(curp, op, false);
                         }
                     }
                 }
@@ -796,7 +793,7 @@ public class fight_handler
                         
                         if(r.contains(content.mouse_x, content.mouse_y)) {
                             if(in_reach.contains(p)) {
-                                move_char(in_reach.get(0), p);
+                                move_char(in_reach.get(0), p, true);
                             }
                         }
                     }
