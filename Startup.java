@@ -28,7 +28,7 @@ public class Startup
 
     public Startup()
     {
-        System.out.println(get_own_name());
+        System.out.println(get_own_path() + " " + get_own_name());
         
         content.window_width = 100;
         content.window_height = 300;
@@ -113,6 +113,17 @@ public class Startup
         String[] tmp = getClass().getClassLoader().getResource("data").toString().split("!")[0].split("/");
         return tmp[tmp.length-1];
     }
+    public String get_own_path() {
+        String tmp = getClass().getClassLoader().getResource("data").toString().split("!")[0];
+        tmp = tmp.replaceFirst("jar:file:", "");
+        String[] ump = tmp.split("/");
+        String out = "";
+        for (int i = 0 ; i < ump.length-1 ; i++) {
+            out += ump[i];
+            out += "/";
+        }
+        return out;
+    }
     
     public String[] dirList(String dir){
         try {
@@ -122,7 +133,7 @@ public class Startup
                 String[] tmp = filename.split("!");
                 filename=tmp[0].replaceFirst("file:/", "");                     
 
-                java.util.jar.JarFile jarFile = new java.util.jar.JarFile(filename);
+                java.util.jar.JarFile jarFile = new java.util.jar.JarFile(get_own_path()+filename);
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while (entries.hasMoreElements())
                 {

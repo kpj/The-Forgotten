@@ -6,6 +6,7 @@ public class Place implements Serializable
     int index;
     boolean checked = false;
     String special = "NOTHING";
+    Place ancestor = null;
 
     public Place(Char on, int ind)
     {

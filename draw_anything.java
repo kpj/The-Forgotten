@@ -18,10 +18,6 @@ public class draw_anything extends JComponent
     Graphics bufG;
     
     Image bg_image;
-    
-    int window_width, window_height;
-    int bg_x_change = 1000;
-    int bg_y_change = 1000;
 
     public draw_anything(content_handler con)
     {
@@ -66,13 +62,5 @@ public class draw_anything extends JComponent
             content.menu.draw_stuff(g, this);
         if (content.notification != null)
             content.notification.draw_stuff(g, this);
-    }
-    
-    public void help_with_bg(Image bg_img, int ww, int wh, int cx, int cy) {
-        bg_image = bg_img;
-        window_width = ww;
-        window_height = wh;
-        bg_x_change -= cx;
-        bg_y_change -= cy;
     }
 }

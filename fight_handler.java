@@ -19,9 +19,12 @@ public class fight_handler
     boolean is_over = false;
     boolean new_round_sending = false;
     
-    int team = -1;
+    int team = 1;
+    boolean my_tmp_turn = true;
     
     // field
+    float scale = 0;
+    int scroll_speed = 2;
     int field_width;
     int field_height;
     int place_width = 100;
@@ -90,12 +93,11 @@ public class fight_handler
                 System.exit(-1);
             }
             System.out.println("Connected to \""+content.ip+":"+content.port+"\"");
-   
             
             Data_packet cur = client.get_existing_data();
             client.num = cur.num;
             
-            System.out.println("Acknowledged by server");
+            System.out.println("Acknowledged by server as #" + client.num);
             content.my_turn = cur.my_turn;
             team = cur.num;
             
@@ -174,6 +176,8 @@ public class fight_handler
                 
                     int x = calc_offset(p.index).get(0);
                     int y = calc_offset(p.index).get(1);
+                    place_width = Math.round( 100 + scale );
+                    place_height = Math.round( 100 + scale );
                     
                     //System.out.println(p.index + " at: " + x + " | " + y);
                     g.setStroke(new BasicStroke(4));
@@ -185,25 +189,28 @@ public class fight_handler
                     //g.drawString(""+p.index,x+15,y+15);
                     
                     // now characters + equipped items
-                    if (p.cur != null) {
-                        g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, imo);
-                    
-                        if (p.cur.did_fight) {
-                            g.drawString("FOUGHT",x ,y+10);
-                        }
-                        if (p.cur.did_walk) {
-                            g.drawString("WALKED",x+50 ,y+10);
-                        }
+                    try {
+                        if (p.cur != null) {
+                            g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, place_width, place_height, imo);
                         
-                        for (Object obj : p.cur.get_equipped_items()) {
-                            Item i = (Item)obj;
+                            if (p.cur.did_fight) {
+                                g.drawImage(content.iml.get_img("pics/Geschlagen.png"), x, y, place_width, place_height, imo);
+                            }
+                            if (p.cur.did_walk) {
+                                g.drawString("WALKED",x+50 ,y+10);
+                            }
                             
-                            g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, imo);
+                            for (Object obj : p.cur.get_equipped_items()) {
+                                Item i = (Item)obj;
+                                
+                                g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
+                            }
+                        }
+                        else if (p.special.equals("NON-WALKABLE")) {
+                            g.drawImage(content.iml.pimg.get(non_walkable_image), x, y, place_width, place_height, imo);
                         }
                     }
-                    else if (p.special.equals("NON-WALKABLE")) {
-                        g.drawImage(content.iml.pimg.get(non_walkable_image), x, y, imo);
-                    }
+                    catch (NullPointerException e ) {}
                 }
             }
         }
@@ -297,14 +304,16 @@ public class fight_handler
         return Math.abs(xi1-xi2)+Math.abs(yi1-yi2);
     }
     
-    public void move_char(Place from, Place to) {
-        if (!(from.cur.team == team || team == -1)) {
-            content.notification.add_noti("This character is not in your team");
-            return;
-        }
-        if (!content.my_turn) {
-            content.notification.add_noti("It is not your turn");
-            return;
+    public void move_char(Place from, Place to, boolean human) {
+        if (human) {
+            if (!(from.cur.team == team || team == -1)) {
+                content.notification.add_noti("This character is not in your team");
+                return;
+            }
+            if (!content.my_turn) {
+                content.notification.add_noti("It is not your turn");
+                return;
+            }
         }
         
         boolean was_fighting = false;
@@ -321,7 +330,8 @@ public class fight_handler
                     return;
                 }
                 if (from.cur.did_fight) {
-                    content.notification.add_noti("Cannot fight in this round anymore");
+                    if (human)
+                        content.notification.add_noti("Cannot fight in this round anymore");
                     return;
                 }
                 // Attack used field
@@ -335,7 +345,8 @@ public class fight_handler
                 return;
             }
             if (from.cur.did_walk) {
-                content.notification.add_noti("Cannot walk in this round anymore");
+                if (human)
+                    content.notification.add_noti("Cannot walk in this round anymore");
                 return;
             }
             from.cur.did_walk = true;
@@ -383,6 +394,20 @@ public class fight_handler
         
         content.notification.add_noti("Let the next round begin!");
         
+        make_chars_ready();
+        
+        if (online) {
+            new_round_sending = true;
+            content.my_turn = false;
+        }
+        else {
+            can_modify = false;
+            let_ai_happen();
+            can_modify = true;
+        }
+    }
+    
+    public void make_chars_ready() {
         for (Object o : content.field) {
             ArrayList l = (ArrayList) o;
             for (Object ob : l) {
@@ -392,14 +417,6 @@ public class fight_handler
                     p.cur.did_fight = false;
                 }
             }
-        }
-        
-        if (online) {
-            // Do online stuff
-            //client.send_data(new Data_packet(changes, true, client.num));
-            //apply_changes(changes);
-            //changes.clear();
-            new_round_sending = true;
         }
     }
     
@@ -424,68 +441,77 @@ public class fight_handler
                         multiple_units_selected = true;
                         return;
                     }
-                    
+
                     can_modify = false;
                     in_reach = Collections.synchronizedList(new ArrayList<Place>());
                     in_reach.add(p); // to know, who is in the center
                     
-                    String imp_fac = "attackenreichweite";
-                    if (show_move_radius) {
-                        imp_fac = "geschwindigkeit";
+                    for (Object ob : get_reachable_places(p)) {
+                        in_reach.add((Place)ob);
                     }
-                    
-                    int max_dist = (int)Math.floor((p.cur.property_current.get(imp_fac)/100));
 
-                    ArrayList<Place> working_p = new ArrayList<Place>();
-                    ArrayList<Integer> working_i = new ArrayList<Integer>();
-                    
-                    working_p.add(p);
-                    working_i.add(0);
-                    
-                    can_modify = false;
-                    while (working_p.size() > 0) {
-                        Place current_p = working_p.get(0);
-                        int current_i = working_i.get(0);
-                        
-                        for (Object oOo : get_bordering_places(current_p)) {
-                            Place pl = (Place)oOo;
-                            
-                            if (show_move_radius) {
-                                if (current_i < max_dist && pl.cur == null && !pl.special.equals("NON-WALKABLE")) {
-                                    //System.out.println(current_p.index+": "+pl.index);
-                                    working_p.add(pl);
-                                    working_i.add(working_i.get(0) + 1);
-                                }
-                            }
-                            else {
-                                if (pl.cur == null) {
-                                    if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
-                                        //System.out.println(current_p.index+": "+pl.index);
-                                        working_p.add(pl);
-                                        working_i.add(working_i.get(0) + 1);
-                                    }
-                                }
-                                else if (!in_reach.isEmpty() && (pl.cur.team != in_reach.get(0).cur.team || pl.cur.team == in_reach.get(0).cur.team)) {
-                                    if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
-                                        //System.out.println(current_p.index+": "+pl.index);
-                                        working_p.add(pl);
-                                        working_i.add(working_i.get(0) + 1);
-                                    }
-                                }
-                            }
-                        }
-                        //System.out.println(current_p.index+": "+current_i + "/"+max_dist +"  ("+working_p.size()+")");
-                        
-                        in_reach.add(current_p);
-                        working_p.remove(0);
-                        working_i.remove(0);
-                    }
                     can_modify = true;
                     p.checked = false;
                 }
             }
         }
     }
+    public ArrayList<Place> get_reachable_places(Place middle) {
+        String imp_fac = "attackenreichweite";
+        if (show_move_radius) {
+            imp_fac = "geschwindigkeit";
+        }
+
+        int max_dist = (int)Math.floor((middle.cur.property_current.get(imp_fac)/100));
+
+        ArrayList<Place> output = new ArrayList<Place>();
+        
+        ArrayList<Place> working_p = new ArrayList<Place>();
+        ArrayList<Integer> working_i = new ArrayList<Integer>();
+        
+        working_p.add(middle);
+        working_i.add(0);
+        
+        while (working_p.size() > 0) {
+            Place current_p = working_p.get(0);
+            int current_i = working_i.get(0);
+            
+            for (Object oOo : get_bordering_places(current_p)) {
+                Place pl = (Place)oOo;
+                
+                if (show_move_radius) {
+                    if (current_i < max_dist && pl.cur == null && !pl.special.equals("NON-WALKABLE")) {
+                        //System.out.println(current_p.index+": "+pl.index);
+                        working_p.add(pl);
+                        working_i.add(working_i.get(0) + 1);
+                    }
+                }
+                else {
+                    if (pl.cur == null) {
+                        if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
+                            //System.out.println(current_p.index+": "+pl.index);
+                            working_p.add(pl);
+                            working_i.add(working_i.get(0) + 1);
+                        }
+                    }
+                    else if (!in_reach.isEmpty() && (pl.cur.team != in_reach.get(0).cur.team || pl.cur.team == in_reach.get(0).cur.team)) {
+                        if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
+                            //System.out.println(current_p.index+": "+pl.index);
+                            working_p.add(pl);
+                            working_i.add(working_i.get(0) + 1);
+                        }
+                    }
+                }
+            }
+            //System.out.println(current_p.index+": "+current_i + "/"+max_dist +"  ("+working_p.size()+")");
+            
+            output.add(current_p);
+            working_p.remove(0);
+            working_i.remove(0);
+        }
+        return output;
+    }
+    
     public HashMap<Place, Integer> make_hashmap(Place p, int i) {
         HashMap<Place, Integer> ret = new HashMap<Place, Integer>();
         ret.put(p, i);
@@ -495,6 +521,253 @@ public class fight_handler
     public void do_online_stuff() {
         
     }
+    
+    public void let_ai_happen() {
+        for (int i = 0 ; i < field_width*field_height-1 ; i++) {
+            Place curp = get_place(i);
+            if (curp.cur != null && curp.cur.team != team && team != -1) {
+                in_reach.clear();
+                in_reach.add(curp);
+                
+                // Someone next to him?
+                show_move_radius = false;
+                
+                for (Object o : get_reachable_places(curp)) {
+                    Place op = (Place)o;
+                    
+                    if (op.index == curp.index) {
+                        continue;
+                    }
+                    
+                    if( op.cur != null && op.cur.team != curp.cur.team) {
+                        // Found char of different team
+                        move_char(curp, op, false);
+                    }
+                }
+                
+                // Someone he might move towards?
+                ArrayList<Place> places_next_to_enemy = new ArrayList<Place>();
+                for (int ii = 0 ; ii < field_width*field_height-1 ; ii++) {
+                    Place pe = get_place(ii);
+                    if (pe.cur == null) continue;
+                    if (curp.cur.team != pe.cur.team) {
+                        for (Object o : get_bordering_places(pe)) {
+                            places_next_to_enemy.add((Place)o);
+                        }
+                    }
+                }
+                show_move_radius = true;
+                for (Object o : get_reachable_places(curp)) {
+                    Place op = (Place)o;
+                    if (op.index == curp.index) continue;
+                    for (Object ob : places_next_to_enemy) {
+                        Place pay = (Place)ob;
+                        if (curp.cur != null && op.index == pay.index) {
+                            //System.out.println(curp.index+" to "+op.index);
+                            move_char(curp, op, false);
+                            break;
+                        }
+                    }
+                }
+                
+                if (curp.cur != null && !curp.cur.did_fight) {
+                    // Someone next to him?
+                    show_move_radius = false;
+                    
+                    for (Object o : get_reachable_places(curp)) {
+                        Place op = (Place)o;
+                        
+                        if (op.index == curp.index) {
+                            continue;
+                        }
+                        
+                        if( op.cur != null && op.cur.team != curp.cur.team) {
+                            // Found char of different team
+                            move_char(curp, op, false);
+                        }
+                    }
+                }
+                
+                
+                // Just some random movement
+                if (curp.cur != null && !curp.cur.did_walk) {
+                    show_move_radius = true;
+                    for (Object o : get_reachable_places(curp)) {
+                        Place op = (Place)o;
+                        if (op.index == curp.index) continue;
+                        
+                        if (curp.cur != null && Math.random() < 0.2) {
+                            //System.out.println(curp.index+" to "+op.index);
+                            curp.cur.did_walk = true;
+                            op.cur = curp.cur;
+                            curp.cur = null;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        in_reach.clear();
+    }
+    
+    
+    ArrayList<Place> open_list = new ArrayList<Place>();
+    ArrayList<Place> closed_list = new ArrayList<Place>();
+    Place target;
+    public ArrayList<Place> pathfinding(Place start, Place aim) {
+        ArrayList<Place> solution = new ArrayList<Place>();
+                
+        if (start.index == aim.index) {
+            solution.add(start);
+            return solution;
+        }
+        if (aim.cur != null || aim.special.equals("NON-WALKABLE")) {
+            return null;
+        }
+        
+        target = aim;
+        
+        for (Object o : get_possible_places(start)) {
+            Place p = (Place)o;
+            p.ancestor = start;
+            open_list.add(p);
+        }
+        
+        move_place(start);
+        
+        while (open_list.size() > 0 || closed_list.contains(target)) {
+            Place next = next_node();
+            if (next == null) break;
+            move_place(next);
+            
+            for (Object o : get_possible_places(next)) {
+                Place p = (Place)o;
+                
+                if (closed_list.contains(p)) continue;
+                
+                /*if (open_list.contains(p)) {
+                    Place tmp = new Place(null, p.index);
+                    tmp.ancestor = next;
+                    if (calc_g(tmp) < calc_g(p)) {
+                        p.ancestor = next;
+                    }
+                }*/
+                
+                if (!open_list.contains(p)) {
+                    p.ancestor = next;
+                    open_list.add(p);
+                }
+            }
+            
+            //show_pathfinding_state();
+        }
+        
+        Place cur = target;
+        do {
+            solution.add(cur);
+            //System.out.print(cur.index + ((cur.ancestor==null)?"":" -> "));
+            cur = cur.ancestor;
+        } while (cur != null);
+        Collections.reverse(solution);
+        return solution;
+    }
+    public void move_place(Place p) {
+        closed_list.add(p);
+        open_list.remove(p);
+    }
+    public ArrayList<Place> get_possible_places(Place middle) {
+        ArrayList<Place> ret = new ArrayList<Place>();
+        for (Object o : get_bordering_places(middle)) {
+            Place p = (Place)o;
+            
+            if (p.cur != null) continue;
+            if (p.special.equals("NON-WALKABLE")) continue;
+            
+            ret.add(p);
+        }
+        
+        return ret;
+    }
+    public Place next_node() {
+        ArrayList<Integer> fl = new ArrayList<Integer>();
+        for (Object o : open_list) {
+            Place p = (Place)o;
+            int f = calc_f(p);
+            fl.add(f);
+        }
+        if (fl.isEmpty()) return null;
+        int min = Collections.min(fl);
+        int counter = 0;
+        for (Object o : fl) {
+            if (((Integer)o).intValue() == min) break;
+            counter++;
+        }
+        Place next = open_list.get(counter);
+        return next;
+    }
+    public int calc_f(Place p) {
+        return calc_g(p) + calc_h(p);
+    }
+    public int calc_h(Place p) {
+        int dx = Math.abs(get_x(p) - get_x(target));
+        int dy = Math.abs(get_y(p) - get_y(target));
+        return (dx + dy) * 10;
+    }
+    public int calc_g(Place p) {
+        int till_now = 0;
+        if (p.ancestor != null) {
+            //System.out.println(p.index+" -> "+ p.ancestor.index);
+            till_now = calc_g(p.ancestor);
+            
+            if (p.special.equals("NOTHING")) return 10 + till_now;
+        }
+        else {
+            if (p.special.equals("NOTHING")) return 0;
+        }
+        return -1;
+    }
+    public int get_x(Place p) {
+        for (Object o : content.field) {
+            ArrayList al = (ArrayList)o;
+            if (al.contains(p)) return al.indexOf(p);
+        }
+        return -1;
+    }
+    public int get_y(Place p) {
+        int counter = 0;
+        for (Object o : content.field) {
+            ArrayList al = (ArrayList)o;
+            if (al.contains(p)) break;
+            counter++;
+        }
+        return counter;
+    }
+    public void show_pathfinding_state() {
+        System.out.println("OPEN LIST:");
+        for (Object o : open_list) {
+            Place p = (Place)o;
+            print_place(p);
+        }
+        System.out.println("CLOSED LIST:");
+        for (Object o : closed_list) {
+            Place p = (Place)o;
+            print_place(p);
+        }
+    }
+    public void print_place(Place p) {
+        System.out.println(
+                "to " + 
+                p.index + 
+                " (" + get_x(p) +"|"+get_y(p)+")" +
+                " from " + 
+                ((p.ancestor != null)?p.ancestor.index:"none") +
+                " costs " +
+                "F:" + calc_f(p) + " " +
+                "G:" + calc_g(p) + " " +
+                "H:" + calc_h(p) + " "
+            );
+    }
+    
     
     public void on_click(String button) {
         if (button.equals("LEFT")) {
@@ -520,7 +793,7 @@ public class fight_handler
                         
                         if(r.contains(content.mouse_x, content.mouse_y)) {
                             if(in_reach.contains(p)) {
-                                move_char(in_reach.get(0), p);
+                                move_char(in_reach.get(0), p, true);
                             }
                         }
                     }
@@ -571,6 +844,12 @@ public class fight_handler
             }
         }
         else if(button.equals("MIDDLE")) {
+            move_x_tmp = (content.mouse_x - drag_start_x);
+            move_y_tmp = (content.mouse_y - drag_start_y);
+            move_x = move_x_tmp + old_move_x;
+            move_y = move_y_tmp + old_move_y;
+        }
+        else if(button.equals("RIGHT")) {
             move_x_tmp = (content.mouse_x - drag_start_x);
             move_y_tmp = (content.mouse_y - drag_start_y);
             move_x = move_x_tmp + old_move_x;
@@ -627,16 +906,19 @@ public class fight_handler
         }
     }
     
+    public void mousewheel_used (int amount) {
+        if (amount > 0) scale -= scroll_speed;
+        if (amount < 0) scale += scroll_speed;
+    }
+    
     public synchronized void update_on_the_fly() {
-        if (new_round_sending) {
-            System.out.println("WANT A NEW ROUND !");
-            System.out.println(content.my_turn);
-        }
-        
-        Data_packet p = new Data_packet(changes, content.my_turn, client.num);
+        Data_packet p = new Data_packet(changes, my_tmp_turn, client.num);
         
         p.on_the_fly = !new_round_sending;
-        new_round_sending = false;
+        if (new_round_sending) {
+            new_round_sending = false;
+            my_tmp_turn = false;
+        }
         
         client.send_data(p);
         changes.clear();
@@ -674,8 +956,10 @@ public class fight_handler
                     System.out.println("Received data");
                     
                     parent.apply_changes(cur.changes);
+                    parent.make_chars_ready();
                     
                     content.my_turn = cur.my_turn;
+                    my_tmp_turn = content.my_turn;
                     
                     content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
                 }
@@ -699,7 +983,7 @@ public class fight_handler
         public void run() {
             while (true) {
                 parent.update_on_the_fly();
-                try{sleep(3000);}catch(InterruptedException e){};
+                try{sleep(7000);}catch(InterruptedException e){};
             }
         }
     }
