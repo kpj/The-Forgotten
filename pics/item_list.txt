@@ -216,3 +216,13 @@ angriffskraft:1300:
 Item:Blauer Novizenstab:pics/Items/Waffen/Zauberstab1.png:undef:
 geschwindigkeit:-25:
 angriffskraft:500:
+#
+#37
+#
+Item:Ledermantel:pics/Items/Kleidung/Kleidung/Gewand4.png:undef:
+geschwindigkeit:-75:
+#
+#38
+#
+Item:Blaue Stoffhose:pics/Items/Kleidung/Ruestung/Hose4.png:undef:
+geschwindigkeit:-25:
