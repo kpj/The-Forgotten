@@ -24,11 +24,11 @@ Item:Elitewache:33e:18e:16e:20e:6e:
 _____N______
 _____N______
 _B_B_N______
-_S___N______
-___B_N_W_V__
+_S_Z_N______
+_Z_B_N_W_V__
 _M_HG___W_W_
-_B_H__W_V_W_
-_S_B_N__W_V_
+_B_HZ_W_V_W_
+_SZB_N__W_V_
 _KG__N_WV_W_
 S__S_N_V____
 _____N___WV_
