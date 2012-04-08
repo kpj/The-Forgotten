@@ -927,8 +927,10 @@ public class fight_handler
     }
     
     public void mousewheel_used (int amount) {
-        if (amount > 0) scale -= scroll_speed;
-        if (amount < 0) scale += scroll_speed;
+        if (amount > 0) scale -= scroll_speed*3;
+        if (amount < 0) scale += scroll_speed*3;
+        if (scale < -84) scale = -84; // min
+        if (scale > 120) scale = 120; // max
     }
     
     public synchronized void update_on_the_fly() {
