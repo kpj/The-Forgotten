@@ -185,7 +185,7 @@ public class fight_handler
                     if (p.checked) {
                         checked.add(p);
                     }
-                    g.drawRect(x, y, place_width, place_height);
+                    //g.drawRect(x, y, place_width, place_height);
                     //g.drawString(""+p.index,x+15,y+15);
                     
                     // now characters + equipped items
@@ -229,16 +229,6 @@ public class fight_handler
         }
         
         // draw reachable
-        /*Color reach_col = Color.red;
-        if (show_move_radius) {
-            reach_col = Color.green;
-        }
-        if (can_modify) {
-            for (Object o : in_reach) {
-                draw_place(g, (Place)o, 4, reach_col);
-            }
-        }*/
-        
         if (show_move_radius) {
             for (Object o : in_reach) {
                 Place p = (Place)o;
