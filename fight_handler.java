@@ -194,10 +194,10 @@ public class fight_handler
                             g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, place_width, place_height, imo);
                         
                             if (p.cur.did_fight) {
-                                g.drawImage(content.iml.get_img("pics/Geschlagen.png"), x, y, place_width, place_height, imo);
+                                g.drawImage(content.iml.get_img("pics/Icons/Geschlagen.png"), x, y, place_width, place_height, imo);
                             }
                             if (p.cur.did_walk) {
-                                g.drawString("WALKED",x+50 ,y+10);
+                                g.drawImage(content.iml.get_img("pics/Icons/Gegangen.png"), x, y, place_width, place_height, imo);
                             }
                             
                             for (Object obj : p.cur.get_equipped_items()) {
@@ -229,13 +229,30 @@ public class fight_handler
         }
         
         // draw reachable
-        Color reach_col = Color.red;
+        /*Color reach_col = Color.red;
         if (show_move_radius) {
             reach_col = Color.green;
         }
         if (can_modify) {
             for (Object o : in_reach) {
                 draw_place(g, (Place)o, 4, reach_col);
+            }
+        }*/
+        
+        if (show_move_radius) {
+            for (Object o : in_reach) {
+                Place p = (Place)o;
+                int x = calc_offset(p.index).get(0);
+                int y = calc_offset(p.index).get(1);
+                g.drawImage(content.iml.get_img("pics/Icons/begehbar.png"), x, y, place_width, place_height, imo);
+            }
+        }
+        else {
+            for (Object o : in_reach) {
+                Place p = (Place)o;
+                int x = calc_offset(p.index).get(0);
+                int y = calc_offset(p.index).get(1);
+                g.drawImage(content.iml.get_img("pics/Icons/attackierbar.png"), x, y, place_width, place_height, imo);
             }
         }
         
@@ -350,8 +367,10 @@ public class fight_handler
                 return;
             }
             from.cur.did_walk = true;
-            to.cur = from.cur;
+            Char tmp = from.cur;
             from.cur = null;
+            animate_move(from, to, tmp);
+            to.cur = tmp;
             
             changes.put(to.index, to);
             changes.put(from.index, from);
@@ -386,6 +405,17 @@ public class fight_handler
             return true;
         return false;
     }
+    
+    public void animate_move(Place from, Place to, Char who) {
+        int fromX = calc_offset(from.index).get(0);
+        int fromY = calc_offset(from.index).get(1);
+        int toX = calc_offset(to.index).get(0);
+        int toY = calc_offset(to.index).get(1);
+        
+        BufferedImage char_img = content.iml.get_img(who.name+"_fight_image");
+        System.out.println(fromX+":"+fromY+"->"+toX+":"+toY);
+    }
+    
     public synchronized void next_round() {
         if (!content.my_turn) {
             content.notification.add_noti("It is not your turn");
