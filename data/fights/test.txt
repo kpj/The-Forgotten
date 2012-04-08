@@ -7,6 +7,7 @@ W:Wilder:pics/Character/Basis5.png,pics/Character/Gesicht/Augen2.png,pics/Charac
 V:Wilder2:pics/Character/Basis5.png,pics/Character/Gesicht/Augen2.png,pics/Character/Gesicht/Nase1.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur5.png:2:
 M:Magier:pics/Kleidung/Kleidung.Gewand1.png,pics/Character/Basis1.png,pics/Character/Gesicht/Nase1.png,pics/Character/Gesicht/Augen2.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur1.png:1:
 G:Elitewache:pics/Character/Basis1.png,pics/Character/Gesicht/Augen2.png,pics/Character/Gesicht/Nase1.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur1.png:1:
+R:Rick:pics/Character/Basis2.png,pics/Character/Gesicht/Augen2.png,pics/Character/Gesicht/Nase1.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur2.png:1:
 #
 N:NON-WALKABLE:undef:-1:
 backgroundimg:pics/Background.png:
@@ -20,6 +21,7 @@ Item:Wilder:35e:24e:26e:
 Item:Wilder2:30e:25e:27e:
 Item:Magier:36e:23e:28e:29e:
 Item:Elitewache:33e:18e:16e:20e:6e:
+Item:Rick:34e:38e:37e:20e:
 
 _____N______
 _____N______
