@@ -53,6 +53,8 @@ public class fight_handler
     int old_move_y = move_y;
     
     // move 'em
+    float animation_speed = 15; // high is slow
+    
     boolean unit_selected = false;
     boolean multiple_units_selected = false;
     
@@ -215,7 +217,76 @@ public class fight_handler
             }
         }
         
+            
+        // special movement
+        if (special_animation) {
+            int x = from_special_x + special_x + move_x;
+            int y = from_special_y + special_y + move_y;
+            
+            g.drawImage(content.iml.get_img(special_char.name+"_fight_image"), x, y, place_width, place_height, imo);
+            for (Object obj : special_char.get_equipped_items()) {
+                Item i = (Item)obj;
                 
+                g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
+            }
+            
+            special_x += special_delta_x;
+            special_y += special_delta_y;
+            
+            /*System.out.println(x+"(+"+special_delta_x+") | "+y+"(+"+special_delta_y+")");
+            System.out.println("Start at: "+from_special_x+" "+from_special_y);
+            System.out.println("End at: "+to_special_x+" "+to_special_y);*/
+            if ( special_delta_x < 0 && special_delta_y < 0 ) {
+                if (x < to_special_x + move_x && y < to_special_y + move_y) {
+                    special_animation = false;  
+                    animate_way(special_start, special_aim, special_i+1);
+                }
+            }
+            else if ( special_delta_x > 0 && special_delta_y > 0 ) {
+                if (x > to_special_x + move_x && y > to_special_y + move_y) {
+                    special_animation = false;  
+                    animate_way(special_start, special_aim, special_i+1);   
+                }
+            }
+            else if ( special_delta_x > 0 && special_delta_y < 0 ) {
+                if (x > to_special_x + move_x && y < to_special_y + move_y) {
+                    special_animation = false;   
+                    animate_way(special_start, special_aim, special_i+1);  
+                }
+            }
+            else if ( special_delta_x < 0 && special_delta_y > 0 ) {
+                if (x < to_special_x + move_x && y > to_special_y + move_y) {
+                    special_animation = false;   
+                    animate_way(special_start, special_aim, special_i+1);  
+                }
+            }
+            else if ( special_delta_x == 0 && special_delta_y > 0 ) {
+                if (y > to_special_y + move_y) {
+                    special_animation = false;    
+                    animate_way(special_start, special_aim, special_i+1); 
+                }
+            }
+            else if ( special_delta_x == 0 && special_delta_y < 0 ) {
+                if (y < to_special_y + move_y) {
+                    special_animation = false;     
+                    animate_way(special_start, special_aim, special_i+1);
+                }
+            }
+            else if ( special_delta_x < 0 && special_delta_y == 0 ) {
+                if (x < to_special_x + move_x) {
+                    special_animation = false;     
+                    animate_way(special_start, special_aim, special_i+1);
+                }
+            }
+            else if ( special_delta_x > 0 && special_delta_y == 0 ) {
+                if (x > to_special_x + move_x) {
+                    special_animation = false;     
+                    animate_way(special_start, special_aim, special_i+1);
+                }
+            }
+        }
+        
+        
         // draw lately updated
         if (online) {
             for (Object o : updated_changes) {
@@ -357,10 +428,15 @@ public class fight_handler
                 return;
             }
             from.cur.did_walk = true;
-            Char tmp = from.cur;
-            from.cur = null;
-            animate_move(from, to, tmp);
-            to.cur = tmp;
+            
+            if (human) {
+                way = pathfinding(from, to);
+                animate_way(from, to, 0);
+            } else {
+                to.cur = from.cur;
+                from.cur = null;
+            }
+            
             
             changes.put(to.index, to);
             changes.put(from.index, from);
@@ -396,14 +472,64 @@ public class fight_handler
         return false;
     }
     
-    public void animate_move(Place from, Place to, Char who) {
-        int fromX = calc_offset(from.index).get(0);
-        int fromY = calc_offset(from.index).get(1);
-        int toX = calc_offset(to.index).get(0);
-        int toY = calc_offset(to.index).get(1);
+    ArrayList<Place> way;
+    Place special_aim = null;
+    Place special_start = null;
+    int special_i = 0;
+    public void animate_way(Place start, Place aim, int i) {
+        if (i == 0) {
+            special_char = start.cur;
+        }
         
-        BufferedImage char_img = content.iml.get_img(who.name+"_fight_image");
-        System.out.println(fromX+":"+fromY+"->"+toX+":"+toY);
+        if (i == way.size()-1) {
+            aim.cur = special_char;
+            return;
+        }
+        
+        //System.out.println(i+" of "+(way.size()-1));
+        
+        special_i = i;
+        special_aim = aim;
+        special_start = start;
+        
+        Place cur, next;
+
+        if (i != way.size()-1) next = way.get(i+1);
+        else next = null;
+        cur = way.get(i);
+        
+        if (next == null) return;
+        
+        //System.out.println(cur.index+"->"+next.index);
+        animate_move(cur, next);
+        
+        start.cur = null;
+    }
+    
+    boolean special_animation = false;
+    int special_x = 0;
+    int special_y = 0;
+    int from_special_x = 0;
+    int from_special_y = 0;
+    int to_special_x = 0;
+    int to_special_y = 0;
+    int special_delta_x = 0;
+    int special_delta_y = 0;
+    Char special_char = null;
+    int animation_timer = 0;
+    public void animate_move(Place from, Place to) {
+        from_special_x = calc_offset(from.index).get(0) - move_x;
+        from_special_y = calc_offset(from.index).get(1) - move_y;
+        to_special_x = calc_offset(to.index).get(0) - move_x;
+        to_special_y = calc_offset(to.index).get(1) - move_y;
+        
+        special_delta_x = -(int)Math.floor((from_special_x-to_special_x)/(animation_speed));
+        special_delta_y = -(int)Math.floor((from_special_y-to_special_y)/(animation_speed));
+        
+        special_x = 0;
+        special_y = 0;
+        
+        special_animation = true;
     }
     
     public synchronized void next_round() {
@@ -635,6 +761,8 @@ public class fight_handler
     ArrayList<Place> closed_list = new ArrayList<Place>();
     Place target;
     public ArrayList<Place> pathfinding(Place start, Place aim) {
+        open_list.clear();
+        closed_list.clear();
         ArrayList<Place> solution = new ArrayList<Place>();
                 
         if (start.index == aim.index) {
