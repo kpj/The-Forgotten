@@ -219,68 +219,68 @@ public class fight_handler
         
             
         // special movement
-        if (special_animation) {
-            int x = (int)from_special.getX() + (int)special.getX() + move_x;
-            int y = (int)from_special.getY() + (int)special.getY() + move_y;
-            
-            g.drawImage(content.iml.get_img(special_char.name+"_fight_image"), x, y, place_width, place_height, imo);
-            for (Object obj : special_char.get_equipped_items()) {
-                Item i = (Item)obj;
+        if (!special_animation.isEmpty()) {
+            if (special_animation.get(0)) {
+                int x = (int)from_special.get(0).getX() + (int)special.get(0).getX() + move_x;
+                int y = (int)from_special.get(0).getY() + (int)special.get(0).getY() + move_y;
                 
-                g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
-            }
-            
-            special.translate((int)special_delta.getX(), (int)special_delta.getY());
-            
-            /*System.out.println(x+"(+"+special_delta.getX()+") | "+y+"(+"+special_delta.getY()+")");
-            System.out.println("Start at: "+from_special_x+" "+from_special.getY());
-            System.out.println("End at: "+to_special.getX()+" "+to_special.getY());*/
-            if ( special_delta.getX() < 0 && special_delta.getY() < 0 ) {
-                if (x < to_special.getX() + move_x && y < to_special.getY() + move_y) {
-                    special_animation = false;  
-                    animate_way(special_start, special_aim, special_i+1);
+                g.drawImage(content.iml.get_img(special_char.get(0).name+"_fight_image"), x, y, place_width, place_height, imo);
+                for (Object obj : special_char.get(0).get_equipped_items()) {
+                    Item i = (Item)obj;
+                    
+                    g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
                 }
-            }
-            else if ( special_delta.getX() > 0 && special_delta.getY() > 0 ) {
-                if (x > to_special.getX() + move_x && y > to_special.getY() + move_y) {
-                    special_animation = false;  
-                    animate_way(special_start, special_aim, special_i+1);   
+                
+                special.get(0).translate((int)special_delta.get(0).getX(), (int)special_delta.get(0).getY());
+                
+                
+                if ( special_delta.get(0).getX() < 0 && special_delta.get(0).getY() < 0 ) {
+                    if (x < to_special.get(0).getX() + move_x && y < to_special.get(0).getY() + move_y) {
+                        special_animation.set(0, false);  
+                        animate_way(special_start.get(0), special_aim.get(0), special_i.get(0)+1);
+                    }
                 }
-            }
-            else if ( special_delta.getX() > 0 && special_delta.getY() < 0 ) {
-                if (x > to_special.getX() + move_x && y < to_special.getY() + move_y) {
-                    special_animation = false;   
-                    animate_way(special_start, special_aim, special_i+1);  
+                else if ( special_delta.get(0).getX() > 0 && special_delta.get(0).getY() > 0 ) {
+                    if (x > to_special.get(0).getX() + move_x && y > to_special.get(0).getY() + move_y) {
+                        special_animation.set(0, false); 
+                        animate_way(special_start.get(0), special_aim.get(0), special_i.get(0)+1);
+                    }
                 }
-            }
-            else if ( special_delta.getX() < 0 && special_delta.getY() > 0 ) {
-                if (x < to_special.getX() + move_x && y > to_special.getY() + move_y) {
-                    special_animation = false;   
-                    animate_way(special_start, special_aim, special_i+1);  
+                else if ( special_delta.get(0).getX() > 0 && special_delta.get(0).getY() < 0 ) {
+                    if (x > to_special.get(0).getX() + move_x && y < to_special.get(0).getY() + move_y) {
+                        special_animation.set(0, false); 
+                        animate_way(special_start.get(0), special_aim.get(0), special_i.get(0)+1);
+                    }
                 }
-            }
-            else if ( special_delta.getX() == 0 && special_delta.getY() > 0 ) {
-                if (y > to_special.getY() + move_y) {
-                    special_animation = false;    
-                    animate_way(special_start, special_aim, special_i+1); 
+                else if ( special_delta.get(0).getX() < 0 && special_delta.get(0).getY() > 0 ) {
+                    if (x < to_special.get(0).getX() + move_x && y > to_special.get(0).getY() + move_y) {
+                        special_animation.set(0, false); 
+                        animate_way(special_start.get(0), special_aim.get(0), special_i.get(0)+1);
+                    }
                 }
-            }
-            else if ( special_delta.getX() == 0 && special_delta.getY() < 0 ) {
-                if (y < to_special.getY() + move_y) {
-                    special_animation = false;     
-                    animate_way(special_start, special_aim, special_i+1);
+                else if ( special_delta.get(0).getX() == 0 && special_delta.get(0).getY() > 0 ) {
+                    if (y > to_special.get(0).getY() + move_y) {
+                        special_animation.set(0, false); 
+                        animate_way(special_start.get(0), special_aim.get(0), special_i.get(0)+1);
+                    }
                 }
-            }
-            else if ( special_delta.getX() < 0 && special_delta.getY() == 0 ) {
-                if (x < to_special.getX() + move_x) {
-                    special_animation = false;     
-                    animate_way(special_start, special_aim, special_i+1);
+                else if ( special_delta.get(0).getX() == 0 && special_delta.get(0).getY() < 0 ) {
+                    if (y < to_special.get(0).getY() + move_y) {
+                        special_animation.set(0, false); 
+                        animate_way(special_start.get(0), special_aim.get(0), special_i.get(0)+1);
+                    }
                 }
-            }
-            else if ( special_delta.getX() > 0 && special_delta.getY() == 0 ) {
-                if (x > to_special.getX() + move_x) {
-                    special_animation = false;     
-                    animate_way(special_start, special_aim, special_i+1);
+                else if ( special_delta.get(0).getX() < 0 && special_delta.get(0).getY() == 0 ) {
+                    if (x < to_special.get(0).getX() + move_x) {
+                        special_animation.set(0, false); 
+                        animate_way(special_start.get(0), special_aim.get(0), special_i.get(0)+1);
+                    }
+                }
+                else if ( special_delta.get(0).getX() > 0 && special_delta.get(0).getY() == 0 ) {
+                    if (x > to_special.get(0).getX() + move_x) {
+                        special_animation.set(0, false); 
+                        animate_way(special_start.get(0), special_aim.get(0), special_i.get(0)+1);
+                    }
                 }
             }
         }
@@ -429,7 +429,7 @@ public class fight_handler
             from.cur.did_walk = true;
             
             if (human) {
-                way = pathfinding(from, to);
+                way.add(pathfinding(from, to));
                 animate_way(from, to, 0);
             } else {
                 to.cur = from.cur;
@@ -471,56 +471,65 @@ public class fight_handler
         return false;
     }
     
-    ArrayList<Place> way;
-    Place special_aim = null;
-    Place special_start = null;
-    int special_i = 0;
     public void animate_way(Place start, Place aim, int i) {
         if (i == 0) {
-            special_char = start.cur;
+            // first move
+            special_char.add(start.cur);
+            special_i.add(i);
+            special_aim.add(aim);
+            special_start.add(start);
+            from_special.add(new Point(0,0));
+            to_special.add(new Point(0,0));
+            special_delta.add(new Point(0,0));
+            special.add(new Point(0,0));
+            special_animation.add(false);
         }
         
-        if (i == way.size()-1) {
-            aim.cur = special_char;
+        if (i == way.get(0).size()-1) {
+            aim.cur = special_char.get(0);
             return;
         }
         
-        //System.out.println(i+" of "+(way.size()-1));
+        System.out.println(i+" of "+(way.get(0).size()-1));
         
-        special_i = i;
-        special_aim = aim;
-        special_start = start;
+        special_i.set(0, i);
+        special_aim.set(0, aim);
+        special_start.set(0, start);
         
         Place cur, next;
 
-        if (i != way.size()-1) next = way.get(i+1);
+        if (i != way.get(0).size()-1) next = way.get(0).get(i+1);
         else next = null;
-        cur = way.get(i);
+        cur = way.get(0).get(i);
         
         if (next == null) return;
         
-        //System.out.println(cur.index+"->"+next.index);
+        System.out.println(cur.index+"->"+next.index);
         animate_move(cur, next);
         
         start.cur = null;
     }
     
-    boolean special_animation = false;
-    Point special = new Point(0,0);
-    Point from_special = new Point(0,0);
-    Point to_special = new Point(0,0);
-    Point special_delta = new Point(0,0);
-    Char special_char = null;
-    int animation_timer = 0;
+    ArrayList<ArrayList<Place>> way = new ArrayList<ArrayList<Place>>();
+    ArrayList<Place> special_aim = new ArrayList<Place>();
+    ArrayList<Place> special_start = new ArrayList<Place>();
+    ArrayList<Integer> special_i = new ArrayList<Integer>();
+    ArrayList<Boolean> special_animation = new ArrayList<Boolean>();
+    ArrayList<Point> special = new ArrayList<Point>();
+    ArrayList<Point> from_special = new ArrayList<Point>();
+    ArrayList<Point> to_special = new ArrayList<Point>();
+    ArrayList<Point> special_delta = new ArrayList<Point>();
+    ArrayList<Char> special_char = new ArrayList<Char>();
+    ArrayList<Integer> animation_timer = new ArrayList<Integer>();
     public void animate_move(Place from, Place to) {
-        from_special.setLocation(calc_offset(from.index).get(0) - move_x, calc_offset(from.index).get(1) - move_y);
-        to_special.setLocation(calc_offset(to.index).get(0) - move_x, calc_offset(to.index).get(1) - move_y);
+        from_special.set(0, new Point(calc_offset(from.index).get(0) - move_x, calc_offset(from.index).get(1) - move_y));
+        to_special.set(0, new Point(calc_offset(to.index).get(0) - move_x, calc_offset(to.index).get(1) - move_y));
         
-        special_delta.setLocation(-(int)Math.floor((from_special.getX()-to_special.getX())/(animation_speed)), -(int)Math.floor((from_special.getY()-to_special.getY())/(animation_speed)));
+        special_delta.set(0, new Point(-(int)Math.floor((from_special.get(0).getX()-to_special.get(0).getX())/(animation_speed)), -(int)Math.floor((from_special.get(0).getY()-to_special.get(0).getY())/(animation_speed))));
         
-        special.setLocation(0,0);
+        special.set(0, new Point(0,0));
         
-        special_animation = true;
+        special_animation.set(0, true);
     }
     
     public synchronized void next_round() {
