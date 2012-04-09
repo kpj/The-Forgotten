@@ -220,8 +220,8 @@ public class fight_handler
             
         // special movement
         if (special_animation) {
-            int x = from_special_x + special_x + move_x;
-            int y = from_special_y + special_y + move_y;
+            int x = (int)from_special.getX() + (int)special.getX() + move_x;
+            int y = (int)from_special.getY() + (int)special.getY() + move_y;
             
             g.drawImage(content.iml.get_img(special_char.name+"_fight_image"), x, y, place_width, place_height, imo);
             for (Object obj : special_char.get_equipped_items()) {
@@ -230,56 +230,55 @@ public class fight_handler
                 g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
             }
             
-            special_x += special_delta_x;
-            special_y += special_delta_y;
+            special.translate((int)special_delta.getX(), (int)special_delta.getY());
             
-            /*System.out.println(x+"(+"+special_delta_x+") | "+y+"(+"+special_delta_y+")");
-            System.out.println("Start at: "+from_special_x+" "+from_special_y);
-            System.out.println("End at: "+to_special_x+" "+to_special_y);*/
-            if ( special_delta_x < 0 && special_delta_y < 0 ) {
-                if (x < to_special_x + move_x && y < to_special_y + move_y) {
+            /*System.out.println(x+"(+"+special_delta.getX()+") | "+y+"(+"+special_delta.getY()+")");
+            System.out.println("Start at: "+from_special_x+" "+from_special.getY());
+            System.out.println("End at: "+to_special.getX()+" "+to_special.getY());*/
+            if ( special_delta.getX() < 0 && special_delta.getY() < 0 ) {
+                if (x < to_special.getX() + move_x && y < to_special.getY() + move_y) {
                     special_animation = false;  
                     animate_way(special_start, special_aim, special_i+1);
                 }
             }
-            else if ( special_delta_x > 0 && special_delta_y > 0 ) {
-                if (x > to_special_x + move_x && y > to_special_y + move_y) {
+            else if ( special_delta.getX() > 0 && special_delta.getY() > 0 ) {
+                if (x > to_special.getX() + move_x && y > to_special.getY() + move_y) {
                     special_animation = false;  
                     animate_way(special_start, special_aim, special_i+1);   
                 }
             }
-            else if ( special_delta_x > 0 && special_delta_y < 0 ) {
-                if (x > to_special_x + move_x && y < to_special_y + move_y) {
+            else if ( special_delta.getX() > 0 && special_delta.getY() < 0 ) {
+                if (x > to_special.getX() + move_x && y < to_special.getY() + move_y) {
                     special_animation = false;   
                     animate_way(special_start, special_aim, special_i+1);  
                 }
             }
-            else if ( special_delta_x < 0 && special_delta_y > 0 ) {
-                if (x < to_special_x + move_x && y > to_special_y + move_y) {
+            else if ( special_delta.getX() < 0 && special_delta.getY() > 0 ) {
+                if (x < to_special.getX() + move_x && y > to_special.getY() + move_y) {
                     special_animation = false;   
                     animate_way(special_start, special_aim, special_i+1);  
                 }
             }
-            else if ( special_delta_x == 0 && special_delta_y > 0 ) {
-                if (y > to_special_y + move_y) {
+            else if ( special_delta.getX() == 0 && special_delta.getY() > 0 ) {
+                if (y > to_special.getY() + move_y) {
                     special_animation = false;    
                     animate_way(special_start, special_aim, special_i+1); 
                 }
             }
-            else if ( special_delta_x == 0 && special_delta_y < 0 ) {
-                if (y < to_special_y + move_y) {
+            else if ( special_delta.getX() == 0 && special_delta.getY() < 0 ) {
+                if (y < to_special.getY() + move_y) {
                     special_animation = false;     
                     animate_way(special_start, special_aim, special_i+1);
                 }
             }
-            else if ( special_delta_x < 0 && special_delta_y == 0 ) {
-                if (x < to_special_x + move_x) {
+            else if ( special_delta.getX() < 0 && special_delta.getY() == 0 ) {
+                if (x < to_special.getX() + move_x) {
                     special_animation = false;     
                     animate_way(special_start, special_aim, special_i+1);
                 }
             }
-            else if ( special_delta_x > 0 && special_delta_y == 0 ) {
-                if (x > to_special_x + move_x) {
+            else if ( special_delta.getX() > 0 && special_delta.getY() == 0 ) {
+                if (x > to_special.getX() + move_x) {
                     special_animation = false;     
                     animate_way(special_start, special_aim, special_i+1);
                 }
@@ -507,27 +506,19 @@ public class fight_handler
     }
     
     boolean special_animation = false;
-    int special_x = 0;
-    int special_y = 0;
-    int from_special_x = 0;
-    int from_special_y = 0;
-    int to_special_x = 0;
-    int to_special_y = 0;
-    int special_delta_x = 0;
-    int special_delta_y = 0;
+    Point special = new Point(0,0);
+    Point from_special = new Point(0,0);
+    Point to_special = new Point(0,0);
+    Point special_delta = new Point(0,0);
     Char special_char = null;
     int animation_timer = 0;
     public void animate_move(Place from, Place to) {
-        from_special_x = calc_offset(from.index).get(0) - move_x;
-        from_special_y = calc_offset(from.index).get(1) - move_y;
-        to_special_x = calc_offset(to.index).get(0) - move_x;
-        to_special_y = calc_offset(to.index).get(1) - move_y;
+        from_special.setLocation(calc_offset(from.index).get(0) - move_x, calc_offset(from.index).get(1) - move_y);
+        to_special.setLocation(calc_offset(to.index).get(0) - move_x, calc_offset(to.index).get(1) - move_y);
         
-        special_delta_x = -(int)Math.floor((from_special_x-to_special_x)/(animation_speed));
-        special_delta_y = -(int)Math.floor((from_special_y-to_special_y)/(animation_speed));
+        special_delta.setLocation(-(int)Math.floor((from_special.getX()-to_special.getX())/(animation_speed)), -(int)Math.floor((from_special.getY()-to_special.getY())/(animation_speed)));
         
-        special_x = 0;
-        special_y = 0;
+        special.setLocation(0,0);
         
         special_animation = true;
     }
