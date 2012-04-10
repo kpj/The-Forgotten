@@ -486,11 +486,13 @@ public class fight_handler
         }
         
         if (i == way.get(0).size()-1) {
+            // end of animation
             aim.cur = special_char.get(0);
+            delete_current_way(0);
             return;
         }
         
-        System.out.println(i+" of "+(way.get(0).size()-1));
+        //System.out.println(i+" of "+(way.get(0).size()-1));
         
         special_i.set(0, i);
         special_aim.set(0, aim);
@@ -504,10 +506,23 @@ public class fight_handler
         
         if (next == null) return;
         
-        System.out.println(cur.index+"->"+next.index);
+        //System.out.println(cur.index+"->"+next.index);
         animate_move(cur, next);
         
         start.cur = null;
+    }
+    
+    public void delete_current_way(int ind) {
+        way.remove(ind);
+        special_aim.remove(ind);
+        special_start.remove(ind);
+        special_i.remove(ind);
+        special_animation.remove(ind);
+        special.remove(ind);
+        from_special.remove(ind);
+        to_special.remove(ind);
+        special_delta.remove(ind);
+        special_char.remove(ind);
     }
     
     ArrayList<ArrayList<Place>> way = new ArrayList<ArrayList<Place>>();
@@ -520,7 +535,6 @@ public class fight_handler
     ArrayList<Point> to_special = new ArrayList<Point>();
     ArrayList<Point> special_delta = new ArrayList<Point>();
     ArrayList<Char> special_char = new ArrayList<Char>();
-    ArrayList<Integer> animation_timer = new ArrayList<Integer>();
     public void animate_move(Place from, Place to) {
         from_special.set(0, new Point(calc_offset(from.index).get(0) - move_x, calc_offset(from.index).get(1) - move_y));
         to_special.set(0, new Point(calc_offset(to.index).get(0) - move_x, calc_offset(to.index).get(1) - move_y));
