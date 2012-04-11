@@ -28,7 +28,7 @@ public class Startup
 
     public Startup()
     {
-        System.out.println(get_own_path() + " " + get_own_name());
+        System.out.println(get_own_path() + "" + get_own_name());
         
         content.window_width = 100;
         content.window_height = 300;
