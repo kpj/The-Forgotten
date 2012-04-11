@@ -188,7 +188,7 @@ public class fight_handler
                         checked.add(p);
                     }
                     //g.drawRect(x, y, place_width, place_height);
-                    //g.drawString(""+p.index,x+15,y+15);
+                    g.drawString(""+p.index,x+15,y+15);
                     
                     // now characters + equipped items
                     try {
@@ -431,7 +431,7 @@ public class fight_handler
             from.cur.did_walk = true;
             
             if (human) {
-                way.add(pathfinding(from, to));
+                way.add(optimize_way(pathfinding(from, to)));
                 animate_way(from, to, 0, way.size()-1);
             } else {
                 to.cur = from.cur;
@@ -470,6 +470,76 @@ public class fight_handler
         content.notification.add_noti(defender.cur.name + " has now " + defender.cur.property_current.get("lebenspunkte") + " life points");
         if (defender.cur.property_current.get("lebenspunkte") <= 0)
             return true;
+        return false;
+    }
+    
+    public ArrayList<Place> optimize_way(ArrayList<Place> tw) {
+        ArrayList<Place> w = new ArrayList<Place>(tw);
+
+        Place cur, next;
+        boolean sl = false;
+        boolean si = false;
+        ArrayList<Place> rm = new ArrayList<Place>();
+
+        for (int i=0;i<w.size()-1;i++) {
+            cur=w.get(i);
+            if(i+1==w.size()) break;
+            next=w.get(i+1);
+
+            if(!si && !sl) {
+                if(same_index(cur, next)) si=true;
+                if(same_list(cur,next)) sl=true;
+            }
+            else if(si) {
+                if(same_index(cur,next)) {
+                    rm.add(cur);
+                }
+                else {
+                    si=false;
+                    if(same_index(cur, next)) si=true;
+                    if(same_list(cur,next)) sl=true;
+                }
+            }
+            else if(sl) {
+                if(same_list(cur,next)) {
+                    rm.add(cur);
+                }
+                else {
+                    sl=false;
+                    if(same_index(cur, next)) si=true;
+                    if(same_list(cur,next)) sl=true;
+                }
+            }
+        }
+        w.removeAll(rm);
+        return w;
+    }
+    @SuppressWarnings("unchecked")
+    public boolean same_index(Place a, Place b) {
+        boolean breaker = false;
+        int a_index = -1;
+        for (Object o : content.field) {
+            ArrayList<Place> l = (ArrayList<Place>)o;
+            
+            if ((a_index = l.indexOf(a)) != -1) {
+                breaker = true;
+                break;
+            }
+            if(breaker)break;
+        }
+        for (Object o : content.field) {
+            ArrayList<Place> l = (ArrayList<Place>)o;
+            
+            if (l.get(a_index).index == b.index) return true;
+        }
+        return false;
+    }
+    @SuppressWarnings("unchecked")
+    public boolean same_list(Place a, Place b) {
+        for (Object o : content.field) {
+            ArrayList<Place> l = (ArrayList<Place>)o;
+            if (l.contains(a) && l.contains(b)) return true;
+        }
         return false;
     }
     
