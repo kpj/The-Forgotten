@@ -23,6 +23,7 @@ public class Char implements Serializable
     
     boolean did_fight = false;
     boolean did_walk = false;
+    boolean visible = true;
     
     @SuppressWarnings("unchecked")
     public Char(String n, float x, float y, ArrayList<String> w_i, ArrayList<String> f_i, key_set kset, int t, HashMap<String, Integer> prop)

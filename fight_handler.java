@@ -192,7 +192,7 @@ public class fight_handler
                     
                     // now characters + equipped items
                     try {
-                        if (p.cur != null) {
+                        if (p.cur != null && p.cur.visible) {
                             g.drawImage(content.iml.get_img(p.cur.name+"_fight_image"), x, y, place_width, place_height, imo);
                         
                             if (p.cur.did_fight) {
@@ -555,11 +555,14 @@ public class fight_handler
             special_delta.add(new Point(0,0));
             special.add(new Point(0,0));
             special_animation.add(false);
+            
+            aim.cur = special_char.get(curi);
+            aim.cur.visible = false;
         }
         
         if (i == way.get(curi).size()-1) {
             // end of animation
-            aim.cur = special_char.get(curi);
+            special_char.get(curi).visible = true;
             delete_current_way(curi);
             return;
         }
@@ -1167,6 +1170,7 @@ public class fight_handler
             int i = ob.getKey();
             Place p = ob.getValue();
             //System.out.println("Detected change on "+i+" ("+p.cur+")");
+            p.cur.visible = true; // let us see all chars
             place_char2(i, p.cur);
             updated_changes.add(p);
         }
