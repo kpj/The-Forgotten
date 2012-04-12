@@ -1087,10 +1087,7 @@ public class fight_handler
             move_y = move_y_tmp + old_move_y;
         }
         else if(button.equals("RIGHT")) {
-            move_x_tmp = (content.mouse_x - drag_start_x);
-            move_y_tmp = (content.mouse_y - drag_start_y);
-            move_x = move_x_tmp + old_move_x;
-            move_y = move_y_tmp + old_move_y;
+            
         }
     }
     public void on_press(String button) {
