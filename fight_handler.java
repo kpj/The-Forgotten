@@ -1055,7 +1055,7 @@ public class fight_handler
     }
     public void on_drag(String button) {
         if (button.equals("LEFT")) {
-            if (content.mouse_x - select_x > 0 && content.mouse_y - select_y > 0) {
+            /*if (content.mouse_x - select_x > 0 && content.mouse_y - select_y > 0) {
                 select_width = content.mouse_x - select_x;
                 select_height = content.mouse_y - select_y;
                 select_x_tmp = select_x;
@@ -1078,7 +1078,7 @@ public class fight_handler
                 select_width = select_x - content.mouse_x;
                 select_y_tmp = select_y;
                 select_height = content.mouse_y - select_y;
-            }
+            }*/
         }
         else if(button.equals("MIDDLE")) {
             move_x_tmp = (content.mouse_x - drag_start_x);
