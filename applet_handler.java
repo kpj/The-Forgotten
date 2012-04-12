@@ -55,6 +55,10 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     // Stuff for mousy mouse
     public void mousePressed(MouseEvent e) {
         get_mouse_pos();
+        
+        // make nice mouse animation
+        content.show_mouse_animation = true;
+        
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 if (content.fight_active)

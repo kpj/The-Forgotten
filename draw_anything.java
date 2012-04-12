@@ -19,6 +19,8 @@ public class draw_anything extends JComponent
     
     Image bg_image;
 
+    int mouse_animation_counter = 1;
+    
     public draw_anything(content_handler con)
     {
         content = con;
@@ -62,5 +64,15 @@ public class draw_anything extends JComponent
             content.menu.draw_stuff(g, this);
         if (content.notification != null)
             content.notification.draw_stuff(g, this);
+            
+        if (content.show_mouse_animation) {
+            // draw nice onclick-mouse animation
+            g.drawImage(content.iml.get_img("pics/Icons/Maus/gif"+mouse_animation_counter+".png"), content.mouse_x, content.mouse_y, this);
+            mouse_animation_counter++;
+            if (mouse_animation_counter == 6) {
+                mouse_animation_counter = 1;
+                content.show_mouse_animation= false;
+            }
+        }
     }
 }

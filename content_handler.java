@@ -40,6 +40,8 @@ public class content_handler
 
     Image_loader iml;
     
+    boolean show_mouse_animation = false;
+    
     // online stuff
     ArrayList<Client> connected = new ArrayList<Client>();
     ArrayList<Boolean> turn = new ArrayList<Boolean>();
