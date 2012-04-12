@@ -87,6 +87,7 @@ public class Item implements Serializable
             cur.add(line[1]); // Name
             cur.add(line[2]); // equipped image
             cur.add(line[3]); // entity image
+            cur.add(line[4]); // class
             item_list.add(cur);
         }
         else {

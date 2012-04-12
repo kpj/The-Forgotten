@@ -5,13 +5,13 @@
 #
 #0
 #
-Item:Eiserne Axt:pics/Items/Waffen/Axt1.png:undef:
+Item:Eiserne Axt:pics/Items/Waffen/Axt1.png:undef:nahkampf:
 geschwindigkeit:-50:
 angriffskraft:1000:
 #
 #1
 #
-Item:Eiserne Schlachtaxt:pics/Items/Waffen/Axt2.png:undef:
+Item:Eiserne Schlachtaxt:pics/Items/Waffen/Axt2.png:undef:nahkampf:
 geschwindigkeit:-100:
 angriffskraft:1500:
 #
