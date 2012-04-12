@@ -67,7 +67,7 @@ public class draw_anything extends JComponent
             
         if (content.show_mouse_animation) {
             // draw nice onclick-mouse animation
-            g.drawImage(content.iml.get_img("pics/Icons/Maus/gif"+mouse_animation_counter+".png"), content.mouse_x, content.mouse_y, this);
+            g.drawImage(content.iml.get_img("pics/Icons/Maus/gif"+mouse_animation_counter+".png"), content.mouse_x-9, content.mouse_y-9, this);
             mouse_animation_counter++;
             if (mouse_animation_counter == 6) {
                 mouse_animation_counter = 1;
