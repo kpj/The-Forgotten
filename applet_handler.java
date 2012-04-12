@@ -3,6 +3,7 @@ import java.applet.*;
 import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
+import java.awt.image.*;
 
 public class applet_handler implements KeyListener, MouseListener, MouseMotionListener, ComponentListener, MouseWheelListener
 {
@@ -29,6 +30,11 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         content.f.setSize(content.window_width, content.window_height);
         content.f.add(drawer);
         content.f.setVisible(true);
+        
+        BufferedImage mouse_img = new Image_parser("pics/Icons/Maus/Schwerticon.png").get_img();
+        Point hotSpot = new Point(0,0);
+        Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(mouse_img, hotSpot, "Pencil");
+        content.f.setCursor(cursor);
         
         content.f.addMouseListener(this);
         content.f.addMouseMotionListener(this);
