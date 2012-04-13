@@ -10,7 +10,7 @@ G:Elitewache:pics/Character/Basis1.png,pics/Character/Gesicht/Augen2.png,pics/Ch
 R:Rick:pics/Character/Basis2.png,pics/Character/Gesicht/Augen2.png,pics/Character/Gesicht/Nase1.png,pics/Character/Gesicht/Braue1.png,pics/Character/Gesicht/Mund1.png,pics/Character/Gesicht/Frisur2.png:1:
 #
 N:NON-WALKABLE:undef:-1:
-backgroundimg:pics/Background.png:
+backgroundimg:pics/gras_dirty.png:
 #
 Item:Bogenschuetze:4e:6e:15e:
 Item:Koenig:22e:3e:6e:14e:19e:20e:

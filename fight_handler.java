@@ -411,7 +411,7 @@ public class fight_handler
                 return;
             }*/
             if (from.cur != content.ini_table.get(0)) {
-                content.notification.add_noti("It is not this characters turn");
+                content.notification.add_noti("It is not this characters' turn");
                 return;
             }
         } else {
@@ -1175,10 +1175,16 @@ public class fight_handler
     public void turn_to_next_char() {
         content.ini_table.add(content.ini_table.get(0));
         content.ini_table.remove(0);
+        
+        if(content.ini_table.get(0).team == team) {
+            content.my_turn = true;
+        } else {
+            content.my_turn = false;
+        }
     }
     
     public synchronized void update_on_the_fly() {
-        Data_packet p = new Data_packet(changes, my_tmp_turn, client.num, content.ini_table);
+        Data_packet p = new Data_packet(changes, my_tmp_turn, client.num);
         
         p.on_the_fly = !new_round_sending;
         if (new_round_sending) {
@@ -1216,8 +1222,6 @@ public class fight_handler
         public void run() {
             while (true) {
                 Data_packet cur = parent.client.get_existing_data();
-            
-                content.ini_table = cur.ini_t;
                 
                 if (!cur.on_the_fly) {
                     //A new round started
@@ -1227,8 +1231,7 @@ public class fight_handler
                     parent.apply_changes(cur.changes);
                     parent.make_chars_ready();
                     
-                    content.my_turn = cur.my_turn;
-                    my_tmp_turn = content.my_turn;
+                    turn_to_next_char();
                     
                     content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
                 }
