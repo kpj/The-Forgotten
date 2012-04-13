@@ -222,7 +222,7 @@ public class fight_handler
                             }
                             
                             if (p.cur == content.ini_table.get(0)) {
-                                draw_place(g, p, 4, Color.pink);
+                                g.drawImage(content.iml.get_img("pics/Icons/ist_dran.png"), x, y, place_width, place_height, imo);
                             }
                         }
                         else if (p.special.equals("NON-WALKABLE")) {
