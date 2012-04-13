@@ -788,6 +788,9 @@ public class fight_handler
         for (int i = 0 ; i < field_width*field_height-1 ; i++) {
             Place curp = get_place(i);
             if (curp.cur != null && curp.cur.team != team && team != -1) {
+                boolean make_next = false;
+                if (curp.cur == content.ini_table.get(0))
+                    make_next = true;
                 in_reach.clear();
                 in_reach.add(curp);
                 
@@ -827,6 +830,8 @@ public class fight_handler
                         if (curp.cur != null && op.index == pay.index) {
                             //System.out.println(curp.index+" to "+op.index);
                             move_char(curp, op, false);
+                            if (op.cur == content.ini_table.get(0))
+                                turn_to_next_char();
                             break;
                         }
                     }
@@ -861,11 +866,17 @@ public class fight_handler
                         if (curp.cur != null && Math.random() < 0.2) {
                             //System.out.println(curp.index+" to "+op.index);
                             move_char(curp, op, false);
+                            if (op.cur == content.ini_table.get(0))
+                                turn_to_next_char();
                             break;
                         }
                     }
                 }
+                if (make_next)
+                    turn_to_next_char();
             }
+            if (curp.cur == content.ini_table.get(0))
+                turn_to_next_char();
         }
         in_reach.clear();
     }

@@ -10,6 +10,9 @@ public class menu_handler
     int menu_height = 170;
     int menu_height_changer = 0;
 
+    int face_pos_x = 45, face_pos_y = 8;
+    int face_width = 13, face_height = 13;
+    
     public menu_handler(content_handler con)
     {
         content = con;
@@ -69,5 +72,19 @@ public class menu_handler
                 return;
             }
         }
+        
+        try {
+            int ini_counter = 0;
+            for (Char c : content.ini_table) {
+                g.drawImage(content.iml.get_img(c.name+"_fight_image"),
+                    0 + ini_counter, y2 - face_height*2, 
+                    ini_counter + face_width*2, y2, 
+                    face_pos_x, face_pos_y, 
+                    face_pos_x + face_width, face_pos_y + face_height, 
+                imo);
+                ini_counter += face_width*2 + 3;
+            }
+        }
+        catch (java.util.ConcurrentModificationException e) {}
     }
 }
