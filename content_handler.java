@@ -17,6 +17,7 @@ public class content_handler
     ArrayList<ArrayList> field;
     Place current_selected = null;
     boolean fight_starting = true;
+    ArrayList<Char> ini_table;
     
     // In world
     ArrayList<Thing> objects = new ArrayList<Thing>();

@@ -16,6 +16,8 @@ public class Data_packet implements Serializable
     
     boolean on_the_fly = true;
     
+    ArrayList<Char> ini_t = null;
+    
     @SuppressWarnings("unchecked")
     public Data_packet(ArrayList<ArrayList> f, boolean turn, int w, int h, String p2b, int n)
     {
@@ -27,10 +29,11 @@ public class Data_packet implements Serializable
         num = n;
     }
     @SuppressWarnings("unchecked")
-    public Data_packet(HashMap<Integer, Place> c, boolean turn, int n)
+    public Data_packet(HashMap<Integer, Place> c, boolean turn, int n, ArrayList<Char> it)
     {
         changes = (HashMap<Integer, Place>)c.clone();
         my_turn = turn;
         num = n;
+        ini_t = it;
     }
 }

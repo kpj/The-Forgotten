@@ -33,6 +33,7 @@ Item:Hoelzener Bogen:pics/Items/Waffen/Bogen1.png:undef:fernkampf:
 geschwindigkeit:-15:
 angriffskraft:800:
 attackenreichweite:300:
+initiative:-2:
 #
 #5
 #

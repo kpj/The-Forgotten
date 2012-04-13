@@ -5,7 +5,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 
-public class Char implements Serializable
+public class Char implements Serializable, Comparable
 {
     String name;
     ArrayList<String> world_image;
@@ -52,6 +52,7 @@ public class Char implements Serializable
             property_std.put("verteidigungspunkte", 100);
             property_std.put("attackenmodifikator", 1000);
             property_std.put("verteidigungmodifikator", 1000);
+            property_std.put("initiative", 50);
         }
         else {
             property_std = new HashMap<String, Integer>(prop);
@@ -140,5 +141,12 @@ public class Char implements Serializable
                 }
             }
         }
+    }
+    
+    // Make it comparable
+    public int compareTo(Object anotherChar) throws ClassCastException {
+        if (!(anotherChar instanceof Char)) throw new ClassCastException("A Char object expected.");
+        int anotherCharINI = ((Char) anotherChar).property_current.get("initiative");  
+        return property_current.get("initiative") - anotherCharINI;
     }
 }

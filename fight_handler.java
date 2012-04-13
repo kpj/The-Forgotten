@@ -29,7 +29,7 @@ public class fight_handler
     int field_height;
     int place_width = 100;
     int place_height = 100;
-    int spacing = 3;
+    int spacing = 1;
     
     // selector
     boolean selecting = false;
@@ -127,6 +127,19 @@ public class fight_handler
                 content.iml.add_img(c.name+"_fight_image", new Image_parser(c.fight_image).get_img());
         }
         
+        // Generating INI-table
+        content.ini_table = new ArrayList<Char>();
+        for (Object o : content.field) {
+            ArrayList l = (ArrayList) o;
+            for (Object ob : l) {
+                Place p = (Place) ob;
+                if (p.cur != null) {
+                    content.ini_table.add(p.cur);
+                }
+            }
+        }
+        Collections.sort(content.ini_table);
+        
         content.fight_starting = false;
         //System.out.println(field_width+"x"+field_height);
     }
@@ -206,6 +219,10 @@ public class fight_handler
                                 Item i = (Item)obj;
                                 
                                 g.drawImage(content.iml.pimg.get(i.equipped_image), x, y, place_width, place_height, imo);
+                            }
+                            
+                            if (p.cur == content.ini_table.get(0)) {
+                                draw_place(g, p, 4, Color.pink);
                             }
                         }
                         else if (p.special.equals("NON-WALKABLE")) {
@@ -389,8 +406,16 @@ public class fight_handler
                 content.notification.add_noti("This character is not in your team");
                 return;
             }
-            if (!content.my_turn) {
+            /*if (!content.my_turn) {
                 content.notification.add_noti("It is not your turn");
+                return;
+            }*/
+            if (from.cur != content.ini_table.get(0)) {
+                content.notification.add_noti("It is not this characters turn");
+                return;
+            }
+        } else {
+            if (from.cur != content.ini_table.get(0)) {
                 return;
             }
         }
@@ -629,6 +654,8 @@ public class fight_handler
         
         content.notification.add_noti("Let the next round begin!");
         
+        turn_to_next_char();
+        
         make_chars_ready();
         
         if (online) {
@@ -833,9 +860,7 @@ public class fight_handler
                         
                         if (curp.cur != null && Math.random() < 0.2) {
                             //System.out.println(curp.index+" to "+op.index);
-                            curp.cur.did_walk = true;
-                            op.cur = curp.cur;
-                            curp.cur = null;
+                            move_char(curp, op, false);
                             break;
                         }
                     }
@@ -1147,8 +1172,13 @@ public class fight_handler
         if (scale > 120) scale = 120; // max
     }
     
+    public void turn_to_next_char() {
+        content.ini_table.add(content.ini_table.get(0));
+        content.ini_table.remove(0);
+    }
+    
     public synchronized void update_on_the_fly() {
-        Data_packet p = new Data_packet(changes, my_tmp_turn, client.num);
+        Data_packet p = new Data_packet(changes, my_tmp_turn, client.num, content.ini_table);
         
         p.on_the_fly = !new_round_sending;
         if (new_round_sending) {
@@ -1187,6 +1217,8 @@ public class fight_handler
             while (true) {
                 Data_packet cur = parent.client.get_existing_data();
             
+                content.ini_table = cur.ini_t;
+                
                 if (!cur.on_the_fly) {
                     //A new round started
                     

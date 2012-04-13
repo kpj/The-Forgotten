@@ -197,6 +197,10 @@ public class Map_parser implements Serializable
         }
         return field;
     }
+    public ArrayList<Char> get_ini_table() {
+        return null;
+    }
+    
     public void place_char2(int pos, Char c) {
         if (c == null) {
             return;
