@@ -18,6 +18,10 @@ for a in all:
 
 try:
 	compiled = pickle.load(open(save_file, 'rb'))
+	if len(compiled) != len(may_compile):
+		compiled = may_compile
+		for c in compiled.keys():
+			compiled[c] = "lol"
 except IOError:
 	compiled = may_compile
 	for c in compiled.keys():

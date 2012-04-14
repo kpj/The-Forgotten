@@ -784,101 +784,105 @@ public class fight_handler
         
     }
     
-    public void let_ai_happen() {
-        for (int i = 0 ; i < field_width*field_height-1 ; i++) {
-            Place curp = get_place(i);
-            if (curp.cur != null && curp.cur.team != team && team != -1) {
-                boolean make_next = false;
-                if (curp.cur == content.ini_table.get(0))
-                    make_next = true;
-                in_reach.clear();
-                in_reach.add(curp);
-                
-                // Someone next to him?
-                show_move_radius = false;
-                
-                for (Object o : get_reachable_places(curp)) {
-                    Place op = (Place)o;
-                    
-                    if (op.index == curp.index) {
-                        continue;
-                    }
-                    
-                    if( op.cur != null && op.cur.team != curp.cur.team) {
-                        // Found char of different team
-                        move_char(curp, op, false);
-                    }
+    @SuppressWarnings("unchecked")
+    public Place find_char (Char c) {
+        for (ArrayList<Place> arl : content.field) {
+            for (Place p : arl) {
+                if (p.cur == c) {
+                    return p;
                 }
-                
-                // Someone he might move towards?
-                ArrayList<Place> places_next_to_enemy = new ArrayList<Place>();
-                for (int ii = 0 ; ii < field_width*field_height-1 ; ii++) {
-                    Place pe = get_place(ii);
-                    if (pe.cur == null) continue;
-                    if (curp.cur.team != pe.cur.team) {
-                        for (Object o : get_bordering_places(pe)) {
-                            places_next_to_enemy.add((Place)o);
-                        }
-                    }
-                }
-                show_move_radius = true;
-                for (Object o : get_reachable_places(curp)) {
-                    Place op = (Place)o;
-                    if (op.index == curp.index) continue;
-                    for (Object ob : places_next_to_enemy) {
-                        Place pay = (Place)ob;
-                        if (curp.cur != null && op.index == pay.index) {
-                            //System.out.println(curp.index+" to "+op.index);
-                            move_char(curp, op, false);
-                            if (op.cur == content.ini_table.get(0))
-                                turn_to_next_char();
-                            break;
-                        }
-                    }
-                }
-                
-                if (curp.cur != null && !curp.cur.did_fight) {
-                    // Someone next to him?
-                    show_move_radius = false;
-                    
-                    for (Object o : get_reachable_places(curp)) {
-                        Place op = (Place)o;
-                        
-                        if (op.index == curp.index) {
-                            continue;
-                        }
-                        
-                        if( op.cur != null && op.cur.team != curp.cur.team) {
-                            // Found char of different team
-                            move_char(curp, op, false);
-                        }
-                    }
-                }
-                
-                
-                // Just some random movement
-                if (curp.cur != null && !curp.cur.did_walk) {
-                    show_move_radius = true;
-                    for (Object o : get_reachable_places(curp)) {
-                        Place op = (Place)o;
-                        if (op.index == curp.index) continue;
-                        
-                        if (curp.cur != null && Math.random() < 0.2) {
-                            //System.out.println(curp.index+" to "+op.index);
-                            move_char(curp, op, false);
-                            if (op.cur == content.ini_table.get(0))
-                                turn_to_next_char();
-                            break;
-                        }
-                    }
-                }
-                if (make_next)
-                    turn_to_next_char();
             }
-            if (curp.cur == content.ini_table.get(0))
-                turn_to_next_char();
         }
+        return null;
+    }
+    public void let_ai_happen() {
+        if (content.ini_table.get(0).team == team) return;
+        
+        Place curp = find_char(content.ini_table.get(0));
+        
         in_reach.clear();
+        in_reach.add(curp);
+        
+        // Someone next to him?
+        show_move_radius = false;
+        
+        for (Object o : get_reachable_places(curp)) {
+            Place op = (Place)o;
+            
+            if (op.index == curp.index) {
+                continue;
+            }
+            
+            if( op.cur != null && op.cur.team != curp.cur.team) {
+                // Found char of different team
+                move_char(curp, op, false);
+            }
+        }
+        
+        // Someone he might move towards?
+        ArrayList<Place> places_next_to_enemy = new ArrayList<Place>();
+        for (int ii = 0 ; ii < field_width*field_height-1 ; ii++) {
+            Place pe = get_place(ii);
+            if (pe.cur == null) continue;
+            if (curp.cur.team != pe.cur.team) {
+                for (Object o : get_bordering_places(pe)) {
+                    places_next_to_enemy.add((Place)o);
+                }
+            }
+        }
+        show_move_radius = true;
+        for (Object o : get_reachable_places(curp)) {
+            Place op = (Place)o;
+            if (op.index == curp.index) continue;
+            for (Object ob : places_next_to_enemy) {
+                Place pay = (Place)ob;
+                if (curp.cur != null && op.index == pay.index) {
+                    //System.out.println(curp.index+" to "+op.index);
+                    move_char(curp, op, false);
+                    break;
+                }
+            }
+        }
+        
+        if (curp.cur != null && !curp.cur.did_fight) {
+            // Someone next to him?
+            show_move_radius = false;
+            
+            for (Object o : get_reachable_places(curp)) {
+                Place op = (Place)o;
+                
+                if (op.index == curp.index) {
+                    continue;
+                }
+                
+                if( op.cur != null && op.cur.team != curp.cur.team) {
+                    // Found char of different team
+                    move_char(curp, op, false);
+                }
+            }
+        }
+        
+        
+        // Just some random movement
+        if (curp.cur != null && !curp.cur.did_walk) {
+            show_move_radius = true;
+            for (Object o : get_reachable_places(curp)) {
+                Place op = (Place)o;
+                if (op.index == curp.index) continue;
+                
+                if (curp.cur != null && Math.random() < 0.2) {
+                    //System.out.println(curp.index+" to "+op.index);
+                    move_char(curp, op, false);
+                    break;
+                }
+            }
+        }
+
+    
+        turn_to_next_char();
+        in_reach.clear();
+        
+        if (content.ini_table.get(0).team != team) let_ai_happen();
     }
     
     
