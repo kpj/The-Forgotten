@@ -646,7 +646,13 @@ public class fight_handler
         special_animation.set(curi, true);
     }
     
+    double last_next_round_time = 0;
     public synchronized void next_round() {
+        if (new Date().getTime() - last_next_round_time < 500) {
+            // Just a delay to prevent speed-clicking
+            return;
+        }
+        
         if (!content.my_turn) {
             content.notification.add_noti("It is not your turn");
             return;
@@ -667,6 +673,7 @@ public class fight_handler
             let_ai_happen();
             can_modify = true;
         }
+        last_next_round_time = new Date().getTime();
     }
     
     public void make_chars_ready() {
