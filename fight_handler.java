@@ -734,11 +734,13 @@ public class fight_handler
         }
     }
     public ArrayList<Place> get_reachable_places(Place middle) {
+        if (middle.cur == null) return null;
+        
         String imp_fac = "attackenreichweite";
         if (show_move_radius) {
             imp_fac = "geschwindigkeit";
         }
-
+        
         int max_dist = (int)Math.floor((middle.cur.property_current.get(imp_fac)/100));
 
         ArrayList<Place> output = new ArrayList<Place>();

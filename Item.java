@@ -13,6 +13,7 @@ public class Item implements Serializable
     HashMap<String, Integer> effect = new HashMap<String, Integer>();
     String equipped_image;
     String entity_image;
+    String main_class;
     
     boolean is_in_use = false;
     
@@ -36,6 +37,7 @@ public class Item implements Serializable
 
         equipped_image = cur_item.get(1);
         entity_image = cur_item.get(2);
+        main_class = cur_item.get(3);
         
         effect = item_effects.get(id);
     }
