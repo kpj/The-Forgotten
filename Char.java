@@ -42,7 +42,7 @@ public class Char implements Serializable, Comparable
         if (prop == null) {
             // Properties
             property_std.put("geschwindigkeit", 500);
-            property_std.put("lebenspunkte", 10000);
+            property_std.put("lebenspunkte", 2000);
             property_std.put("manapunkte", 1000);
             property_std.put("ausdauerpunkte", 500);
             property_std.put("initiative", 800);
@@ -50,8 +50,8 @@ public class Char implements Serializable, Comparable
             property_std.put("angriffskraft", 200);
             property_std.put("attackenreichweite", 100);
             property_std.put("verteidigungspunkte", 100);
-            property_std.put("attackenmodifikator", 1000);
-            property_std.put("verteidigungmodifikator", 1000);
+            property_std.put("attackenmodifikator", 1);
+            property_std.put("verteidigungmodifikator", 1);
             property_std.put("initiative", 50);
         }
         else {
