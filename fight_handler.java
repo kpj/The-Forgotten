@@ -650,7 +650,7 @@ public class fight_handler
     
     double last_next_round_time = 0;
     public synchronized void next_round() {
-        if (new Date().getTime() - last_next_round_time < 500) {
+        if (new Date().getTime() - last_next_round_time < 300) {
             // Just a delay to prevent speed-clicking
             return;
         }
