@@ -304,36 +304,38 @@ public class fight_handler
             }
         }
         
-        
-        // draw lately updated
-        if (online) {
-            for (Object o : updated_changes) {
-                draw_place(g, (Place)o, 1, Color.pink);
+        try {
+            // draw lately updated
+            if (online) {
+                for (Object o : updated_changes) {
+                    draw_place(g, (Place)o, 1, Color.pink);
+                }
+            }
+            
+            // draw checked
+            for (Object o : checked) {
+                draw_place(g, (Place)o, 4, Color.red);
+            }
+            
+            // draw reachable
+            if (show_move_radius) {
+                for (Object o : in_reach) {
+                    Place p = (Place)o;
+                    int x = calc_offset(p.index).get(0);
+                    int y = calc_offset(p.index).get(1);
+                    g.drawImage(content.iml.get_img("pics/Icons/begehbar.png"), x, y, place_width, place_height, imo);
+                }
+            }
+            else {
+                for (Object o : in_reach) {
+                    Place p = (Place)o;
+                    int x = calc_offset(p.index).get(0);
+                    int y = calc_offset(p.index).get(1);
+                    g.drawImage(content.iml.get_img("pics/Icons/attackierbar.png"), x, y, place_width, place_height, imo);
+                }
             }
         }
-        
-        // draw checked
-        for (Object o : checked) {
-            draw_place(g, (Place)o, 4, Color.red);
-        }
-        
-        // draw reachable
-        if (show_move_radius) {
-            for (Object o : in_reach) {
-                Place p = (Place)o;
-                int x = calc_offset(p.index).get(0);
-                int y = calc_offset(p.index).get(1);
-                g.drawImage(content.iml.get_img("pics/Icons/begehbar.png"), x, y, place_width, place_height, imo);
-            }
-        }
-        else {
-            for (Object o : in_reach) {
-                Place p = (Place)o;
-                int x = calc_offset(p.index).get(0);
-                int y = calc_offset(p.index).get(1);
-                g.drawImage(content.iml.get_img("pics/Icons/attackierbar.png"), x, y, place_width, place_height, imo);
-            }
-        }
+        catch (java.lang.NullPointerException e) {}
         
         // draw selector
         if(selecting) {
@@ -346,7 +348,7 @@ public class fight_handler
         int x = calc_offset(p.index).get(0);
         int y = calc_offset(p.index).get(1);
         
-        g.setStroke(new BasicStroke(5));
+        g.setStroke(new BasicStroke(thickness));
         g.setColor(col);
         
         g.drawRect(x, y, place_width, place_height); 

@@ -67,6 +67,8 @@ public class menu_handler
                     g.drawString(i.name + " (" + ((i.is_in_use)?"Equipped":"Not equipped") + ")", x + 300, y + 40 + upper);
                     upper += 12;
                 }
+                
+                draw_bar(g, c, "lebenspunkte", Color.red, x+5, y+27);
             }
             catch (java.lang.NullPointerException e) {
                 return;
@@ -86,5 +88,19 @@ public class menu_handler
             }
         }
         catch (java.util.ConcurrentModificationException e) {}
+    }
+    
+    int bar_width = 15, bar_height = 100;
+    public void draw_bar(Graphics2D g, Char c, String type, Color col, int x, int y) {
+        float curv = (float)c.property_current.get(type);
+        float maxv = (float)c.property_max.get(type);
+        
+        float perc_val = 1/maxv * curv;
+
+        g.setColor(col);
+        g.setStroke(new BasicStroke(2));
+        
+        g.drawRect(x, y, bar_width, bar_height);
+        g.fillRect(x, y, bar_width, (int)(bar_height * perc_val));
     }
 }
