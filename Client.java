@@ -35,20 +35,20 @@ public class Client extends Thread
             Data_packet data = get_existing_data();
             
             if (data.on_the_fly) {
-                System.out.println("on the fly update");
+                content.log("on the fly update", 3);
                 send_to_all(data);
             }
             else {
                 if (data.my_turn) {
-                    System.out.println("Received data from active player #"+data.num);
+                    content.log("Received data from active player #"+data.num, 3);
                     change_turn();
                     send_to_all(data);
                 }
                 else {
-                    System.out.println("Received data from inactive player #"+data.num);
+                    content.log("Received data from inactive player #"+data.num, 3);
                 }
             }
-            System.out.println("----");
+            content.log("----", 3);
         }
     }
     
@@ -81,19 +81,19 @@ public class Client extends Thread
             
             in.read(ba, 0, length_size);
             size = ((Integer)deserialize(ba)).intValue();
-            //System.out.println("Will read "+size+" bytes");
+            //content.log("Will read "+size+" bytes");
             ba = new byte[size];
             
             int read_bytes = 0;
-            System.out.println("Incoming bytes");
+            content.log("Incoming bytes", 6);
             while (cur_size < size-length_size) {
                 read_bytes = in.read(ba, cur_size, Math.min(read_size, size-cur_size));
                 cur_size += read_bytes;
                 if (num == -1)
-                    System.out.println("["+(cur_size+length_size)+"|"+size+"] ("+read_bytes+")");
+                    content.log("["+(cur_size+length_size)+"|"+size+"] ("+read_bytes+")", 2);
             }
             if (cur_size == -1) return null;
-            System.out.println("[" + num + "] Read "+(cur_size+length_size)+" bytes");
+            content.log("[" + num + "] Read "+(cur_size+length_size)+" bytes", 2);
             return (Data_packet)deserialize(ba);
         }
         catch (IOException e) {
@@ -116,15 +116,15 @@ public class Client extends Thread
     public synchronized void send_to_all(Data_packet cur) {
         for (Object o : content.connected) {
             Client c = (Client)o;
-            System.out.print("["+num+"->"+c.num+"] ");
+            if (content.log_level >= 2) System.out.print("["+num+"->"+c.num+"] ");
             if (c.num == num && content.connected.size() > 1) {
-                System.out.println("!");
+                content.log("!", 2);
                 continue;
             }
             
-            System.out.println("Sending to "+c.name);
+            content.log("Sending to "+c.name, 2);
             cur.my_turn = content.turn.get(c.num - 1);
-            //System.out.println(cur.my_turn +"->"+ c.num);
+            //content.log(cur.my_turn +"->"+ c.num);
             
             c.send_data(cur);
         }
@@ -136,7 +136,7 @@ public class Client extends Thread
             byte[] bal = serialize(dp);
             Integer i = new Integer(bal.length + length_size);
             byte[] ball = serialize(i);
-            System.out.println(" Sending "+i+" bytes");
+            content.log(" Sending "+i+" bytes", 1);
             out.write(concat(ball, bal));
         }
         catch (IOException e) {
@@ -172,9 +172,9 @@ public class Client extends Thread
             return is.readObject();
         }
         catch (IOException e) {
-            //System.out.println("[DES] error: "+e);
+            //content.log("[DES] error: "+e);
             //e.printStackTrace();
-            //System.out.println("I think somebody disconnected");
+            //content.log("I think somebody disconnected");
             return null;
         }
         catch (ClassNotFoundException e) {

@@ -94,12 +94,12 @@ public class fight_handler
                 //e.printStackTrace();
                 System.exit(-1);
             }
-            System.out.println("Connected to \""+content.ip+":"+content.port+"\"");
+            content.log("Connected to \""+content.ip+":"+content.port+"\"", 3);
             
             Data_packet cur = client.get_existing_data();
             client.num = cur.num;
             
-            System.out.println("Acknowledged by server as #" + client.num);
+            content.log("Acknowledged by server as #" + client.num, 3);
             content.my_turn = cur.my_turn;
             team = cur.num;
             
@@ -141,7 +141,7 @@ public class fight_handler
         Collections.sort(content.ini_table);
         
         content.fight_starting = false;
-        //System.out.println(field_width+"x"+field_height);
+        //content.log(field_width+"x"+field_height);
     }
     
     public void place_char(Place p, Char c) {
@@ -154,7 +154,7 @@ public class fight_handler
                 Place p = (Place) ob;
                 if (p.index == pos) {
                     p.cur = c;
-                    //System.out.println("Set "+p.index+"'s char to "+c);
+                    //content.log("Set "+p.index+"'s char to "+c);
                 }
             }
         }
@@ -176,7 +176,13 @@ public class fight_handler
         Graphics2D g = (Graphics2D)g3;
         
         // draw bg
-        g.drawImage(content.iml.pimg.get(bg_image), 0 , 0, content.window_width, content.window_height, -move_x, -move_y, -move_x+content.window_width, -move_y+content.window_height, imo);
+        g.drawImage(content.iml.pimg.get(bg_image), 
+            0 , 0, 
+            content.window_width, content.window_height, 
+            -move_x, -move_y, 
+            -move_x+(int)(content.window_width-scale), -move_y+(int)(content.window_height-scale), 
+            imo
+        );
         
         // draw field
         checked = new ArrayList<Place>();
@@ -194,7 +200,7 @@ public class fight_handler
                     place_width = Math.round( 100 + scale );
                     place_height = Math.round( 100 + scale );
                     
-                    //System.out.println(p.index + " at: " + x + " | " + y);
+                    //content.log(p.index + " at: " + x + " | " + y);
                     g.setStroke(new BasicStroke(4));
                     g.setColor(Color.black);
                     if (p.checked) {
@@ -459,6 +465,7 @@ public class fight_handler
             
             if (human) {
                 way.add(optimize_way(pathfinding(from, to)));
+                content.sol.get_sound("sounds/moving.wav").play_sound();
                 animate_way(from, to, 0, way.size()-1);
             } else {
                 to.cur = from.cur;
@@ -600,7 +607,7 @@ public class fight_handler
             return;
         }
         
-        //System.out.println(i+" of "+(way.get(0).size()-1));
+        //content.log(i+" of "+(way.get(0).size()-1));
         
         special_i.set(curi, i);
         special_aim.set(curi, aim);
@@ -614,7 +621,7 @@ public class fight_handler
         
         if (next == null) return;
         
-        //System.out.println(cur.index+"->"+next.index);
+        //content.log(cur.index+"->"+next.index);
         animate_move(cur, next, curi);
         
         start.cur = null;
@@ -656,7 +663,7 @@ public class fight_handler
     
     double last_next_round_time = 0;
     public synchronized void next_round() {
-        if (new Date().getTime() - last_next_round_time < 300) {
+        if (new Date().getTime() - last_next_round_time < 150) {
             // Just a delay to prevent speed-clicking
             return;
         }
@@ -674,7 +681,7 @@ public class fight_handler
         
         if (online) {
             new_round_sending = true;
-            content.my_turn = false;
+            //content.my_turn = false;
         }
         else {
             can_modify = false;
@@ -760,7 +767,7 @@ public class fight_handler
                 
                 if (show_move_radius) {
                     if (current_i < max_dist && pl.cur == null && !pl.special.equals("NON-WALKABLE")) {
-                        //System.out.println(current_p.index+": "+pl.index);
+                        //content.log(current_p.index+": "+pl.index);
                         working_p.add(pl);
                         working_i.add(working_i.get(0) + 1);
                     }
@@ -768,21 +775,21 @@ public class fight_handler
                 else {
                     if (pl.cur == null) {
                         if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
-                            //System.out.println(current_p.index+": "+pl.index);
+                            //content.log(current_p.index+": "+pl.index);
                             working_p.add(pl);
                             working_i.add(working_i.get(0) + 1);
                         }
                     }
                     else if (!in_reach.isEmpty() && (pl.cur.team != in_reach.get(0).cur.team || pl.cur.team == in_reach.get(0).cur.team)) {
                         if (current_i < max_dist && !pl.special.equals("NON-WALKABLE")) {
-                            //System.out.println(current_p.index+": "+pl.index);
+                            //content.log(current_p.index+": "+pl.index);
                             working_p.add(pl);
                             working_i.add(working_i.get(0) + 1);
                         }
                     }
                 }
             }
-            //System.out.println(current_p.index+": "+current_i + "/"+max_dist +"  ("+working_p.size()+")");
+            //content.log(current_p.index+": "+current_i + "/"+max_dist +"  ("+working_p.size()+")");
             
             output.add(current_p);
             working_p.remove(0);
@@ -854,7 +861,7 @@ public class fight_handler
             for (Object ob : places_next_to_enemy) {
                 Place pay = (Place)ob;
                 if (curp.cur != null && op.index == pay.index) {
-                    //System.out.println(curp.index+" to "+op.index);
+                    //content.log(curp.index+" to "+op.index);
                     move_char(curp, op, false);
                     break;
                 }
@@ -888,7 +895,7 @@ public class fight_handler
                 if (op.index == curp.index) continue;
                 
                 if (curp.cur != null && Math.random() < 0.2) {
-                    //System.out.println(curp.index+" to "+op.index);
+                    //content.log(curp.index+" to "+op.index);
                     move_char(curp, op, false);
                     break;
                 }
@@ -1010,7 +1017,7 @@ public class fight_handler
     public int calc_g(Place p) {
         int till_now = 0;
         if (p.ancestor != null) {
-            //System.out.println(p.index+" -> "+ p.ancestor.index);
+            //content.log(p.index+" -> "+ p.ancestor.index);
             till_now = calc_g(p.ancestor);
             
             if (p.special.equals("NOTHING")) return 10 + till_now;
@@ -1037,19 +1044,19 @@ public class fight_handler
         return counter;
     }
     public void show_pathfinding_state() {
-        System.out.println("OPEN LIST:");
+        content.log("OPEN LIST:", 6);
         for (Object o : open_list) {
             Place p = (Place)o;
             print_place(p);
         }
-        System.out.println("CLOSED LIST:");
+        content.log("CLOSED LIST:", 6);
         for (Object o : closed_list) {
             Place p = (Place)o;
             print_place(p);
         }
     }
     public void print_place(Place p) {
-        System.out.println(
+        content.log(
                 "to " + 
                 p.index + 
                 " (" + get_x(p) +"|"+get_y(p)+")" +
@@ -1059,7 +1066,7 @@ public class fight_handler
                 "F:" + calc_f(p) + " " +
                 "G:" + calc_g(p) + " " +
                 "H:" + calc_h(p) + " "
-            );
+            , 6);
     }
     
     
@@ -1222,6 +1229,7 @@ public class fight_handler
         if (new_round_sending) {
             new_round_sending = false;
             my_tmp_turn = false;
+            p.ini_t = content.ini_table;
         }
         
         client.send_data(p);
@@ -1234,8 +1242,8 @@ public class fight_handler
         for (Map.Entry<Integer, Place> ob : ch.entrySet()) {
             int i = ob.getKey();
             Place p = ob.getValue();
-            //System.out.println("Detected change on "+i+" ("+p.cur+")");
-            p.cur.visible = true; // let us see all chars
+            //content.log("Detected change on "+i+" ("+p.cur+")", 1);
+            if(p.cur != null) p.cur.visible = true; // let us see all chars
             place_char2(i, p.cur);
             updated_changes.add(p);
         }
@@ -1258,12 +1266,12 @@ public class fight_handler
                 if (!cur.on_the_fly) {
                     //A new round started
                     
-                    System.out.println("Received data");
+                    content.log("Received data", 4);
                     
                     parent.apply_changes(cur.changes);
                     parent.make_chars_ready();
                     
-                    turn_to_next_char();
+                    content.ini_table = cur.ini_t;
                     
                     content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
                 }

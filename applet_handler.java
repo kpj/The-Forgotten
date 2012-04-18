@@ -26,14 +26,16 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         drawer = new draw_anything(content);
         keyer = new key_handler(content);
         
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        
         content.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         content.f.setSize(content.window_width, content.window_height);
         content.f.add(drawer);
         content.f.setVisible(true);
         
-        BufferedImage mouse_img = new Image_parser("pics/Icons/Maus/Schwerticon.png").get_img();
-        Point hotSpot = new Point(0,0);
-        Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(mouse_img, hotSpot, "Pencil");
+        BufferedImage mouse_img = new Image_parser("pics/Icons/Maus/Schwerticon2.png").get_img();
+        Point hotSpot = new Point(0, (int)tk.getBestCursorSize(32, 64).getHeight()/2);
+        Cursor cursor = tk.createCustomCursor(mouse_img, hotSpot, "Pencil");
         content.f.setCursor(cursor);
         
         content.f.addMouseListener(this);
@@ -42,7 +44,7 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         content.f.addComponentListener(this);
         content.f.addMouseWheelListener(this);
         
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension d = tk.getScreenSize();
         content.f.setLocation((int)d.getWidth()/2 - content.window_width/2, (int)d.getHeight()/2 - content.window_height/2);
         
         keyer.start();

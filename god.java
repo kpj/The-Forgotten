@@ -17,7 +17,11 @@ public class god implements Runnable
         content.menu = new menu_handler(content);
         content.notification = new notification_handler(content);
         content.window = new applet_handler(content);
-        content.iml = new Image_loader(list_all("png"));
+        
+        content.iml = new Image_loader(list_all(".png"));
+        content.sol = new Sound_loader(list_all(".wav"));
+        
+        content.log_level = 10;
         
         new Thread(this).start();
     }

@@ -40,6 +40,7 @@ public class content_handler
     int mouse_x, mouse_y;
 
     Image_loader iml;
+    Sound_loader sol;
     
     boolean show_mouse_animation = false;
     
@@ -115,5 +116,10 @@ public class content_handler
     }
     public ArrayList<Region> get_regions() {
         return regions;
+    }
+    
+    static int log_level = 0; // higher int = higher priority
+    public void log(String msg, int lvl) {
+        if (lvl >= log_level) System.out.println(msg);
     }
 }

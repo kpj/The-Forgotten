@@ -16,6 +16,8 @@ public class Data_packet implements Serializable
     
     boolean on_the_fly = true;
     
+    ArrayList<Char> ini_t = null;
+    
     @SuppressWarnings("unchecked")
     public Data_packet(ArrayList<ArrayList> f, boolean turn, int w, int h, String p2b, int n)
     {
