@@ -29,7 +29,6 @@ public class draw_anything extends JComponent
     // Double-Buffering
     @Override
     public void update(Graphics g) {
-       
         int w = this.getSize().width;
         int h = this.getSize().height;
  
@@ -51,6 +50,8 @@ public class draw_anything extends JComponent
     @Override
     protected void paintComponent( Graphics g )
     {
+        get_mouse_pos();
+        
         content.g = (Graphics2D)g;
         
         if (content.fight_active)
@@ -74,5 +75,15 @@ public class draw_anything extends JComponent
                 content.show_mouse_animation= false;
             }
         }
+        
+        //if (content.fight_active)
+        //    g.drawImage(content.iml.get_img("pics/Icons/Maus/Schwerticon.png"), content.mouse_x, content.mouse_y, this);
+        
+        g.drawImage(new Image_parser("pics/Icons/Maus/Schwerticon.png").get_img(), content.mouse_x, content.mouse_y, this);
+    }
+    
+    public void get_mouse_pos() {
+        content.mouse_x = (int) MouseInfo.getPointerInfo().getLocation().x - content.f.getLocationOnScreen().x;
+        content.mouse_y = (int) MouseInfo.getPointerInfo().getLocation().y - content.f.getLocationOnScreen().y;
     }
 }

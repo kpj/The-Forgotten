@@ -33,10 +33,14 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         content.f.add(drawer);
         content.f.setVisible(true);
         
+        /*
         BufferedImage mouse_img = new Image_parser("pics/Icons/Maus/Schwerticon2.png").get_img();
         Point hotSpot = new Point(0, (int)tk.getBestCursorSize(32, 64).getHeight()/2);
         Cursor cursor = tk.createCustomCursor(mouse_img, hotSpot, "Pencil");
         content.f.setCursor(cursor);
+        */
+        if (content.fight_active)
+            content.f.setCursor(tk.createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "null"));
         
         content.f.addMouseListener(this);
         content.f.addMouseMotionListener(this);
@@ -55,9 +59,7 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     }    
     
     // Stuff for mousy mouse
-    public void mousePressed(MouseEvent e) {
-        get_mouse_pos();
-        
+    public void mousePressed(MouseEvent e) { 
         // make nice mouse animation
         content.show_mouse_animation = true;
         
@@ -80,7 +82,6 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         }
     }
     public void mouseReleased(MouseEvent e) {
-        get_mouse_pos();
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 if (content.fight_active)
@@ -103,7 +104,6 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     public void mouseExited(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {}
     public void mouseDragged(MouseEvent e) {
-        get_mouse_pos();
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 if (content.fight_active)
@@ -123,8 +123,6 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         }
     }
     public void mouseClicked(MouseEvent e) {
-        get_mouse_pos();
-        
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 // LEFT     

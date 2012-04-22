@@ -7,7 +7,7 @@ public class content_handler
 {
     Graphics2D g = null;
     public String lol = "lol";
-
+    
     // Imp
     fight_handler fight; public boolean fight_active = false;
     world_handler world; public boolean world_active = false;

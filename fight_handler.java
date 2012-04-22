@@ -465,7 +465,7 @@ public class fight_handler
             
             if (human) {
                 way.add(optimize_way(pathfinding(from, to)));
-                content.sol.get_sound("sounds/moving.wav").play_sound();
+                content.sol.get_sound("sounds/moving.wav").loop_sound();
                 animate_way(from, to, 0, way.size()-1);
             } else {
                 to.cur = from.cur;
@@ -604,6 +604,7 @@ public class fight_handler
             // end of animation
             special_char.get(curi).visible = true;
             delete_current_way(curi);
+            content.sol.get_sound("sounds/moving.wav").stop_sound();
             return;
         }
         
