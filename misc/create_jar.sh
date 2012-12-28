@@ -1,3 +1,5 @@
+# Execute from root directory
+
 output="The-Forgotten.jar"
 
 python3 misc/compiler.py

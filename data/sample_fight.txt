@@ -6,8 +6,8 @@
 
 # Zuerst werden bestimmte Zeichen mit einem Character verbunden
 # Hierbei wird das Endbild aus verschiedenen Einzelbildern zusammengesetzt
-# Die Liste kann belienig lang sein
-# Es ist kein abschließendes Komma nötig
+# Die Liste kann beliebig lang sein
+# Es ist kein abschließendes Kommatar nötig
 C:Name:Pfad_zu_Bild1,Pfad_zu_Bild2,Pfad_zu_Bild3,...:Team:
 
 # Nun kann man diesem Character über das Schlüsselwort 'Item' Gegenstände geben
