@@ -38,12 +38,14 @@ public class menu_handler
         calc_edges();
         
         Graphics2D g = (Graphics2D)g3;
+
+				g.setFont(content.getFont());
         
         g.setColor(Color.darkGray);
         g.fillRect(x, y, content.window_width, menu_height + menu_height_changer);
         g.setColor(Color.black);
         
-        g.drawString((content.my_turn)?"Press \"n\" for next character!":"Wait for other players", x2 - 200, y + 15);
+        g.drawString((content.my_turn)?"Press \"n\" for next character!":"Wait for other players", x2 - 350, y + 15);
         
         if (content.current_selected == null) {
             g.drawString("No character selected.", x + 5, y + 15);

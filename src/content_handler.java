@@ -2,6 +2,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
+import java.io.*;
 
 public class content_handler
 {
@@ -43,7 +44,10 @@ public class content_handler
     Sound_loader sol;
     
     boolean show_mouse_animation = false;
-    
+
+		// font
+		String font_to_use = "CAELDERA.TTF";
+
     // online stuff
     ArrayList<Client> connected = new ArrayList<Client>();
     ArrayList<Boolean> turn = new ArrayList<Boolean>();
@@ -56,6 +60,22 @@ public class content_handler
  
     }
     
+		public Font getFont(){
+			Font font = null;
+			try {
+				InputStream fin = this.getClass().getResourceAsStream("fonts/"+font_to_use);
+				font = Font.createFont(
+					Font.TRUETYPE_FONT,
+					fin
+				).deriveFont(16f);
+			}
+			catch (Exception e) {
+				System.out.println("Font creation failed");
+				e.printStackTrace();
+			}
+			return font;
+		}
+
     public java.lang.Object get_active_environment() {
         if (fight_active) return fight;
         if (world_active) return world;
