@@ -1,7 +1,10 @@
 import os, pickle, hashlib
 
 cur_dir = "/".join(os.path.realpath(__file__).split("/")[:-1])
-save_file = cur_dir+"/compiler_saves"
+src_dir = "src/"
+bin_dir = "bin/"
+
+save_file = cur_dir+"/Compiler_saves"
 comper = ".java"
 to_compile = []
 
@@ -11,10 +14,10 @@ def get_hash_of_file(f):
 	return m.digest()
 
 may_compile = {}
-all = os.listdir(cur_dir+"/..")
+all = os.listdir(cur_dir+"/../"+src_dir)
 for a in all:
 	if comper in a:
-		may_compile[a] = get_hash_of_file(a)
+		may_compile[a] = get_hash_of_file(src_dir+a)
 
 try:
 	compiled = pickle.load(open(save_file, 'rb'))
@@ -35,6 +38,6 @@ for e in all:
 
 for tc in to_compile:
 	print("Compiling %s..." % tc)
-	os.system("javac %s" % tc)
+	os.system("javac -d %s -cp %s %s" % (bin_dir, bin_dir, src_dir + tc))
 
 pickle.dump(may_compile, open(save_file, 'wb'))
