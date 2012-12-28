@@ -1,0 +1,27 @@
+﻿# Hier stehen Kommentare
+# Diese sollen nicht übernommen werden
+
+
+# Man achte auf den abschließenden ':'
+
+# Zuerst werden bestimmte Zeichen mit einem Character verbunden
+# Hierbei wird das Endbild aus verschiedenen Einzelbildern zusammengesetzt
+# Die Liste kann beliebig lang sein
+# Es ist kein abschließendes Kommatar nötig
+C:Name:Pfad_zu_Bild1,Pfad_zu_Bild2,Pfad_zu_Bild3,...:Team:
+
+# Nun kann man diesem Character über das Schlüsselwort 'Item' Gegenstände geben
+# Wird an die Item-ID ein 'e' angehängt, so wird dieses ausgerüstet
+# Die Item-Liste kann beliebig lang sein
+Item:Name:ItemID1[e]:ItemID2[e]:...:
+
+# Man kann auch ein Hintergrundbild festlegen
+backgroundimg:Pfad_zum_Background:
+
+
+# Nun kann man die Karte erstellen
+# Als freies Feld können alle nicht definierten Zeichen genutzt werden
+C____
+_____
+_____
+___C_
