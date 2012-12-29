@@ -1,5 +1,14 @@
+
+import game.god;
+import game.handler.content_handler;
+
 import java.util.*;
 import javax.swing.*;
+
+import core.graphics.applet_handler;
+
+import network.Server;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -34,7 +43,15 @@ public class Startup
         content.window_height = 300;
         
         window = new applet_handler(content);
-        fights = new JComboBox(dirList(fight_directory));
+        fights = new JComboBox<Object>(dirList(fight_directory));
+        
+        sp.setFont(content.getFont());
+        mp.setFont(content.getFont());
+        mp_ip.setFont(content.getFont());
+        mp_port.setFont(content.getFont());
+        servp.setFont(content.getFont());
+        serv_port.setFont(content.getFont());
+        fights.setFont(content.getFont());
         
         panel.add(sp);
         panel.add(new JSeparator());
@@ -82,7 +99,8 @@ public class Startup
         content.f.pack();
     }
     
-    public static void main (String[] args) {
+    @SuppressWarnings("unused")
+	public static void main (String[] args) {
         Startup startup = new Startup();
     }
     
@@ -90,7 +108,7 @@ public class Startup
         System.out.println("Starting singleplayer");
         god good = new god();
         
-        good.create_fight("data/fights/test.txt", false);
+        good.create_fight("/data/fights/test.txt", false);
     }
     
     public void start_multiplayer() {
@@ -102,7 +120,8 @@ public class Startup
         good.create_fight("", true);
     }
     
-    public void start_server() {
+    @SuppressWarnings("unused")
+	public void start_server() {
         System.out.println("Starting server");
         content.port = Integer.parseInt(serv_port.getText());
         Server serv = new Server(content, fight_directory+chosen_fight);
