@@ -66,6 +66,7 @@ public class draw_anything extends JComponent
         
         content.g = (Graphics2D)g;
         content.g.setFont(content.getFont());
+     
         
         if (content.fight_active)
             ((fight_handler)content.get_active_environment()).draw_stuff(g, this);
@@ -79,6 +80,9 @@ public class draw_anything extends JComponent
         if (content.notification != null)
             content.notification.draw_stuff(g, this);
             
+        if(content.win_manager != null)
+    		content.win_manager.draw_windows(g);
+        
         if (content.show_mouse_animation) {
             // draw nice onclick-mouse animation
             g.drawImage(content.iml.get_img("/data/pics/Icons/Maus/gif"+mouse_animation_counter+".png"), content.mouse_x-9, content.mouse_y-9, this);

@@ -68,6 +68,34 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         // make nice mouse animation
         content.show_mouse_animation = true;
         
+        
+        // Check if we need to consult the window manager
+    	get_mouse_pos();
+    	
+    	for (user_interface.graphics.window.Window w : content.win_manager.get_windows()) {
+    		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
+    		switch(e.getModifiers()) {
+                case InputEvent.BUTTON1_MASK: {
+                    // LEFT     
+                    w.on_press("LEFT");
+                    break;
+                }
+                case InputEvent.BUTTON2_MASK: {
+                    // MIDDLE    
+                    w.on_press("MIDDLE");
+                    break;
+                }
+                case InputEvent.BUTTON3_MASK: {
+                    // RIGHT   
+                    w.on_press("RIGHT");
+                    break;
+                }
+            }
+    		return;
+    		}
+    	}
+    	
+    	// If that is not the case proceed to other activities
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 if (content.fight_active)
@@ -87,6 +115,33 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         }
     }
     public void mouseReleased(MouseEvent e) {
+    	// Check if we need to consult the window manager
+    	get_mouse_pos();
+    	
+    	for (user_interface.graphics.window.Window w : content.win_manager.get_windows()) {
+    		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
+    		switch(e.getModifiers()) {
+                case InputEvent.BUTTON1_MASK: {
+                    // LEFT     
+                    w.on_release("LEFT");
+                    break;
+                }
+                case InputEvent.BUTTON2_MASK: {
+                    // MIDDLE    
+                    w.on_release("MIDDLE");
+                    break;
+                }
+                case InputEvent.BUTTON3_MASK: {
+                    // RIGHT   
+                    w.on_release("RIGHT");
+                    break;
+                }
+            }
+    		return;
+    		}
+    	}
+    	
+    	// If that is not the case proceed to other activities
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 if (content.fight_active)
@@ -109,6 +164,33 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     public void mouseExited(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {}
     public void mouseDragged(MouseEvent e) {
+    	// Check if we need to consult the window manager
+    	get_mouse_pos();
+    	
+    	for (user_interface.graphics.window.Window w : content.win_manager.get_windows()) {
+    		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
+    		switch(e.getModifiers()) {
+                case InputEvent.BUTTON1_MASK: {
+                    // LEFT     
+                    w.on_drag("LEFT");
+                    break;
+                }
+                case InputEvent.BUTTON2_MASK: {
+                    // MIDDLE    
+                    w.on_drag("MIDDLE");
+                    break;
+                }
+                case InputEvent.BUTTON3_MASK: {
+                    // RIGHT   
+                    w.on_drag("RIGHT");
+                    break;
+                }
+            }
+    		return;
+    		}
+    	}
+    	
+    	// If that is not the case proceed to other activities
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 if (content.fight_active)
@@ -128,6 +210,33 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         }
     }
     public void mouseClicked(MouseEvent e) {
+    	// Check if we need to consult the window manager
+    	get_mouse_pos();
+    	
+    	for (user_interface.graphics.window.Window w : content.win_manager.get_windows()) {
+    		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
+    		switch(e.getModifiers()) {
+                case InputEvent.BUTTON1_MASK: {
+                    // LEFT     
+                    w.on_click("LEFT");
+                    break;
+                }
+                case InputEvent.BUTTON2_MASK: {
+                    // MIDDLE    
+                    w.on_click("MIDDLE");
+                    break;
+                }
+                case InputEvent.BUTTON3_MASK: {
+                    // RIGHT   
+                    w.on_click("RIGHT");
+                    break;
+                }
+            }
+    		return;
+    		}
+    	}
+    	
+    	// If that is not the case proceed to other activities
         switch(e.getModifiers()) {
             case InputEvent.BUTTON1_MASK: {
                 // LEFT     
@@ -156,7 +265,7 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
                 if (content.world_active)
                     ((world_handler)content.get_active_environment()).on_click("RIGHT");
                 if (content.map_active)
-                    ((map_handler)content.get_active_environment()).on_click("RIG");
+                    ((map_handler)content.get_active_environment()).on_click("RIGHT");
                 break;
             }
         }

@@ -12,6 +12,7 @@ import javax.swing.*;
 
 import user_interface.graphics.menu_handler;
 import user_interface.graphics.notification_handler;
+import user_interface.graphics.window.window_manager;
 
 import core.graphics.applet_handler;
 
@@ -50,6 +51,7 @@ public class content_handler
     public menu_handler menu = null;
     public notification_handler notification = null;
     public applet_handler window;
+    public window_manager win_manager;
     
     public JFrame f = new JFrame("The Forgotten");
     

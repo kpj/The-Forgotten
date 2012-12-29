@@ -17,6 +17,7 @@ import core.graphics.applet_handler;
 
 import user_interface.graphics.menu_handler;
 import user_interface.graphics.notification_handler;
+import user_interface.graphics.window.window_manager;
 import user_interface.io.key_set;
 
 import loader.Image_loader;
@@ -35,6 +36,7 @@ public class god implements Runnable
         content.menu = new menu_handler(content);
         content.notification = new notification_handler(content);
         content.window = new applet_handler(content);
+        content.win_manager = new window_manager(content);
         
         content.iml = new Image_loader(list_all(".png"));
         content.sol = new Sound_loader(list_all(".wav"));
