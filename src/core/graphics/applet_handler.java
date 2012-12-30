@@ -65,6 +65,9 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     
     // Stuff for mousy mouse
     public void mousePressed(MouseEvent e) { 
+    	if(content.win_manager == null)
+    		return;
+    	
         // make nice mouse animation
         content.show_mouse_animation = true;
         
@@ -208,6 +211,9 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         }
     }
     public void mouseClicked(MouseEvent e) {
+    	if(content.win_manager == null)
+    		return;
+    	
     	// Check if we need to consult the window manager
     	ArrayList<user_interface.graphics.window.Window> rev = new ArrayList<>(content.win_manager.get_windows());
     	Collections.reverse(rev);
