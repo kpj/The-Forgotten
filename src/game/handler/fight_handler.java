@@ -1212,10 +1212,16 @@ public class fight_handler
         }
     }
     
+    int window_counter = 0;
     public void on_key(Character key) {
         switch (key) {
             case 'n': {
                 next_round();
+                break;
+            }
+            case 'w': {
+                content.win_manager.add_window("New One " + window_counter);
+                window_counter++;
                 break;
             }
         }

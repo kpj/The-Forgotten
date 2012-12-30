@@ -34,6 +34,7 @@ public class Window {
 	int move_x_tmp, move_y_tmp, drag_start_x, drag_start_y, old_move_x, old_move_y;
 	
 	boolean dispose_me = false;
+	boolean in_focus = true;
 	
 	public Window(content_handler con, String cap, int x, int y, int w, int h) {
 		content = con;
@@ -110,6 +111,16 @@ public class Window {
 		return dispose_me;
 	}
 	
+	public void focus() {
+		in_focus = true;
+	}
+	public void defocus() {
+		in_focus = false;
+	}
+	public boolean in_focus() {
+		return in_focus;
+	}
+	
 	public void on_click(String button) {
 		if(get_close_button_rect().contains(content.mouse_x,content.mouse_y)) {
 			dispose_me = true;
@@ -122,6 +133,9 @@ public class Window {
         move_y = move_y_tmp + old_move_y;
 	}
 	public void on_press(String button) {
+		in_focus = true;
+		//System.out.println("Clicked at: "+caption);
+		
         drag_start_x = content.mouse_x;
         drag_start_y = content.mouse_y;
     }

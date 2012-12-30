@@ -71,8 +71,10 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         
         // Check if we need to consult the window manager
     	get_mouse_pos();
+    	ArrayList<user_interface.graphics.window.Window> rev = new ArrayList<>(content.win_manager.get_windows());
+    	Collections.reverse(rev);
     	
-    	for (user_interface.graphics.window.Window w : content.win_manager.get_windows()) {
+    	for (user_interface.graphics.window.Window w : rev) {
     		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
     		switch(e.getModifiers()) {
                 case InputEvent.BUTTON1_MASK: {
@@ -117,8 +119,10 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     public void mouseReleased(MouseEvent e) {
     	// Check if we need to consult the window manager
     	get_mouse_pos();
+    	ArrayList<user_interface.graphics.window.Window> rev = new ArrayList<>(content.win_manager.get_windows());
+    	Collections.reverse(rev);
     	
-    	for (user_interface.graphics.window.Window w : content.win_manager.get_windows()) {
+    	for (user_interface.graphics.window.Window w : rev) {
     		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
     		switch(e.getModifiers()) {
                 case InputEvent.BUTTON1_MASK: {
@@ -166,8 +170,10 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     public void mouseDragged(MouseEvent e) {
     	// Check if we need to consult the window manager
     	get_mouse_pos();
+    	ArrayList<user_interface.graphics.window.Window> rev = new ArrayList<>(content.win_manager.get_windows());
+    	Collections.reverse(rev);
     	
-    	for (user_interface.graphics.window.Window w : content.win_manager.get_windows()) {
+    	for (user_interface.graphics.window.Window w : rev) {
     		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
     		switch(e.getModifiers()) {
                 case InputEvent.BUTTON1_MASK: {
@@ -211,9 +217,10 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     }
     public void mouseClicked(MouseEvent e) {
     	// Check if we need to consult the window manager
-    	get_mouse_pos();
+    	ArrayList<user_interface.graphics.window.Window> rev = new ArrayList<>(content.win_manager.get_windows());
+    	Collections.reverse(rev);
     	
-    	for (user_interface.graphics.window.Window w : content.win_manager.get_windows()) {
+    	for (user_interface.graphics.window.Window w : rev) {
     		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
     		switch(e.getModifiers()) {
                 case InputEvent.BUTTON1_MASK: {
