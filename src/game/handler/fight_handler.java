@@ -344,7 +344,6 @@ public class fight_handler
                     Place p = (Place)o;
                     int x = calc_offset(p.index).get(0);
                     int y = calc_offset(p.index).get(1);
-                    System.out.println(content.iml.get_img("data/pics/Icons/begehbar.png"));
                     g.drawImage(content.iml.get_img("/data/pics/Icons/begehbar.png"), x, y, place_width, place_height, imo);
                 }
             }

@@ -76,24 +76,27 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     	
     	for (user_interface.graphics.window.Window w : rev) {
     		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
-    		switch(e.getModifiers()) {
-                case InputEvent.BUTTON1_MASK: {
-                    // LEFT     
-                    w.on_press("LEFT");
-                    break;
-                }
-                case InputEvent.BUTTON2_MASK: {
-                    // MIDDLE    
-                    w.on_press("MIDDLE");
-                    break;
-                }
-                case InputEvent.BUTTON3_MASK: {
-                    // RIGHT   
-                    w.on_press("RIGHT");
-                    break;
-                }
-            }
-    		return;
+	    		content.dragged_window = w;
+	    		content.is_dragging_window = true;
+	    		
+	    		switch(e.getModifiers()) {
+	                case InputEvent.BUTTON1_MASK: {
+	                    // LEFT     
+	                    w.on_press("LEFT");
+	                    break;
+	                }
+	                case InputEvent.BUTTON2_MASK: {
+	                    // MIDDLE    
+	                    w.on_press("MIDDLE");
+	                    break;
+	                }
+	                case InputEvent.BUTTON3_MASK: {
+	                    // RIGHT   
+	                    w.on_press("RIGHT");
+	                    break;
+	                }
+	            }
+	    		return;
     		}
     	}
     	
@@ -119,30 +122,28 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     public void mouseReleased(MouseEvent e) {
     	// Check if we need to consult the window manager
     	get_mouse_pos();
-    	ArrayList<user_interface.graphics.window.Window> rev = new ArrayList<>(content.win_manager.get_windows());
-    	Collections.reverse(rev);
     	
-    	for (user_interface.graphics.window.Window w : rev) {
-    		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
+    	if(content.is_dragging_window) {
+    		content.is_dragging_window = false;
+    		
     		switch(e.getModifiers()) {
-                case InputEvent.BUTTON1_MASK: {
-                    // LEFT     
-                    w.on_release("LEFT");
-                    break;
-                }
-                case InputEvent.BUTTON2_MASK: {
-                    // MIDDLE    
-                    w.on_release("MIDDLE");
-                    break;
-                }
-                case InputEvent.BUTTON3_MASK: {
-                    // RIGHT   
-                    w.on_release("RIGHT");
-                    break;
-                }
-            }
-    		return;
+            	case InputEvent.BUTTON1_MASK: {
+            		// LEFT     
+            		content.dragged_window.on_release("LEFT");
+            		break;
+            	}
+            	case InputEvent.BUTTON2_MASK: {
+            		// MIDDLE    
+            		content.dragged_window.on_release("MIDDLE");
+            		break;
+            	}
+            	case InputEvent.BUTTON3_MASK: {
+            		// RIGHT   
+            		content.dragged_window.on_release("RIGHT");
+            		break;
+            	}
     		}
+    		return;
     	}
     	
     	// If that is not the case proceed to other activities
@@ -170,30 +171,27 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     public void mouseDragged(MouseEvent e) {
     	// Check if we need to consult the window manager
     	get_mouse_pos();
-    	ArrayList<user_interface.graphics.window.Window> rev = new ArrayList<>(content.win_manager.get_windows());
-    	Collections.reverse(rev);
     	
-    	for (user_interface.graphics.window.Window w : rev) {
-    		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
+    	if(content.is_dragging_window) {
     		switch(e.getModifiers()) {
-                case InputEvent.BUTTON1_MASK: {
-                    // LEFT     
-                    w.on_drag("LEFT");
-                    break;
-                }
-                case InputEvent.BUTTON2_MASK: {
-                    // MIDDLE    
-                    w.on_drag("MIDDLE");
-                    break;
-                }
-                case InputEvent.BUTTON3_MASK: {
-                    // RIGHT   
-                    w.on_drag("RIGHT");
-                    break;
-                }
-            }
-    		return;
+            	case InputEvent.BUTTON1_MASK: {
+            		// LEFT   
+            		System.out.println("GO - " + content.dragged_window.get_rect());
+            		content.dragged_window.on_drag("LEFT");
+            		break;
+            	}
+            	case InputEvent.BUTTON2_MASK: {
+            		// MIDDLE    
+            		content.dragged_window.on_drag("MIDDLE");
+            		break;
+            	}
+            	case InputEvent.BUTTON3_MASK: {
+            		// RIGHT   
+            		content.dragged_window.on_drag("RIGHT");
+            		break;
+            	}
     		}
+    		return;
     	}
     	
     	// If that is not the case proceed to other activities

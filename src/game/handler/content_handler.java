@@ -66,6 +66,10 @@ public class content_handler
     
     public boolean show_mouse_animation = false;
 
+    // window management
+    public boolean is_dragging_window = false;
+    public user_interface.graphics.window.Window dragged_window = null;
+    
 	// font
 	String font_to_use = "CAELDERA.TTF";
 
