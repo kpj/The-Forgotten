@@ -127,19 +127,30 @@ public class Window {
 		}
 	}
 	public void on_drag(String button) {
-		move_x_tmp = (content.mouse_x - drag_start_x);
-        move_y_tmp = (content.mouse_y - drag_start_y);
-        move_x = move_x_tmp + old_move_x;
-        move_y = move_y_tmp + old_move_y;
+		if (content.is_dragging_window) {
+			move_x_tmp = (content.mouse_x - drag_start_x);
+			move_y_tmp = (content.mouse_y - drag_start_y);
+			move_x = move_x_tmp + old_move_x;
+			move_y = move_y_tmp + old_move_y;
+		}
 	}
 	public void on_press(String button) {
 		in_focus = true;
 		
-        drag_start_x = content.mouse_x;
-        drag_start_y = content.mouse_y;
+		// Only drag if status bar is involved
+		if(get_status_bar_rect().contains(content.mouse_x, content.mouse_y)) {
+			content.dragged_window = this;
+    		content.is_dragging_window = true;
+    		
+			drag_start_x = content.mouse_x;
+			drag_start_y = content.mouse_y;
+		}
     }
 	public void on_release(String button) {
-		old_move_x = move_x;
-        old_move_y = move_y;
+		if (content.is_dragging_window) {
+			old_move_x = move_x;
+			old_move_y = move_y;
+			content.is_dragging_window = false;
+		}
 	}
 }

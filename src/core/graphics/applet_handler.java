@@ -76,9 +76,6 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     	
     	for (user_interface.graphics.window.Window w : rev) {
     		if(w.get_rect().contains(content.mouse_x, content.mouse_y)) {
-	    		content.dragged_window = w;
-	    		content.is_dragging_window = true;
-	    		
 	    		switch(e.getModifiers()) {
 	                case InputEvent.BUTTON1_MASK: {
 	                    // LEFT     
@@ -124,8 +121,6 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     	get_mouse_pos();
     	
     	if(content.is_dragging_window) {
-    		content.is_dragging_window = false;
-    		
     		switch(e.getModifiers()) {
             	case InputEvent.BUTTON1_MASK: {
             		// LEFT     
