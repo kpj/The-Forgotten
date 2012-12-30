@@ -14,7 +14,7 @@ public class Window {
 	
 	String caption;
 	
-	Color window_color;
+	Color window_color, window_border_color;
 	int window_x, window_y, window_width, window_height;
 	
 	
@@ -49,6 +49,7 @@ public class Window {
 		window_y = y;
 		window_width = w;
 		window_height = h;
+		window_border_color = Color.black;
 		
 		status_bar_width = window_width;
 		close_button_x = status_bar_width - close_button_width;
@@ -61,6 +62,15 @@ public class Window {
 		// draw window
 		g.setColor(window_color);
 		g.fillRect(
+				window_xpos, 
+				window_ypos, 
+				window_width, 
+				window_height
+			);
+		
+		// draw window borders
+		g.setColor(window_border_color);
+		g.drawRect(
 				window_xpos, 
 				window_ypos, 
 				window_width, 
