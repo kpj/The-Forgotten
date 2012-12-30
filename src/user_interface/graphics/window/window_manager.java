@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import user_interface.graphics.window.component.Label;
+import user_interface.graphics.window.component.TextBox;
+
 public class window_manager {
 	
 	content_handler content;
@@ -20,7 +23,9 @@ public class window_manager {
 	public void add_window(String caption) {
 		defocus_all();
 		
-		windows.add(new Window(content, caption, 10, 10, 200, 200));
+		Window w = new Window(content, caption, 10, 10, 200, 200);
+		w.add_element(new Label("Test Text", 0, 0));
+		windows.add(w);
 	}
 	
 	private void defocus_all() {

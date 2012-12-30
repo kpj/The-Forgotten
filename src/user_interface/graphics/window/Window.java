@@ -4,8 +4,9 @@ import game.handler.content_handler;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+
 
 public class Window {
 	
@@ -35,6 +36,8 @@ public class Window {
 	
 	boolean dispose_me = false;
 	boolean in_focus = true;
+	
+	ArrayList<Window_component> elements = new ArrayList<>();
 	
 	public Window(content_handler con, String cap, int x, int y, int w, int h) {
 		content = con;
@@ -85,6 +88,15 @@ public class Window {
 		// draw title
 		g.setColor(Color.black);
 		g.drawString(caption, window_xpos, window_ypos + 15);
+		
+		// draw elements
+		for(Window_component wc : elements) {
+			wc.draw_content(g, window_xpos, window_ypos + status_bar_height*2);
+		}
+	}
+	
+	public void add_element(Window_component wc) {
+		elements.add(wc);
 	}
 	
 	public Rectangle get_rect() {
