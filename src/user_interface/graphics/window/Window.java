@@ -131,11 +131,9 @@ public class Window {
         move_y_tmp = (content.mouse_y - drag_start_y);
         move_x = move_x_tmp + old_move_x;
         move_y = move_y_tmp + old_move_y;
-        System.out.println(caption + " - dragged");
 	}
 	public void on_press(String button) {
 		in_focus = true;
-		//System.out.println("Clicked at: "+caption);
 		
         drag_start_x = content.mouse_x;
         drag_start_y = content.mouse_y;

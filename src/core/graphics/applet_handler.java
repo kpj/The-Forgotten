@@ -176,7 +176,6 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
     		switch(e.getModifiers()) {
             	case InputEvent.BUTTON1_MASK: {
             		// LEFT   
-            		System.out.println("GO - " + content.dragged_window.get_rect());
             		content.dragged_window.on_drag("LEFT");
             		break;
             	}
