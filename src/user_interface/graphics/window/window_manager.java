@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import user_interface.graphics.window.component.Image;
 import user_interface.graphics.window.component.Label;
 
 public class window_manager {
@@ -24,6 +25,8 @@ public class window_manager {
 		
 		Window w = new Window(content, caption, 10, 10, 200, 200);
 		w.add_element(new Label("Test Text", 0, 0));
+		w.add_element(new Image(content.iml.get_img("/data/pics/non_walkable.png"), 0, 3, 100, 100));
+		
 		windows.add(w);
 	}
 	

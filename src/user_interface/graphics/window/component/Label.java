@@ -17,6 +17,7 @@ public class Label implements Window_component {
 		component_y = y;
 	}
 	
+	@Override
 	public void draw_content(Graphics g, int origin_x, int origin_y) {
 		g.drawString(label, origin_x + component_x, origin_y + component_y);
 	}
