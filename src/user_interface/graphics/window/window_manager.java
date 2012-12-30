@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import user_interface.graphics.window.component.Label;
-import user_interface.graphics.window.component.TextBox;
 
 public class window_manager {
 	
