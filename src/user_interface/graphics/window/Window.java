@@ -2,8 +2,10 @@ package user_interface.graphics.window;
 
 import game.handler.content_handler;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -70,6 +72,7 @@ public class Window {
 		
 		// draw window borders
 		g.setColor(window_border_color);
+		((Graphics2D)g).setStroke(new BasicStroke(4));
 		g.drawRect(
 				window_xpos, 
 				window_ypos, 
