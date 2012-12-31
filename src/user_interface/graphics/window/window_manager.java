@@ -5,6 +5,7 @@ import game.handler.content_handler;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import user_interface.graphics.window.component.Bar;
 import user_interface.graphics.window.component.Image;
@@ -24,6 +25,7 @@ public class window_manager {
 	public void add_window(String caption) {
 		defocus_all();
 		
+		// TODO
 		Window w = new Window(content, caption, 10, 10, 200, 200);
 		w.add_element(new Label("Test Text", 0, 0));
 		w.add_element(new Image(content.iml.get_img("/data/pics/non_walkable.png"), 0, 30, 100, 100));
@@ -44,28 +46,34 @@ public class window_manager {
 		int len = windows.size();
 		Window move_to_end = null;
 		
-		for(Window w : windows) {
-			// draw window
-			w.draw_me(g);
-			
-			// check if it should be deleted
-			if (w.dispose_me) {
-				to_rm.add(w);
-			}
-			
-			// check for changing focus
-			if(w.in_focus && windows.indexOf(w) != len-1) {
-				defocus_all();
-				w.focus();
-				move_to_end = w;
+		try {
+			for(Window w : windows) {
+				// draw window
+				w.draw_me(g);
+				
+				// check if it should be deleted
+				if (w.dispose_me) {
+					to_rm.add(w);
+				}
+				
+				// check for changing focus
+				if(w.in_focus && windows.indexOf(w) != len-1) {
+					defocus_all();
+					w.focus();
+					move_to_end = w;
+				}
 			}
 		}
+		catch (ConcurrentModificationException e) {}
 		
-		// Delete closed windows
-		for(Window w : to_rm) {
-			windows.remove(windows.indexOf(w));
+		try {
+			// Delete closed windows
+			for(Window w : to_rm) {
+				windows.remove(windows.indexOf(w));
+			}
+			to_rm.clear();
 		}
-		to_rm.clear();
+		catch (ConcurrentModificationException e) {}
 
 		// Check focus stuff
 		if(move_to_end != null) {
