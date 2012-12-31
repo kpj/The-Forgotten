@@ -23,10 +23,14 @@ public class window_manager {
 	}
 	
 	public void add_window(String caption) {
-		defocus_all();
+		Window w = new Window(content, caption, 10, 10, 200, 200);
+		
+		if(content.is_dragging_window)
+			w.defocus();
+		else
+			defocus_all();
 		
 		// TODO
-		Window w = new Window(content, caption, 10, 10, 200, 200);
 		w.add_element(new Label("Test Text", 0, 0));
 		w.add_element(new Image(content.iml.get_img("/data/pics/non_walkable.png"), 0, 30, 100, 100));
 		Bar b = new Bar(155, 0, 20, 100, false);
