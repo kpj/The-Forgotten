@@ -72,6 +72,8 @@ public class content_handler
     
 	// font
 	String font_to_use = "CAELDERA.TTF";
+	public Font font;
+	public FontMetrics font_metric;
 
     // online stuff
     public ArrayList<Client> connected = new ArrayList<Client>();
@@ -82,7 +84,7 @@ public class content_handler
     
     public content_handler()
     {
- 
+    	this.font = this.getFont();
     }
     
 	public Font getFont(){
@@ -163,8 +165,19 @@ public class content_handler
         return regions;
     }
     
+    
     public static int log_level = 0; // higher int = higher priority
     public void log(String msg, int lvl) {
         if (lvl >= log_level) System.out.println(msg);
+    }
+    
+    
+    // Return type: {width, height}
+    public int[] get_string_information(String s) {
+    	int width = (int) this.font.getStringBounds(s, this.g.getFontRenderContext()).getWidth();
+    	int height = this.font_metric.getHeight();
+    	
+    	int[] i = {width, height};
+    	return i;
     }
 }

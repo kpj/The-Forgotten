@@ -38,7 +38,7 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
         
         Toolkit tk = Toolkit.getDefaultToolkit();
         
-        //content.f.setFont(content.getFont());
+        //content.f.setFont(content.font);
         content.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         content.f.setSize(content.window_width, content.window_height);
         content.f.add(drawer);

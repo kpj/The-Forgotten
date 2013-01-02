@@ -65,7 +65,11 @@ public class draw_anything extends JComponent
         get_mouse_pos();
         
         content.g = (Graphics2D)g;
-        content.g.setFont(content.getFont());
+        
+        // some font related stuff
+        content.font_metric = content.g.getFontMetrics();
+        
+        content.g.setFont(content.font);
      
         
         if (content.fight_active)

@@ -35,6 +35,7 @@ public class window_manager {
 		w.add_element(new Image(content.iml.get_img("/data/pics/non_walkable.png"), 0, 30, 100, 100));
 		Bar b = new Bar(155, 0, 20, 100, false);
 		b.set_level(33);
+		b.set_popup_text("This is a useless bar");
 		w.add_element(b);
 		
 		windows.add(w);

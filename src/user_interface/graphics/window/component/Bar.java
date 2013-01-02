@@ -2,6 +2,7 @@ package user_interface.graphics.window.component;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import user_interface.graphics.window.Window_component;
 
@@ -17,6 +18,10 @@ public class Bar implements Window_component{
 	
 	// TODO delete me
 	int changer = 1;
+	
+	String popup_text = "";
+	
+	int origin_x, origin_y;
 	
 	public Bar(int x, int y, int w, int h, boolean hori) {
 		bar_color = Color.cyan;
@@ -49,6 +54,9 @@ public class Bar implements Window_component{
 	
 	@Override
 	public void draw_content(Graphics g, int origin_x, int origin_y) {
+		this.origin_x = origin_x;
+		this.origin_y = origin_y;
+		
 		int x = origin_x + bar_x;
 		int y = origin_y + bar_y;
 		
@@ -94,5 +102,20 @@ public class Bar implements Window_component{
 	public void change_level(int perc) {
 		percent_filled += perc;
 	}
+	
 
+	public Rectangle get_rect() {
+		return new Rectangle(origin_x+bar_x, origin_y+bar_y, bar_width, bar_height);
+	}
+	
+	public void set_popup_text(String f) {
+		popup_text = f;
+	}
+	public String get_popup_text() {
+		return this.popup_text;
+	}
+	public boolean popup_set() {
+		return !(popup_text.equals(""));
+	}
+	
 }

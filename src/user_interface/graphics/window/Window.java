@@ -105,6 +105,21 @@ public class Window {
 		// draw elements
 		for(Window_component wc : elements) {
 			wc.draw_content(g, window_xpos, window_ypos + status_bar_height*2);
+			
+			if(this.in_focus) {
+				// check for "tooltip" help
+				if(wc.get_rect().contains(content.mouse_x, content.mouse_y)) {
+					if(wc.popup_set()) {
+						String txt_2draw = wc.get_popup_text();
+						int[] i = content.get_string_information(txt_2draw);
+						
+						g.setColor(Color.cyan);
+						g.fillRect(content.mouse_x-1, content.mouse_y-i[1]+2, i[0]+2, i[1]);
+						g.setColor(Color.black);
+						g.drawString(txt_2draw, content.mouse_x, content.mouse_y);
+					}
+				}
+			}
 		}
 	}
 	
