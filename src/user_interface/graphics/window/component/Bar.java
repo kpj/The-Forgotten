@@ -16,15 +16,14 @@ public class Bar implements Window_component{
 	
 	boolean horizontal;
 	
-	// TODO delete me
-	int changer = 1;
-	
 	String popup_text = "";
 	
 	int origin_x, origin_y;
 	
+	String id;
+	
 	public Bar(int x, int y, int w, int h, boolean hori) {
-		bar_color = Color.cyan;
+		bar_color = Color.red;
 		
 		bar_x = x;
 		bar_y = y;
@@ -35,7 +34,7 @@ public class Bar implements Window_component{
 		percent_filled = 100;
 	}
 	public Bar(int x, int y, int w, int h, boolean hori, int p) {
-		bar_color = Color.cyan;
+		bar_color = Color.red;
 		
 		bar_x = x;
 		bar_y = y;
@@ -54,6 +53,8 @@ public class Bar implements Window_component{
 	
 	@Override
 	public void draw_content(Graphics g, int origin_x, int origin_y) {
+		g.setColor(this.bar_color);
+		
 		this.origin_x = origin_x;
 		this.origin_y = origin_y;
 		
@@ -75,13 +76,6 @@ public class Bar implements Window_component{
 		g.drawRect(x, y, bar_width, bar_height);
 		
 		check_boundary();
-		
-		// TODO Delete me later on!!
-		change_level(changer);
-		if(percent_filled==100)
-			changer*=-1;
-		if(percent_filled==0)
-			changer*=-1;
 	}
 
 	private void check_boundary() {
@@ -118,4 +112,23 @@ public class Bar implements Window_component{
 		return !(popup_text.equals(""));
 	}
 	
+	public int getX() {
+		return bar_x;
+	}
+	public int getY() {
+		return bar_y;
+	}
+	public int getWidth() {
+		return bar_width;
+	}
+	public int getHeight() {
+		return bar_height;
+	}
+	
+	public void set_id(String id) {
+		this.id = id;
+	}
+	public String get_id() {
+		return id;
+	}
 }

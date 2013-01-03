@@ -11,10 +11,14 @@ import core.graphics.draw_anything;
 
 import parser.Image_parser;
 import parser.Map_parser;
+import user_interface.graphics.window.Window;
+import user_interface.graphics.window.component.Image;
+import user_interface.graphics.window.component.Label;
 
 import network.Client;
 import network.Data_packet;
 
+import java.awt.geom.Ellipse2D;
 import java.awt.image.*;
 import java.net.*;
 import java.io.*;
@@ -81,6 +85,8 @@ public class fight_handler
     
     ArrayList<Place> updated_changes = new ArrayList<Place>();
     
+    public Window information_window;
+    
     @SuppressWarnings("unchecked")
     public fight_handler(String path2fight, content_handler con, boolean on)
     {
@@ -125,7 +131,7 @@ public class fight_handler
             loading_field = true;
             content.field = new ArrayList<ArrayList>(cur.field);
             loading_field = false;
-            content.notification.add_noti("Updated field");
+            content.win_manager.add_notification("Updated field");
             
             
             Data_getter dg = new Data_getter(this, content);
@@ -157,6 +163,72 @@ public class fight_handler
         
         content.fight_starting = false;
         //content.log(field_width+"x"+field_height);
+        
+        // Design lower menu
+        information_window = new Window(
+        		content, 
+        		"bla", 
+        		0, 
+        		content.window_height-170, 
+        		content.window_width,
+        		170
+        	);
+        information_window.remove_status_bar();
+        
+        Image img = new Image(gen_ini_table_image(), 0, information_window.getHeight()-50);
+        img.set_id("ini table picture");
+        information_window.add_element(img);
+        
+        Label lab = new Label("lol", 0, 0, 100, 20);
+        lab.set_id("status string");
+        information_window.add_element(lab);
+        // TODO maybe replace all interior elements if window gets resized?
+        Label lab2 = new Label("lol", information_window.getWidth()-350, 0, 100, 20);
+        lab2.set_id("turn string");
+        information_window.add_element(lab2);
+        
+        content.win_manager.add_window(information_window);
+    }
+    
+    public BufferedImage gen_ini_table_image() {
+    	int face_pos_x = 45, face_pos_y = 8;
+        int face_width = 13, face_height = 13;
+        double face_scale = 2;
+        
+    	BufferedImage img = new BufferedImage(
+    			content.window_width-10, 
+    			(int)(face_height*face_scale), 
+    			BufferedImage.TYPE_INT_ARGB
+    		);
+    	
+    	Graphics2D g2d = img.createGraphics();
+    	Color transparent = new Color(0, 0, 0, 0);
+        g2d.setColor(transparent);
+        g2d.setComposite(AlphaComposite.Src);
+    	
+    	try {
+            int ini_counter = 0;
+            for (Char c : content.ini_table) {
+                g2d.drawImage(
+                	content.iml.get_img(c.name+"_fight_image"),
+                	
+                	// destination
+                    ini_counter, 0, 
+                    (int)(ini_counter + face_width*face_scale), (int) (face_height*face_scale), 
+                    
+                    // source
+                    face_pos_x, face_pos_y, 
+                    face_pos_x + face_width, face_pos_y + face_height, 
+                    
+                	null
+                );
+                ini_counter += face_width*2 + 3;
+            }
+        }
+        catch (java.util.ConcurrentModificationException | NullPointerException e) {}
+    	
+    	g2d.dispose();
+    	return img;
     }
     
     public void place_char(Place p, Char c) {
@@ -359,11 +431,20 @@ public class fight_handler
         catch (java.lang.NullPointerException e) {}
         
         // draw selector
-        if(selecting) {
+        /*if(selecting) {
             g.setStroke(new BasicStroke(2));
             g.setColor(Color.blue);
             g.drawRect(select_x_tmp, select_y_tmp, select_width, select_height);
+        }*/
+        
+        // check for the lonely menu
+        if (content.current_selected == null) {
+        	((Label)(information_window.get_by_id("status string"))).update_label("No character selected.");
+        } else {
+        	((Label)(information_window.get_by_id("status string"))).update_label(content.current_selected.cur.name);
         }
+        
+        ((Label)(information_window.get_by_id("turn string"))).update_label((content.my_turn)?"Press \"n\" for next character!":"Wait for other players");
     }
     public void draw_place(Graphics2D g, Place p, int thickness, Color col) {
         int x = calc_offset(p.index).get(0);
@@ -426,7 +507,7 @@ public class fight_handler
     public void move_char(Place from, Place to, boolean human) {
         if (human) {
             if (!(from.cur.team == team || team == -1)) {
-                content.notification.add_noti("This character is not in your team");
+            	content.win_manager.add_notification("This character is not in your team");
                 return;
             }
             /*if (!content.my_turn) {
@@ -434,7 +515,8 @@ public class fight_handler
                 return;
             }*/
             if (from.cur != content.ini_table.get(0)) {
-                content.notification.add_noti("It is not this characters' turn");
+                // TODOcontent.notification.add_noti("It is not this characters' turn");
+            	content.win_manager.add_notification("It is not this characters' turn");
                 return;
             }
         } else {
@@ -458,7 +540,7 @@ public class fight_handler
                 }
                 if (from.cur.did_fight) {
                     if (human)
-                        content.notification.add_noti("Cannot fight in this round anymore");
+                    	content.win_manager.add_notification("Cannot fight in this round anymore");
                     return;
                 }
                 // Attack used field
@@ -473,7 +555,7 @@ public class fight_handler
             }
             if (from.cur.did_walk) {
                 if (human)
-                    content.notification.add_noti("Cannot walk in this round anymore");
+                	content.win_manager.add_notification("Cannot walk in this round anymore");
                 return;
             }
             from.cur.did_walk = true;
@@ -521,8 +603,8 @@ public class fight_handler
             defender.cur.deal_damage(att - def);
         }
         
-        content.notification.add_noti(attacker.cur.name + " dealt " + (att-def) + " damage to " + defender.cur.name);
-        content.notification.add_noti(defender.cur.name + " has now " + defender.cur.property_current.get("lebenspunkte") + " life points");
+        content.win_manager.add_notification(attacker.cur.name + " dealt " + (att-def) + " damage to " + defender.cur.name);
+        content.win_manager.add_notification(defender.cur.name + " has now " + defender.cur.property_current.get("lebenspunkte") + " life points");
         if (defender.cur.property_current.get("lebenspunkte") <= 0)
             return true;
         return false;
@@ -685,13 +767,15 @@ public class fight_handler
         }
         
         if (!content.my_turn) {
-            content.notification.add_noti("It is not your turn");
+        	content.win_manager.add_notification("It is not your turn");
             return;
         }
         
-        content.notification.add_noti("Let the next round begin!");
+        content.win_manager.add_notification("Let the next round begin!");
         
         turn_to_next_char();
+        
+        ((Image)(this.information_window.get_by_id("ini table picture"))).update_image(gen_ini_table_image());
         
         make_chars_ready();
         
@@ -724,10 +808,7 @@ public class fight_handler
         ArrayList<Place> sel = checked;
         if (sel == null)
             return;
-        if (sel.size() == 0) {
-            
-        }
-        else {
+        if (sel.size() != 0) {
             for (Object o : sel) {
                 Place p = (Place)o;
                 
@@ -736,6 +817,7 @@ public class fight_handler
                     if (sel.size() == 1) {
                         unit_selected = true;
                         content.current_selected = p;
+                        content.win_manager.add_character_window(p.cur);
                     }
                     else {
                         multiple_units_selected = true;
@@ -1094,7 +1176,12 @@ public class fight_handler
                     ArrayList l = (ArrayList) o;
                     for (Object ob : l) {
                         Place p = (Place) ob;
-                        Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
+                        Rectangle r = new Rectangle(
+                        		calc_offset(p.index).get(0),
+                        		calc_offset(p.index).get(1),
+                        		place_width,
+                        		place_height
+                        	);
                         
                         if(r.contains(content.mouse_x, content.mouse_y)) {
                             p.checked = !p.checked;
@@ -1107,7 +1194,12 @@ public class fight_handler
                     ArrayList l = (ArrayList) o;
                     for (Object ob : l) {
                         Place p = (Place) ob;
-                        Rectangle r = new Rectangle(calc_offset(p.index).get(0), calc_offset(p.index).get(1), place_width, place_height);
+                        Rectangle r = new Rectangle(
+                        		calc_offset(p.index).get(0), 
+                        		calc_offset(p.index).get(1), 
+                        		place_width, 
+                        		place_height
+                        	);
                         
                         if(r.contains(content.mouse_x, content.mouse_y)) {
                             if(in_reach.contains(p)) {
@@ -1220,7 +1312,7 @@ public class fight_handler
                 break;
             }
             case 'w': {
-                content.win_manager.add_window("New One " + window_counter);
+                content.win_manager.add_notification("New One " + window_counter);
                 window_counter++;
                 break;
             }
@@ -1296,7 +1388,7 @@ public class fight_handler
                     
                     content.ini_table = cur.ini_t;
                     
-                    content.notification.add_noti((content.my_turn)?"It is your turn":"Wait for other players");
+                    content.win_manager.add_notification((content.my_turn)?"It is your turn":"Wait for other players");
                 }
                 else {
                     // just updating on the fly

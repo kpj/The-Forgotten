@@ -78,11 +78,6 @@ public class draw_anything extends JComponent
             ((world_handler)content.get_active_environment()).draw_stuff(g, this);
         if (content.map_active)
             ((map_handler)content.get_active_environment()).draw_stuff(g, this);
-        
-        if (content.menu != null)
-            content.menu.draw_stuff(g, this);
-        if (content.notification != null)
-            content.notification.draw_stuff(g, this);
             
         if(content.win_manager != null)
     		content.win_manager.draw_windows(g);

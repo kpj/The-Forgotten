@@ -12,4 +12,12 @@ public interface Window_component {
 	public void set_popup_text(String text);
 	public String get_popup_text();
 	public boolean popup_set();
+	
+	public int getX();
+	public int getY();
+	public int getWidth();
+	public int getHeight();
+	
+	public void set_id(String id);
+	public String get_id();
 }

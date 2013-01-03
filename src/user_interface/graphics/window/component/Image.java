@@ -16,12 +16,21 @@ public class Image implements Window_component{
 	
 	int origin_x, origin_y;
 	
+	String id = "";
+	
 	public Image(BufferedImage img, int x, int y, int w, int h) {
 		image = img;
 		image_x = x;
 		image_y = y;
 		image_width = w;
 		image_height = h;
+	}
+	public Image(BufferedImage img, int x, int y) {
+		image = img;
+		image_x = x;
+		image_y = y;
+		image_width = img.getWidth();
+		image_height = img.getHeight();
 	}
 	
 	@Override
@@ -44,5 +53,29 @@ public class Image implements Window_component{
 	}
 	public boolean popup_set() {
 		return !(popup_text.equals(""));
+	}
+	
+	public void update_image(BufferedImage new_img) {
+		this.image = new_img;
+	}
+	
+	public int getX() {
+		return image_x;
+	}
+	public int getY() {
+		return image_y;
+	}
+	public int getWidth() {
+		return image_width;
+	}
+	public int getHeight() {
+		return image_height;
+	}
+	
+	public void set_id(String id) {
+		this.id = id;
+	}
+	public String get_id() {
+		return id;
 	}
 }

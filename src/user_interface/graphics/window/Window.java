@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class Window {
@@ -26,6 +27,7 @@ public class Window {
 	int status_bar_y = 0;
 	int status_bar_width;
 	int status_bar_height = 20;
+	boolean has_status_bar = true; // Includes ability to move/close window
 	
 	Color close_button_color = Color.gray;
 	int close_button_x;
@@ -39,6 +41,9 @@ public class Window {
 	
 	boolean dispose_me = false;
 	boolean in_focus = true;
+	
+	int time_to_live = -42;
+	int time_start = -42;
 	
 	ArrayList<Window_component> elements = new ArrayList<>();
 	
@@ -81,30 +86,32 @@ public class Window {
 				window_height
 			);
 		
-		// draw status bar
-		if(this.in_focus)
-			g.setColor(status_bar_color_in_focus);
-		else
-			g.setColor(status_bar_color_de_focus);
-		g.fillRect(
-				window_xpos+status_bar_x, 
-				window_ypos+status_bar_y, 
-				status_bar_width, 
-				status_bar_height
-			);
-		
-		// draw close button
-		g.setColor(close_button_color);
-		g.fillRect(
-				window_xpos+close_button_x, 
-				window_ypos+close_button_y, 
-				close_button_width, 
-				close_button_height
-			);
-		
-		// draw title
-		g.setColor(Color.black);
-		g.drawString(caption, window_xpos, window_ypos + 15);
+		if(this.has_status_bar) {
+			// draw status bar
+			if(this.in_focus)
+				g.setColor(status_bar_color_in_focus);
+			else
+				g.setColor(status_bar_color_de_focus);
+			g.fillRect(
+					window_xpos+status_bar_x, 
+					window_ypos+status_bar_y, 
+					status_bar_width, 
+					status_bar_height
+				);
+			
+			// draw close button
+			g.setColor(close_button_color);
+			g.fillRect(
+					window_xpos+close_button_x, 
+					window_ypos+close_button_y, 
+					close_button_width, 
+					close_button_height
+				);
+			
+			// draw title
+			g.setColor(Color.black);
+			g.drawString(caption, window_xpos, window_ypos + 15);
+		}
 		
 		// draw elements
 		for(Window_component wc : elements) {
@@ -112,6 +119,7 @@ public class Window {
 			
 			if(this.in_focus) {
 				// check for "tooltip" help
+				// TODO Draw tooltips on top of all other elements
 				if(wc.get_rect().contains(content.mouse_x, content.mouse_y)) {
 					if(wc.popup_set()) {
 						String txt_2draw = wc.get_popup_text();
@@ -125,10 +133,72 @@ public class Window {
 				}
 			}
 		}
+		
+		// check time to live
+		if(this.time_to_live != -42) {
+			if(((int) new Date().getTime()) - this.time_start > this.time_to_live) {
+				this.dispose_me = true;
+			}
+		}
 	}
 	
 	public void add_element(Window_component wc) {
 		elements.add(wc);
+	}
+	
+	// ttl in milliseconds
+	public void set_time_to_live(int ttl) {
+		this.time_to_live = (ttl<0)?0:ttl;
+		time_start = (int) new Date().getTime();
+	}
+	
+	public void remove_status_bar() {
+		this.has_status_bar = false;
+		
+		// Draw elements higher
+		status_bar_height /= 2;
+	}
+	public void add_status_bar() {
+		this.has_status_bar = true;
+		
+		// Draw elements lower
+		status_bar_height *= 2;
+	}
+	
+	// Resizes window, so it contains all added elements
+	public void set_size_2_elements() {
+		// Fit y
+		int max_y = 0; 
+		int index = 0, i = 0;
+		for(Window_component wc : elements) {
+			int cur_y = wc.getY();
+			if(cur_y > max_y) {
+				max_y = cur_y;
+				index = i;
+			}
+			i++;
+		}
+		
+		int last_height = elements.get(index).getHeight();
+		
+		this.window_height = max_y + last_height + 7; // + some offset to look nice
+
+		
+		// Fit x
+		int max_x = 0; 
+		index = 0; i = 0;
+		for(Window_component wc : elements) {
+			int cur_x = wc.getX();
+			if(cur_x > max_x) {
+				max_x = cur_x;
+				index = i;
+			}
+			i++;
+		}
+		
+		int last_width = elements.get(index).getWidth();
+		
+		this.window_width = max_x + last_width + 8; // + some offset to look nice
 	}
 	
 	public Rectangle get_rect() {
@@ -166,7 +236,7 @@ public class Window {
 	}
 	
 	public void on_click(String button) {
-		if(get_close_button_rect().contains(content.mouse_x,content.mouse_y)) {
+		if(this.has_status_bar && get_close_button_rect().contains(content.mouse_x,content.mouse_y)) {
 			dispose_me = true;
 		}
 	}
@@ -182,7 +252,7 @@ public class Window {
 		in_focus = true;
 		
 		// Only drag if status bar is involved
-		if(get_status_bar_rect().contains(content.mouse_x, content.mouse_y)) {
+		if(this.has_status_bar &&  get_status_bar_rect().contains(content.mouse_x, content.mouse_y)) {
 			content.dragged_window = this;
     		content.is_dragging_window = true;
     		
@@ -196,5 +266,32 @@ public class Window {
 			old_move_y = move_y;
 			content.is_dragging_window = false;
 		}
+	}
+	
+	public Window_component get_by_id(String id) {
+		for(Window_component wc : elements) {
+			if(wc.get_id().equals(id))
+				return wc;
+		}
+		return null;
+	}
+	
+	public void setWidth(int w) {
+		this.window_width = w;
+	}
+	public int getWidth() {
+		return this.window_width;
+	}
+	public int getHeight() {
+		return this.window_height;
+	}
+	public void setHeight(int h) {
+		this.window_height = h;
+	}
+	public void setX(int x) {
+		this.window_x = x;
+	}
+	public void setY(int y) {
+		this.window_y = y;
 	}
 }

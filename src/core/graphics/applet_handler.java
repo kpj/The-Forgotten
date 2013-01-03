@@ -325,6 +325,9 @@ public class applet_handler implements KeyListener, MouseListener, MouseMotionLi
                        + c.getSize().height);*/
         content.window_width = c.getSize().width;
         content.window_height = c.getSize().height;
+        
+        if(content.win_manager != null)
+        	content.win_manager.update_positions();
     }
 
     public void componentShown(ComponentEvent e) {
