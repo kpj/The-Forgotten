@@ -20,7 +20,8 @@ public class Window {
 	int window_x, window_y, window_width, window_height;
 	
 	
-	Color status_bar_color = Color.blue;
+	Color status_bar_color_in_focus = Color.blue;
+	Color status_bar_color_de_focus = new Color(0,10,102);
 	int status_bar_x = 0;
 	int status_bar_y = 0;
 	int status_bar_width;
@@ -81,7 +82,10 @@ public class Window {
 			);
 		
 		// draw status bar
-		g.setColor(status_bar_color);
+		if(this.in_focus)
+			g.setColor(status_bar_color_in_focus);
+		else
+			g.setColor(status_bar_color_de_focus);
 		g.fillRect(
 				window_xpos+status_bar_x, 
 				window_ypos+status_bar_y, 
